@@ -1,7 +1,7 @@
 /*  Supply Chain Central Application
     Michael Bernard, Benjamin Chopson, Vasily Kushakov
     CSCI 3321
-    Controller
+    DatabaseConnection
 */
 
 package databaseconnection;
@@ -20,9 +20,11 @@ import java.util.Properties;
  */
 public class DatabaseConnection {
     private Connection connection;
+    private int role;
     
-    public DatabaseConnection()
+    public DatabaseConnection(int role)
     {
+        this.role = role;
         try {
             this.connection = getConnection();
         }
@@ -34,14 +36,28 @@ public class DatabaseConnection {
     }
     
     private Connection getConnection() throws SQLException {
-
         Connection conn = null;
         Properties connectionProps = new Properties();
-        connectionProps.put("user", "root");
-        connectionProps.put("password", "OtW@t&3kH1W");
+        String user;
+        String password;
+        //Manage SQL access permissions
+        switch (role)
+        {
+            case 1: user = "spmanager"; password = "spmanager"; break;
+            case 2: user = "material"; password = "material"; break;
+            case 3: user = "dispatcher"; password = "dispatcher"; break;
+            case 4: user = "warehouse"; password = "warehouse"; break;
+            default: user = "dispatcher"; password = "dispatcher"; break;
+        }
+        //REPLACE Temporary code for present
+        user = "root";
+        password = "OtW@t&3kH1W";
+        //
+        connectionProps.put("user", user);
+        connectionProps.put("password", password);//"OtW@t&3kH1W"
         conn = DriverManager.getConnection(
                 "jdbc:mysql://"
-                + "localhost"
+                + "localhost"//TODO update to appropriate server
                 + ":3306/supplychaincentral",
                 connectionProps);
         System.out.println("Connected to database");
