@@ -13,7 +13,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
-
 /**
  *
  * @author Benjamin
@@ -25,11 +24,12 @@ public class DataGeneratorUtility {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        Connection conn = null;
         Statement stmt = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            Connection conn = getConnection();
+            conn = getConnection();
             stmt = conn.createStatement();
 //            pstmt = conn.prepareStatement("INSERT INTO users " +
 //                    "VALUES (?, ?, ?, ?, ?, ?)");
@@ -52,6 +52,11 @@ public class DataGeneratorUtility {
                         + "," + employeeID + "," + managerID
                         + "," + roleID + "," + locationCode + ")");
             }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        try {
+            conn.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }

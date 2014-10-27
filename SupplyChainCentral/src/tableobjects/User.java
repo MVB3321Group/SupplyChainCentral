@@ -16,15 +16,17 @@ public class User {
     private int managerID;
     private int roleID;
     private String locationCode;
+    private String password;
     
     public User(String fName, String lName, int employeeID, int managerID,
-                int roleID, String locationCode) {
+                int roleID, String locationCode, String password) {
         setfName(fName);
         setlName(lName);
         setEmployeeID(employeeID);
         setManagerID(managerID);
         setRoleID(roleID);
         setLocationCode(locationCode);
+        setPassword(password);
     }
 
     public String getfName() {
@@ -73,5 +75,13 @@ public class User {
 
     public void setLocationCode(String locationCode) {
         this.locationCode = locationCode;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
