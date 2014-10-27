@@ -29,9 +29,54 @@ public class DatabaseConnection {
         conn = getConnection();
     }
     
+    private Connection getConnection() throws SQLException {
+        Connection conn = null;
+        Properties connectionProps = new Properties();
+        String user;
+        String password;
+        //Manage SQL access permissions
+        switch (role)
+        {
+            case 1: user = "spmanager"; password = "spmanager"; break;
+            case 2: user = "material"; password = "material"; break;
+            case 3: user = "dispatcher"; password = "dispatcher"; break;
+            case 4: user = "warehouse"; password = "warehouse"; break;
+            default: user = "dispatcher"; password = "dispatcher"; break;
+        }
+        //REPLACE Temporary code for present
+        user = "root";
+        password = "OtW@t&3kH1W";
+        //REPLACE
+        connectionProps.put("user", user);
+        connectionProps.put("password", password);//"OtW@t&3kH1W"
+        conn = DriverManager.getConnection(
+                "jdbc:mysql://"
+                + "localhost:3306/" +
+                  "supplychaincentral",
+                connectionProps);
+        System.out.println("Connected to database");
+        return conn;
+    }
+    
+    public boolean insertShipment(Shipment shipment) throws SQLException {
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        pstmt = conn.prepareStatement("INSERT INTO shipments" + 
+                "(shipID, origin, destination, priority) VALUES" +
+                "(?, ?, ?, ?)");
+        pstmt.setInt(1, shipment.getShipID());
+        pstmt.setString(2, shipment.getOrigin());
+        pstmt.setString(3, shipment.getDestination());
+        pstmt.setInt(4, shipment.getPriority());
+        return pstmt.execute();
+    }
     /**
      * either getUser == null indicates invalid user, or there is a boolean
      * method isUser(employeeID, password)
+     * @param employeeID
+     * @param password
+     * @return user
+     * @throws java.sql.SQLException
      */
     public User getUser(int employeeID, String password) throws SQLException {
         PreparedStatement pstmt = null;
@@ -56,34 +101,5 @@ public class DatabaseConnection {
                     roleID, locationCode, password2);
         }
         return user;
-    }
-    
-    private Connection getConnection() throws SQLException {
-        Connection conn = null;
-        Properties connectionProps = new Properties();
-        String user;
-        String password;
-        //Manage SQL access permissions
-        switch (role)
-        {
-            case 1: user = "spmanager"; password = "spmanager"; break;
-            case 2: user = "material"; password = "material"; break;
-            case 3: user = "dispatcher"; password = "dispatcher"; break;
-            case 4: user = "warehouse"; password = "warehouse"; break;
-            default: user = "dispatcher"; password = "dispatcher"; break;
-        }
-        //REPLACE Temporary code for present
-        user = "root";
-        password = "OtW@t&3kH1W";
-        //
-        connectionProps.put("user", user);
-        connectionProps.put("password", password);//"OtW@t&3kH1W"
-        conn = DriverManager.getConnection(
-                "jdbc:mysql://"
-                + "localhost:3306/" +
-                  "supplychaincentral",
-                connectionProps);
-        System.out.println("Connected to database");
-        return conn;
     }
 }

@@ -11,7 +11,7 @@ package controllers;
  * @author Benjamin
  */
 public class Controller {
-    
+    //Will get a user object based on input from login window.
     public static void main(String[] args) {
         
     }
