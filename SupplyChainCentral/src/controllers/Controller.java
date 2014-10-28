@@ -6,13 +6,20 @@
 
 package controllers;
 
+import databaseconnection.DatabaseConnection;
+
 /**
  *
  * @author Benjamin
  */
 public class Controller {
+    //Will get a user object based on input from login window.
+    DatabaseConnection dbConn;
     
-    public static void main(String[] args) {
-        
+    public Controller() {
+        //in order to get the connection, you need the role.
+        //in order to get the role, you need the user
+        //in order to get the user, you need the connection
+        //therefore, the role implementation will not work as written
     }
 }
