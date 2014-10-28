@@ -58,6 +58,12 @@ public class DatabaseConnection {
         return conn;
     }
     
+    /**
+     * 
+     * @param shipment
+     * @return
+     * @throws SQLException 
+     */
     public boolean insertShipment(Shipment shipment) throws SQLException {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -75,7 +81,7 @@ public class DatabaseConnection {
      * method isUser(employeeID, password)
      * @param employeeID
      * @param password
-     * @return user
+     * @return
      * @throws java.sql.SQLException
      */
     public User getUser(int employeeID, String password) throws SQLException {

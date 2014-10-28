@@ -1,16 +1,16 @@
 /*  Supply Chain Central Application
     Michael Bernard, Benjamin Chopson, Vasily Kushakov
     CSCI 3321
-    Controller
+    SupplyChainCentral
 */
-
-package controllers;
+package application;
 
 /**
  *
  * @author Benjamin
  */
-public class Controller {
-    //Will get a user object based on input from login window.
-    
+public class SupplyChainCentral {
+    public static void main(String[] args) {
+        
+    }
 }
