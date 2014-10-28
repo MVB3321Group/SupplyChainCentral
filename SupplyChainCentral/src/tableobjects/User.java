@@ -22,7 +22,7 @@ public class User {
                 int roleID, String locationCode, String password) {
         setfName(fName);
         setlName(lName);
-        setEmployeeID(employeeID);
+        this.employeeID = employeeID;//not providing a setter for employee ID...
         setManagerID(managerID);
         setRoleID(roleID);
         setLocationCode(locationCode);
@@ -47,10 +47,6 @@ public class User {
 
     public int getEmployeeID() {
         return employeeID;
-    }
-
-    public void setEmployeeID(int employeeID) {
-        this.employeeID = employeeID;
     }
 
     public int getManagerID() {

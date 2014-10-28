@@ -5,11 +5,20 @@
 */
 package application;
 
+import controllers.Controller;
+
 /**
  *
  * @author Benjamin
  */
 public class SupplyChainCentral {
+    Controller controller;
+    
+    public SupplyChainCentral() {
+        controller = new Controller();
+        
+    }
+    
     public static void main(String[] args) {
         
     }
