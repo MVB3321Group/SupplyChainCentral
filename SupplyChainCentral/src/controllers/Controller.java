@@ -18,7 +18,7 @@ import tableobjects.User;
 public class Controller {
     //Will get a user object based on input from login window.
     private final int MAX_LOGIN_ATTEMPTS = 5;
-    DatabaseConnection dbConn;
+    private DatabaseConnection dbConn;
     User user;//user for this session
     
     public Controller() {

@@ -109,6 +109,20 @@ public class DatabaseConnection {
             return false;
         }
     }
+    
+//    public Shipment[] getShipments() {
+//        Statement stmt;
+//        ResultSet rs;
+//        try {
+//            stmt = connection.createStatement();
+//            rs = stmt.executeQuery("SELECT * FROM Shipments");
+//        }
+//        catch (SQLException e) {
+//            System.err.println("Unable to retrive shipment list.");
+//            e.printStackTrace();
+//        }
+//    }
+    
     /**
      * either getUser == null indicates invalid user, or there is a boolean
      * method isUser(employeeID, password)
