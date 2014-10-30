@@ -8,7 +8,7 @@
 package controllers;
 
 import databaseconnection.DatabaseConnection;
-import java.sql.SQLException;
+import java.util.Scanner;
 import tableobjects.User;
 
 /**
@@ -26,34 +26,17 @@ public class Controller {
         //in order to get the role, you need the user
         //in order to get the user, you need the connection
         //therefore, the role implementation will not work as written
-        try {
-            dbConn = new DatabaseConnection(0);
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
+        dbConn = new DatabaseConnection(0);
     }
     
     private boolean isValidUser(int employeeID, String password) {
-        try {
-            User vUser = dbConn.getUser(1111, "opensesame");//"dummy" values
-            if (vUser != null)
-                return true;
-            return false;
-        }
-        catch (SQLException e) {
-            return false;
-        }
+        User vUser = dbConn.getUser(employeeID, password);
+        return (vUser != null);
     }
     
     //To be called on any exit event
     public void exit() {
-        try {
-            dbConn.close();
-        }
-        catch (SQLException e) {
-            //TODO: Display message about connection not closing
-        }
+        dbConn.close();
     }
     
     public static void main(String [] args) {
@@ -69,8 +52,25 @@ public class Controller {
             loginPage.txtPassword.Text = "";
             numAttempts++;
         }*/
+        //Begin simple test code
+        int username = -1;
+        String password = "";
+        while (username != 0) {
+            System.out.print("Enter username & password or 0 to quit: ");
+            Scanner scan = new Scanner(System.in);
+            username = scan.nextInt();
+            password = scan.next();
+            if (controller.isValidUser(username, password)) {
+                controller.user = controller.dbConn.getUser(username, password);
+                break;
+            }
+        }
+        System.out.println("Welcome " + controller.user.getfName() + " "
+                            + controller.user.getlName());
+        //End simple test code
         //controller.validateUser(employeeID, password);
         //TODO: Show main page
+        
         controller.exit();
     }
 }

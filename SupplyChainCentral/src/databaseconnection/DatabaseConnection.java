@@ -25,21 +25,39 @@ public class DatabaseConnection {
     private Connection connection;
     
     //If connection is unsuccessful, propagate exception
-    public DatabaseConnection(int role) throws SQLException {
-        connection = getConnection(role);
+    public DatabaseConnection(int role) {
+        try {
+            connection = getConnection(role);
+        }
+        catch (SQLException e) {
+            System.err.println("Unable to connect to database.");//change
+            e.printStackTrace();
+        }
     }
     
-    public void switchUser(int newRole) throws SQLException {
-        connection.close();
-        connection = getConnection(newRole);
+    public void switchUser(int newRole) {
+        try {
+            connection.close();
+            connection = getConnection(newRole);
+        }
+        catch (SQLException e) {
+            System.err.println("Unable to switch users.");
+            e.printStackTrace();
+        }
     }
     
-    public void close() throws SQLException {
-        connection.close();
+    public void close() {
+        try {
+            connection.close();
+        }
+        catch (SQLException e) {
+            System.err.println("Unable to properly closee connection.");
+            e.printStackTrace();
+        }
     }
     
     private Connection getConnection(int role) throws SQLException {
-        Connection conn = null;
+        Connection conn;
         Properties connectionProps = new Properties();
         String user;
         String password;
@@ -71,20 +89,25 @@ public class DatabaseConnection {
     /**
      * 
      * @param shipment
-     * @return
-     * @throws SQLException 
+     * @return 
      */
-    public boolean insertShipment(Shipment shipment) throws SQLException {
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        pstmt = connection.prepareStatement("INSERT INTO shipments" + 
-                "(shipID, origin, destination, priority) VALUES" +
-                "(?, ?, ?, ?)");
-        pstmt.setInt(1, shipment.getShipID());
-        pstmt.setString(2, shipment.getOrigin());
-        pstmt.setString(3, shipment.getDestination());
-        pstmt.setInt(4, shipment.getPriority());
-        return pstmt.execute();
+    public boolean insertShipment(Shipment shipment) {
+        PreparedStatement pstmt;
+        try {
+            pstmt = connection.prepareStatement("INSERT INTO shipments" + 
+                    "(shipID, origin, destination, priority) VALUES" +
+                    "(?, ?, ?, ?)");
+            pstmt.setInt(1, shipment.getShipID());
+            pstmt.setString(2, shipment.getOrigin());
+            pstmt.setString(3, shipment.getDestination());
+            pstmt.setInt(4, shipment.getPriority());
+            return pstmt.execute();
+        }
+        catch (SQLException e) {
+            System.err.println("Unable to insert shipment.");
+            e.printStackTrace();
+            return false;
+        }
     }
     /**
      * either getUser == null indicates invalid user, or there is a boolean
@@ -92,29 +115,36 @@ public class DatabaseConnection {
      * @param employeeID
      * @param password
      * @return
-     * @throws java.sql.SQLException
      */
-    public User getUser(int employeeID, String password) throws SQLException {
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        pstmt = connection.prepareStatement("SELECT * FROM users" +
-                "WHERE employeeID = ? AND password = ?");
-        pstmt.setInt(1, employeeID);
-        pstmt.setString(2, password);
-        rs = pstmt.executeQuery();
-        String fName; String lName; int employeeID2; int managerID;
-        int roleID; String locationCode; String password2;
+    public User getUser(int employeeID, String password) {
+        PreparedStatement pstmt;
+        ResultSet rs;
         User user = null;
-        while (rs.next()) {
-            fName = rs.getString("fName");
-            lName = rs.getString("lName");
-            employeeID2 = rs.getInt("employeeID");
-            managerID = rs.getInt("managerID");
-            roleID = rs.getInt("roleID");
-            locationCode = rs.getString("locationCode");
-            password2 = rs.getString("password");
-            user = new User(fName, lName, employeeID2, managerID,
-                    roleID, locationCode, password2);
+        try {
+            pstmt = connection.prepareStatement("SELECT * FROM users "
+                    + "WHERE employeeID = ? AND password = ?");
+            pstmt.setInt(1, employeeID);
+            pstmt.setString(2, password);
+            rs = pstmt.executeQuery();
+            String fName; String lName; int employeeID2;
+            int managerID;
+            int roleID;
+            String locationCode;
+            String password2;
+            while (rs.next()) {
+                fName = rs.getString("fName");
+                lName = rs.getString("lName");
+                employeeID2 = rs.getInt("employeeID");
+                managerID = rs.getInt("managerID");
+                roleID = rs.getInt("roleID");
+                locationCode = rs.getString("locationCode");
+                password2 = rs.getString("password");
+                user = new User(fName, lName, employeeID2, managerID,
+                        roleID, locationCode, password2);
+            }
+        } catch (SQLException e) {
+            System.err.println("Could not validate user.");
+            e.printStackTrace();
         }
         return user;
     }
