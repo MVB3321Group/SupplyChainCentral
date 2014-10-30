@@ -2,6 +2,7 @@
     Michael Bernard, Benjamin Chopson, Vasily Kushakov
     CSCI 3321
     DatabaseConnection
+    Interface between controllers and database
 */
 
 package databaseconnection;
@@ -25,11 +26,19 @@ public class DatabaseConnection {
     
     //If connection is unsuccessful, propagate exception
     public DatabaseConnection(int role) throws SQLException {
-        this.role = role;
-        conn = getConnection();
+        conn = getConnection(role);
     }
     
-    private Connection getConnection() throws SQLException {
+    private void switchUser(int newRole) throws SQLException {
+        conn.close();
+        conn = getConnection(newRole);
+    }
+    
+    public void close() throws SQLException {
+        conn.close();
+    }
+    
+    private Connection getConnection(int role) throws SQLException {
         Connection conn = null;
         Properties connectionProps = new Properties();
         String user;
@@ -37,6 +46,7 @@ public class DatabaseConnection {
         //Manage SQL access permissions
         switch (role)
         {
+            case 0: user = "uservalidator"; password = "uservalidator"; break;
             case 1: user = "spmanager"; password = "spmanager"; break;
             case 2: user = "material"; password = "material"; break;
             case 3: user = "dispatcher"; password = "dispatcher"; break;
