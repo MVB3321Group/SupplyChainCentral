@@ -51,7 +51,7 @@ public class DatabaseConnection {
             connection.close();
         }
         catch (SQLException e) {
-            System.err.println("Unable to properly closee connection.");
+            System.err.println("Unable to properly close connection.");
             e.printStackTrace();
         }
     }
