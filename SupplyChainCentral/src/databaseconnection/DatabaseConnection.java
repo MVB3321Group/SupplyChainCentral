@@ -22,20 +22,20 @@ import tableobjects.*;
  */
 public class DatabaseConnection {
     private int role;
-    private Connection conn;
+    private Connection connection;
     
     //If connection is unsuccessful, propagate exception
     public DatabaseConnection(int role) throws SQLException {
-        conn = getConnection(role);
+        connection = getConnection(role);
     }
     
-    private void switchUser(int newRole) throws SQLException {
-        conn.close();
-        conn = getConnection(newRole);
+    public void switchUser(int newRole) throws SQLException {
+        connection.close();
+        connection = getConnection(newRole);
     }
     
     public void close() throws SQLException {
-        conn.close();
+        connection.close();
     }
     
     private Connection getConnection(int role) throws SQLException {
@@ -56,7 +56,7 @@ public class DatabaseConnection {
         //REPLACE Temporary code for present
         user = "root";
         password = "OtW@t&3kH1W";
-        //REPLACE
+        //END REPLACE
         connectionProps.put("user", user);
         connectionProps.put("password", password);//"OtW@t&3kH1W"
         conn = DriverManager.getConnection(
@@ -77,7 +77,7 @@ public class DatabaseConnection {
     public boolean insertShipment(Shipment shipment) throws SQLException {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        pstmt = conn.prepareStatement("INSERT INTO shipments" + 
+        pstmt = connection.prepareStatement("INSERT INTO shipments" + 
                 "(shipID, origin, destination, priority) VALUES" +
                 "(?, ?, ?, ?)");
         pstmt.setInt(1, shipment.getShipID());
@@ -97,7 +97,7 @@ public class DatabaseConnection {
     public User getUser(int employeeID, String password) throws SQLException {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        pstmt = conn.prepareStatement("SELECT * FROM users" +
+        pstmt = connection.prepareStatement("SELECT * FROM users" +
                 "WHERE employeeID = ? AND password = ?");
         pstmt.setInt(1, employeeID);
         pstmt.setString(2, password);

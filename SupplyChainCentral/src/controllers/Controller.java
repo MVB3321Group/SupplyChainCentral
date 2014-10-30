@@ -2,6 +2,7 @@
     Michael Bernard, Benjamin Chopson, Vasily Kushakov
     CSCI 3321
     Controller
+    Contains main method of the supply chain central application
 */
 
 package controllers;
@@ -18,7 +19,7 @@ public class Controller {
     //Will get a user object based on input from login window.
     private final int MAX_LOGIN_ATTEMPTS = 5;//arbitary value for now
     DatabaseConnection dbConn;
-    User user;
+    User user;//user for this session
     
     public Controller() {
         //in order to get the connection, you need the role.
@@ -33,7 +34,7 @@ public class Controller {
         }
     }
     
-    public boolean isValidUser(int employeeID, String password) {
+    private boolean isValidUser(int employeeID, String password) {
         try {
             User user = dbConn.getUser(1111, "opensesame");//"dummy" values
             if (user != null)
@@ -59,12 +60,14 @@ public class Controller {
         }
         try {
             user = dbConn.getUser(employeeID, password);
+            dbConn.switchUser(user.getRoleID());
         }
         catch (SQLException e) {
             //TODO: display some warning message
         }
     }
     
+    //To be called on any exit event
     public void exit() {
         try {
             dbConn.close();
