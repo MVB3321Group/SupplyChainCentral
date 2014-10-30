@@ -7,6 +7,7 @@
 package controllers;
 
 import databaseconnection.DatabaseConnection;
+import java.sql.SQLException;
 
 /**
  *
@@ -21,5 +22,11 @@ public class Controller {
         //in order to get the role, you need the user
         //in order to get the user, you need the connection
         //therefore, the role implementation will not work as written
+        try {
+            dbConn = new DatabaseConnection();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
