@@ -34,6 +34,10 @@ public class DatabaseConnection {
         conn = getConnection(newRole);
     }
     
+    public void close() throws SQLException {
+        conn.close();
+    }
+    
     private Connection getConnection(int role) throws SQLException {
         Connection conn = null;
         Properties connectionProps = new Properties();
@@ -42,6 +46,7 @@ public class DatabaseConnection {
         //Manage SQL access permissions
         switch (role)
         {
+            case 0: user = "uservalidator"; password = "uservalidator"; break;
             case 1: user = "spmanager"; password = "spmanager"; break;
             case 2: user = "material"; password = "material"; break;
             case 3: user = "dispatcher"; password = "dispatcher"; break;
