@@ -13,6 +13,7 @@ import java.util.Date;
  */
 public class Shipment {
     private int shipID;
+    private int originatorID;
     private String origin;
     private String destination;
     private int priority;
@@ -21,12 +22,29 @@ public class Shipment {
     private Date endTime;
     private String currentLocation;
     
-    public Shipment(int shipID, String origin, String destination, int priority) {
+    public Shipment(int shipID, int originatorID, String origin, String destination, int priority) {
         setShipID(shipID);
+        setOriginatorID(originatorID);
         setOrigin(origin);
         setDestination(destination);
         setPriority(priority);
     }
+    
+    public Shipment(int shipID, int originatorID, String origin,
+            String destination, int priority,int scheduleID, Date startTime,
+            Date endTime, String currentLocation) {
+        setShipID(shipID);
+        setOriginatorID(originatorID);
+        setOrigin(origin);
+        setDestination(destination);
+        setPriority(priority);
+        setScheduleID(scheduleID);
+        setStartTime(startTime);
+        setEndTime(endTime);
+        setCurrentLocation(currentLocation);
+    }
+    
+    public Shipment() {}
     
     public int getShipID() {
         return shipID;
@@ -90,5 +108,13 @@ public class Shipment {
 
     public void setCurrentLocation(String currentLocation) {
         this.currentLocation = currentLocation;
+    }
+
+    public int getOriginatorID() {
+        return originatorID;
+    }
+
+    public void setOriginatorID(int originatorID) {
+        this.originatorID = originatorID;
     }
 }

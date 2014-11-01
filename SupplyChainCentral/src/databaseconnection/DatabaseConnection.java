@@ -13,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Properties;
 import tableobjects.*;
 
@@ -95,12 +96,13 @@ public class DatabaseConnection {
         PreparedStatement pstmt;
         try {
             pstmt = connection.prepareStatement("INSERT INTO shipments" + 
-                    "(shipID, origin, destination, priority) VALUES" +
-                    "(?, ?, ?, ?)");
+                    "(shipID, originatorID, origin, destination, priority)" +
+                    "VALUES (?, ?, ?, ?, ?)");
             pstmt.setInt(1, shipment.getShipID());
-            pstmt.setString(2, shipment.getOrigin());
-            pstmt.setString(3, shipment.getDestination());
-            pstmt.setInt(4, shipment.getPriority());
+            pstmt.setInt(2, shipment.getOriginatorID());
+            pstmt.setString(3, shipment.getOrigin());
+            pstmt.setString(4, shipment.getDestination());
+            pstmt.setInt(5, shipment.getPriority());
             return pstmt.execute();
         }
         catch (SQLException e) {
@@ -110,18 +112,35 @@ public class DatabaseConnection {
         }
     }
     
-//    public Shipment[] getShipments() {
-//        Statement stmt;
-//        ResultSet rs;
-//        try {
-//            stmt = connection.createStatement();
-//            rs = stmt.executeQuery("SELECT * FROM Shipments");
-//        }
-//        catch (SQLException e) {
-//            System.err.println("Unable to retrive shipment list.");
-//            e.printStackTrace();
-//        }
-//    }
+    //warning: not tested
+    public ArrayList<Shipment> getShipments() {
+        Statement stmt;
+        ResultSet rs;
+        ArrayList<Shipment> shipments = new ArrayList<>();
+        try {
+            stmt = connection.createStatement();
+            rs = stmt.executeQuery("SELECT * FROM Shipments");
+            while (rs.next()) {
+                Shipment s = new Shipment(
+                        rs.getInt("shipID"),
+                        rs.getInt("originatorID"),
+                        rs.getString("origin"),
+                        rs.getString("destination"),
+                        rs.getInt("priority"),
+                        rs.getInt("scheduleID"),
+                        rs.getDate("startTime"),
+                        rs.getDate("endTime"),
+                        rs.getString("currentLocation")
+                );
+                shipments.add(s);
+            }
+        }
+        catch (SQLException e) {
+            System.err.println("Unable to retrive shipment list.");
+            e.printStackTrace();
+        }
+        return shipments;
+    }
     
     /**
      * either getUser == null indicates invalid user, or there is a boolean
