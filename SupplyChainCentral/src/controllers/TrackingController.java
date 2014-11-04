@@ -1,7 +1,7 @@
 /*  Supply Chain Central Application
     Michael Bernard, Benjamin Chopson, Vasily Kushakov
     CSCI 3321
-    SchedulingController
+    TrackingController
 */
 package controllers;
 
@@ -9,14 +9,14 @@ package controllers;
  *
  * @author Benjamin
  */
-public class SchedulingController extends Controller {
-    public SchedulingController() {
+public class TrackingController extends Controller {
+    public TrackingController() {
         super();
     }
     
     @Override
     public void exit() {
-        //dispose of any resources for scheduling controller
+        //dispose of any resources for tracking controller
         super.exit();
     }
 }

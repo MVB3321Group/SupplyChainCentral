@@ -5,7 +5,7 @@
 */
 package tableobjects;
 
-import java.util.Date;
+import java.sql.Date;
 
 /**
  *
@@ -22,8 +22,7 @@ public class Shipment {
     private Date endTime;
     private String currentLocation;
     
-    public Shipment(int shipID, int originatorID, String origin, String destination, int priority) {
-        setShipID(shipID);
+    public Shipment(int originatorID, String origin, String destination, int priority) {
         setOriginatorID(originatorID);
         setOrigin(origin);
         setDestination(destination);

@@ -25,8 +25,8 @@ public class DatabaseConnection {
     private int role;
     private Connection connection;
     
-    //If connection is unsuccessful, propagate exception
     public DatabaseConnection(int role) {
+        this.role = role;
         try {
             connection = getConnection(role);
         }
@@ -37,6 +37,7 @@ public class DatabaseConnection {
     }
     
     public void switchUser(int newRole) {
+        this.role = newRole;
         try {
             connection.close();
             connection = getConnection(newRole);
@@ -96,13 +97,12 @@ public class DatabaseConnection {
         PreparedStatement pstmt;
         try {
             pstmt = connection.prepareStatement("INSERT INTO shipments" + 
-                    "(shipID, originatorID, origin, destination, priority)" +
-                    "VALUES (?, ?, ?, ?, ?)");
-            pstmt.setInt(1, shipment.getShipID());
-            pstmt.setInt(2, shipment.getOriginatorID());
-            pstmt.setString(3, shipment.getOrigin());
-            pstmt.setString(4, shipment.getDestination());
-            pstmt.setInt(5, shipment.getPriority());
+                    "(originatorID, origin, destination, priority)" +
+                    "VALUES (?, ?, ?, ?)");
+            pstmt.setInt(1, shipment.getOriginatorID());
+            pstmt.setString(2, shipment.getOrigin());
+            pstmt.setString(3, shipment.getDestination());
+            pstmt.setInt(4, shipment.getPriority());
             return pstmt.execute();
         }
         catch (SQLException e) {
@@ -112,7 +112,34 @@ public class DatabaseConnection {
         }
     }
     
-    //warning: not tested
+    public boolean updateShipment(Shipment shipment) {
+        PreparedStatement pstmt;
+        StringBuilder command = new StringBuilder("UPDATE shipments SET ");
+        command.append("originatorID = ?, origin = ?, destination = ?, ");
+        command.append("priority = ?, scheduleID = ?, startTime = ?, ");
+        command.append("endTime = ?, currentLocation = ?");
+        command.append("WHERE shipID = ?");
+        try {
+            pstmt = connection.prepareStatement(command.toString());
+            pstmt.setInt(1, shipment.getOriginatorID());
+            pstmt.setString(2, shipment.getOrigin());
+            pstmt.setString(3, shipment.getDestination());
+            pstmt.setInt(4, shipment.getPriority());
+            pstmt.setInt(5, shipment.getScheduleID());
+            pstmt.setDate(6, shipment.getStartTime());
+            pstmt.setDate(7, shipment.getEndTime());
+            pstmt.setString(8, shipment.getCurrentLocation());
+            pstmt.setInt(9, shipment.getShipID());
+            return pstmt.execute();
+        }
+        catch (SQLException e) {
+            System.err.println("Unable to update shipment.");
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    //warning: not tested (at all)
     public ArrayList<Shipment> getShipments() {
         Statement stmt;
         ResultSet rs;
@@ -136,11 +163,40 @@ public class DatabaseConnection {
             }
         }
         catch (SQLException e) {
-            System.err.println("Unable to retrive shipment list.");
+            System.err.println("Unable to retrieve shipment list.");
             e.printStackTrace();
         }
         return shipments;
     }
+    
+    //warning: not tested (at all)
+    public ArrayList<Location> getLocations() {
+        Statement stmt;
+        ResultSet rs;
+        ArrayList<Location> locations = new ArrayList<>();
+        try {
+            stmt = connection.createStatement();
+            rs = stmt.executeQuery("SELECT * FROM Locations");
+            while (rs.next()) {
+                Location l = new Location(
+                        rs.getString("locationCode"),
+                        rs.getInt("locationType"),
+                        rs.getString("address"),
+                        rs.getInt("zip"),
+                        rs.getString("city"),
+                        rs.getString("state")
+                );
+                locations.add(l);
+            }
+        }
+        catch (SQLException e) {
+            System.err.println("Unable to retrieve location list.");
+            e.printStackTrace();
+        }
+        return locations;
+    }
+    
+    //TODO: public ArrayList<Product>
     
     /**
      * either getUser == null indicates invalid user, or there is a boolean

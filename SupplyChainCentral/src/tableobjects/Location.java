@@ -11,13 +11,13 @@ package tableobjects;
  */
 public class Location {
     private String locationCode;
-    private String locationType;
+    private int locationType;
     private String address;
     private int zip;
     private String city;
     private String state;
     
-    public Location(String locationCode, String locationType, String address,
+    public Location(String locationCode, int locationType, String address,
                     int zip, String city, String state) {
         setLocationCode(locationCode);
         setLocationType(locationType);
@@ -35,11 +35,11 @@ public class Location {
         this.locationCode = locationCode;
     }
 
-    public String getLocationType() {
+    public int getLocationType() {
         return locationType;
     }
 
-    public void setLocationType(String locationType) {
+    public void setLocationType(int locationType) {
         this.locationType = locationType;
     }
 
