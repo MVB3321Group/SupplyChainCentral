@@ -7,9 +7,15 @@
 
 package controllers;
 
-import databaseconnection.DatabaseConnection;
+import controllers.*;
+import databaseconnection.*;
+import tableobjects.*;
+import tools.Toolbar;
+import windows.*;
 import java.util.Scanner;
-import tableobjects.User;
+import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
 /**
  *
@@ -19,6 +25,7 @@ public class Controller {
     //Will get a user object based on input from login window.
     private final int MAX_LOGIN_ATTEMPTS = 5;
     private DatabaseConnection dbConn;
+    private SchedulingController sController;
     User user;//user for this session
     
     public Controller() {
@@ -27,6 +34,7 @@ public class Controller {
         //in order to get the user, you need the connection
         //therefore, the role implementation will not work as written
         dbConn = new DatabaseConnection(0);
+        sController = new SchedulingController(dbConn);
     }
     
     private boolean isValidUser(int employeeID, String password) {
@@ -37,6 +45,32 @@ public class Controller {
     //To be called on any exit event
     public void exit() {
         dbConn.close();
+    }
+        
+    // General method for opening a window under specified conditions
+    // TODO: Fix attempts to open an already-open window
+    public static void openWindow(Stage window, Pane pane,
+                                  double width, double height) {
+        Toolbar toolbar = new Toolbar();
+        toolbar.generateDropdowns(pane);
+
+        Scene scene = new Scene(pane, width, height);
+
+        window.setTitle("Supply Chain Central");
+        window.setScene(scene);
+        window.show();
+        window.setResizable(false);
+    }
+    
+    public static void openMainWindow() {
+        // Below step instantiates class-specific object only when necessary
+        if (! MainWindow.mainWindow.isIconified()) {
+            MainWindow obj = new MainWindow(); // "dummy" instance
+        }
+        
+        openWindow(MainWindow.mainWindow, MainWindow.bPane, 1344, 686);
+        
+        MainWindow.mainWindow.setIconified(false);
     }
     
     public static void main(String [] args) {
@@ -52,6 +86,7 @@ public class Controller {
             loginPage.txtPassword.Text = "";
             numAttempts++;
         }*/
+
         //Begin simple test code
         int username = -1;
         String password = "";
