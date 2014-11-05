@@ -19,6 +19,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
@@ -35,7 +36,9 @@ public class ShipmentWindow {
         
     public static final ComboBox<Product> PROD_DROPDOWN = new ComboBox<>();
     public static final ComboBox<Location> DEST_DROPDOWN = new ComboBox<>();
-
+    
+    public TableView<Shipment> SHIPMENTS_TABLE = new TableView<>();
+    
     public static Stage shipmentWindow = new Stage();
     
     public static AnchorPane aPane = new AnchorPane();
@@ -55,6 +58,8 @@ public class ShipmentWindow {
         gPane.add(new Label("Destination:"), 0, 3);
         gPane.add(DEST_DROPDOWN, 1, 3);
         gPane.add(CREATE_SHIPMENT_BUTTON, 1, 6);
+        
+        gPane.add(SHIPMENTS_TABLE, 1, 7);
         
         PROD_DROPDOWN.setPrefWidth(150);
         DEST_DROPDOWN.setPrefWidth(150);
