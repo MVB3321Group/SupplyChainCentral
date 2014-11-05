@@ -196,7 +196,32 @@ public class DatabaseConnection {
         return locations;
     }
     
-    //TODO: public ArrayList<Product>
+    //warning: not tested (at all)
+    public ArrayList<Product> getProducts() {
+        Statement stmt;
+        ResultSet rs;
+        ArrayList<Product> products = new ArrayList<>();
+        try {
+            stmt = connection.createStatement();
+            rs = stmt.executeQuery("SELECT * FROM Products");
+            while (rs.next()) {
+                Product p = new Product(
+                        rs.getString("productName"),
+                        rs.getInt("productID"),
+                        rs.getDouble("height"),
+                        rs.getDouble("length"),
+                        rs.getDouble("width"),
+                        rs.getDouble("height")
+                );
+                products.add(p);
+            }
+        }
+        catch (SQLException e) {
+            System.err.println("Unable to retrieve product list.");
+            e.printStackTrace();
+        }
+        return products;
+    }
     
     /**
      * either getUser == null indicates invalid user, or there is a boolean
