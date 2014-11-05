@@ -14,6 +14,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 import tableobjects.*;
 
@@ -239,6 +241,65 @@ public class DatabaseConnection {
             e.printStackTrace();
         }
         return products;
+    }
+    
+    public boolean addProductToShipment(Shipment s, Product p, int quantity) {
+        PreparedStatement pstmt;
+        try {
+            pstmt = connection.prepareStatement("INSERT INTO productsshipped" + 
+                    "(shipID, productID, quantity)" +
+                    "VALUES (?, ?, ?)");
+            pstmt.setInt(1, s.getShipID());
+            pstmt.setInt(2, p.getProductID());
+            pstmt.setInt(3, quantity);
+            return pstmt.execute();
+        }
+        catch (SQLException e) {
+            System.err.println("Unable to add product to shipment.");
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    public HashMap<Product, Integer> getProductsByShipment(Shipment s) {
+        PreparedStatement pstmt;
+        ResultSet rs;
+        PreparedStatement pstmt2;
+        ResultSet rs2;
+        HashMap<Product, Integer> productsShipped = new HashMap<>();
+        try {
+            StringBuilder command = new StringBuilder("SELECT productID, ");
+            command.append("quantity FROM productsshipped WHERE shipID = ?");
+            StringBuilder command2 = new StringBuilder("SELECT * FROM ");
+            command2.append("products WHERE productID = ?");
+            pstmt = connection.prepareStatement(command.toString());
+            pstmt.setInt(1, s.getShipID());
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                int productID = rs.getInt("productID");
+                int quantity = rs.getInt("quantity");
+                pstmt2 = connection.prepareStatement(command2.toString());
+                pstmt2.setInt(1, productID);
+                rs2 = pstmt2.executeQuery();
+                Product p = null;
+                while (rs2.next()) {
+                    p = new Product(
+                        rs.getString("productName"),
+                        rs.getInt("productID"),
+                        rs.getDouble("height"),
+                        rs.getDouble("length"),
+                        rs.getDouble("width"),
+                        rs.getDouble("height")
+                    );
+                }
+                productsShipped.put(p, quantity);
+            }
+        }
+        catch (SQLException e) {
+            System.err.println("Unable to retrieve product list.");
+            e.printStackTrace();
+        }
+        return productsShipped;
     }
     
     /**
