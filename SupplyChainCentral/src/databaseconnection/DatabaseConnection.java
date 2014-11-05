@@ -31,7 +31,7 @@ public class DatabaseConnection {
             connection = getConnection(role);
         }
         catch (SQLException e) {
-            System.err.println("Unable to connect to database.");//change
+            System.err.println("Unable to connect to database.");
             e.printStackTrace();
         }
     }
@@ -107,6 +107,24 @@ public class DatabaseConnection {
         }
         catch (SQLException e) {
             System.err.println("Unable to insert shipment.");
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    public boolean createPriorityRequest(PriorityRequest req) {
+        PreparedStatement pstmt;
+        try {
+            pstmt = connection.prepareStatement("INSERT INTO priorityrequests" + 
+                    "(employeeID, shipID, priority)" +
+                    "VALUES (?, ?, ?)");
+            pstmt.setInt(1, req.getEmployeeID());
+            pstmt.setInt(2, req.getShipID());
+            pstmt.setInt(3, req.getPriority());
+            return pstmt.execute();
+        }
+        catch (SQLException e) {
+            System.err.println("Unable to create request.");
             e.printStackTrace();
             return false;
         }

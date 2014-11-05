@@ -9,14 +9,8 @@ package controllers;
  *
  * @author Benjamin
  */
-public class SchedulingController extends Controller {
+public class SchedulingController {
     public SchedulingController() {
-        super();
-    }
-    
-    @Override
-    public void exit() {
-        //dispose of any resources for scheduling controller
-        super.exit();
+        
     }
 }

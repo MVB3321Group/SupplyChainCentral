@@ -9,14 +9,8 @@ package controllers;
  *
  * @author Benjamin
  */
-public class TrackingController extends Controller {
+public class TrackingController {
     public TrackingController() {
-        super();
-    }
-    
-    @Override
-    public void exit() {
-        //dispose of any resources for tracking controller
-        super.exit();
+        
     }
 }
