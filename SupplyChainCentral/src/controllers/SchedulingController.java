@@ -15,6 +15,8 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
+import static windows.ShipmentWindow.CREATE_SHIPMENT_BUTTON;
 
 
 /**
@@ -32,7 +34,9 @@ public class SchedulingController {
         
         Shipment shpmt = new Shipment(originatorID, orig, dest, priority);
         MainWindow.dbConn.insertShipment(shpmt);
-        System.out.println("Shipment successfully added to database");
+        
+        // Confirm success
+        ShipmentWindow.gPane.add(ShipmentWindow.success, 1, 6);
     }
     
     public static void openShipmentWindow() {

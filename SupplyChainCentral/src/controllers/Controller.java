@@ -43,7 +43,7 @@ public class Controller {
     
     //To be called on any exit event
     public void exit() {
-//        dbConn.close();
+        MainWindow.dbConn.close();
     }
 
     // TODO: Fix attempts to open an already-open window
@@ -69,8 +69,14 @@ public class Controller {
             MainWindow obj = new MainWindow(); // "dummy" instance
         }
         
-        openWindow(MainWindow.mainWindow, MainWindow.bPane, 1342, 686);
+        openWindow(MainWindow.mainWindow, MainWindow.mainPane, 1342, 686);
         MainWindow.mainWindow.setIconified(false);
+    }
+
+    // TODO
+    public static void showSuccess(Stage window, Pane pane,
+                                   double width, double height) {
+        
     }
     
     public static void main(String [] args) {

@@ -44,9 +44,10 @@ public class ShipmentWindow {
     public static Stage shipmentWindow = new Stage();
     
     public static AnchorPane aPane = new AnchorPane();
-    
-    GridPane gPane = new GridPane();
-    
+    public static GridPane gPane = new GridPane();
+            
+    public static Label success = new Label("Shipment added succesfully. ");  
+
     public ShipmentWindow() {
         
         gPane.add(new Label("Product: "), 0, 0);
@@ -64,7 +65,7 @@ public class ShipmentWindow {
         gPane.add(DESTINATIONS_CHART, 2, 7);
         gPane.setHgap(10);
         gPane.setVgap(10);
-        
+
         PROD_DROPDOWN.setPrefWidth(150);
         ORIG_DROPDOWN.setPrefWidth(150);
         DEST_DROPDOWN.setPrefWidth(150);

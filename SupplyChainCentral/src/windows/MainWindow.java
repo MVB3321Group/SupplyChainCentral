@@ -8,21 +8,18 @@ package windows;
 
 import controllers.*;
 import databaseconnection.*;
-import tableobjects.*;
-import tools.Toolbar;
-import windows.*;
 import javafx.application.Application;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 public class MainWindow extends Application {
-    public static BorderPane bPane = new BorderPane();
+    public static AnchorPane mainPane = new AnchorPane(); // TODO: BorderPane
     public static Stage mainWindow = new Stage();
     public static DatabaseConnection dbConn;
     
     @Override
     public void start(Stage window) {
-        dbConn = new DatabaseConnection(0);
+        dbConn = new DatabaseConnection(0); // Establish database connection!
         Controller.openMainWindow();
     }
     
