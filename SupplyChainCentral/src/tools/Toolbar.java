@@ -24,7 +24,7 @@ public class Toolbar {
     private final ComboBox<String> RUN_DROPDOWN = new ComboBox<>();
     private final ComboBox<String> TRACK_DROPDOWN = new ComboBox<>();
     private final ComboBox<String> TOOLS_DROPDOWN = new ComboBox<>();
-    public static final ComboBox<String> HELP_DROPDOWN = new ComboBox<>();
+    private final ComboBox<String> HELP_DROPDOWN = new ComboBox<>();
 
     private final String[] FILE_DROPDOWN_OPTIONS = new String[4];
     private final String[] VIEW_DROPDOWN_OPTIONS = new String[4];
