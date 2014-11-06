@@ -33,8 +33,8 @@ public class ShipmentWindow {
     private final TextField PRIORITY_TF = new TextField();
     private final Button CREATE_SHIPMENT_BUTTON = new Button("Create Shipment");
         
-    public static final ComboBox<Product> PROD_DROPDOWN = new ComboBox<>();
-    public static final ComboBox<Location> DEST_DROPDOWN = new ComboBox<>();
+    public static final ComboBox<String> PROD_DROPDOWN = new ComboBox<>();
+    public static final ComboBox<String> DEST_DROPDOWN = new ComboBox<>();
 
     public static Stage shipmentWindow = new Stage();
     
@@ -58,7 +58,7 @@ public class ShipmentWindow {
         
         PROD_DROPDOWN.setPrefWidth(150);
         DEST_DROPDOWN.setPrefWidth(150);
-//        SchedulingController.populateProducts(); // Testing database method
+        SchedulingController.populateDestinations(); // Testing database method
         
         // Set properties for UI
         PRODUCT_SHIPPED_TF.setAlignment(Pos.BOTTOM_RIGHT);

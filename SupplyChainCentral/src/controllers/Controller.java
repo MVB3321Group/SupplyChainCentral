@@ -24,7 +24,6 @@ import javafx.stage.Stage;
 public class Controller {
     //Will get a user object based on input from login window.
     private final int MAX_LOGIN_ATTEMPTS = 5;
-    private DatabaseConnection dbConn;
     private SchedulingController sController;
     User user;//user for this session
     
@@ -33,18 +32,18 @@ public class Controller {
         //in order to get the role, you need the user
         //in order to get the user, you need the connection
         //therefore, the role implementation will not work as written
-        dbConn = new DatabaseConnection(0);
-        sController = new SchedulingController(dbConn);
+//        dbConn = new DatabaseConnection(0);
+//        sController = new SchedulingController(dbConn);
     }
     
-    private boolean isValidUser(int employeeID, String password) {
-        User vUser = dbConn.getUser(employeeID, password);
-        return (vUser != null);
-    }
+//    private boolean isValidUser(int employeeID, String password) {
+//        User vUser = dbConn.getUser(employeeID, password);
+//        return (vUser != null);
+//    }
     
     //To be called on any exit event
     public void exit() {
-        dbConn.close();
+//        dbConn.close();
     }
         
     // General method for opening a window under specified conditions
@@ -90,16 +89,16 @@ public class Controller {
         //Begin simple test code
         int username = -1;
         String password = "";
-        while (username != 0) {
-            System.out.print("Enter username & password or 0 to quit: ");
-            Scanner scan = new Scanner(System.in);
-            username = scan.nextInt();
-            password = scan.next();
-            if (controller.isValidUser(username, password)) {
-                controller.user = controller.dbConn.getUser(username, password);
-                break;
-            }
-        }
+//        while (username != 0) {
+//            System.out.print("Enter username & password or 0 to quit: ");
+//            Scanner scan = new Scanner(System.in);
+//            username = scan.nextInt();
+//            password = scan.next();
+//            if (controller.isValidUser(username, password)) {
+//                controller.user = controller.dbConn.getUser(username, password);
+//                break;
+//            }
+//        }
         System.out.println("Welcome " + controller.user.getfName() + " "
                             + controller.user.getlName());
         //End simple test code

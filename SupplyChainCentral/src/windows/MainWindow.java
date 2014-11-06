@@ -18,9 +18,11 @@ import javafx.stage.Stage;
 public class MainWindow extends Application {
     public static BorderPane bPane = new BorderPane();
     public static Stage mainWindow = new Stage();
+    public static DatabaseConnection dbConn;
     
     @Override
     public void start(Stage window) {
+        dbConn = new DatabaseConnection(0);
         Controller.openMainWindow();
     }
     
