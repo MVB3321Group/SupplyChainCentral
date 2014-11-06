@@ -89,6 +89,11 @@ public class ShipmentWindow {
         
         CREATE_SHIPMENT_BUTTON.setOnAction(e -> {
             SchedulingController.createShipment();
+            DESTINATIONS_CHART.getData().clear();
+            SchedulingController.populateShipmentChart();
+            SHIPMENTS_TABLE.getItems().clear();
+            SHIPMENTS_TABLE.getColumns().clear();
+            SchedulingController.populateShipmentsTable();
         });
         
         GridPane.setHalignment(CREATE_SHIPMENT_BUTTON, HPos.RIGHT);
