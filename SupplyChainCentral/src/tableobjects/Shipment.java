@@ -43,7 +43,7 @@ public class Shipment {
         setCurrentLocation(currentLocation);
     }
     
-    public Shipment() {}
+    public Shipment() {} // No-arg constructor
     
     public int getShipID() {
         return shipID;

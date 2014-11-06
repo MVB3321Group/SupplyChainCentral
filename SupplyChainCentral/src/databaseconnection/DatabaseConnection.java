@@ -86,7 +86,7 @@ public class DatabaseConnection {
                 + "localhost:3306/" +
                   "supplychaincentral",
                 connectionProps);
-        System.out.println("Connected to database");
+        System.out.println("Successfully connected to database");
         return conn;
     }
     

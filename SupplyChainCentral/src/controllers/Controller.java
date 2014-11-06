@@ -45,8 +45,7 @@ public class Controller {
     public void exit() {
 //        dbConn.close();
     }
-        
-    // General method for opening a window under specified conditions
+
     // TODO: Fix attempts to open an already-open window
     public static void openWindow(Stage window, Pane pane,
                                   double width, double height) {
@@ -62,13 +61,15 @@ public class Controller {
     }
     
     public static void openMainWindow() {
-        // Below step instantiates class-specific object only when necessary
+        /* Creating an instance object for a window class sets off the
+           entire flow of events for the class; only create instance object
+           if the window is not already open ("iconified," in this case)
+        */
         if (! MainWindow.mainWindow.isIconified()) {
             MainWindow obj = new MainWindow(); // "dummy" instance
         }
         
-        openWindow(MainWindow.mainWindow, MainWindow.bPane, 1344, 686);
-        
+        openWindow(MainWindow.mainWindow, MainWindow.bPane, 1342, 686);
         MainWindow.mainWindow.setIconified(false);
     }
     
