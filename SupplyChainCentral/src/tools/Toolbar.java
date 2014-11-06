@@ -31,7 +31,7 @@ public class Toolbar {
     private final String[] RUN_DROPDOWN_OPTIONS = new String[4];
     private final String[] TRACK_DROPDOWN_OPTIONS = new String[4];
     private final String[] TOOLS_DROPDOWN_OPTIONS = new String[4];
-    public static final String[] HELP_DROPDOWN_OPTIONS = new String[4];
+    private final String[] HELP_DROPDOWN_OPTIONS = new String[4];
     
     public Pane pane = new Pane();
 

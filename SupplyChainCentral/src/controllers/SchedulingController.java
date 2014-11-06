@@ -24,15 +24,29 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 public class SchedulingController {
     
+    public static void createShipment() {
+        int originatorID = 1234;
+        String orig = ShipmentWindow.ORIG_DROPDOWN.getValue();
+        String dest = ShipmentWindow.DEST_DROPDOWN.getValue();
+        int priority = Integer.valueOf(ShipmentWindow.PRIORITY_TF.getText());
+        
+        Shipment shpmt = new Shipment(originatorID, orig, dest, priority);
+        MainWindow.dbConn.insertShipment(shpmt);
+        System.out.println("Shipment successfully added to database");
+    }
+    
     public static void openShipmentWindow() {
-        // Below step instantiates class-specific object only when necessary
+        /* Creating an instance object for a window class sets off the
+           entire flow of events for the class; only create instance object
+           if the window is not already open ("iconified," in this case)
+        */
         if (! ShipmentWindow.shipmentWindow.isIconified()) {
             ShipmentWindow obj = new ShipmentWindow(); // "dummy" instance
         }
         
         MainWindow.mainWindow.close(); // First close main window
         Controller.openWindow(ShipmentWindow.shipmentWindow,
-                              ShipmentWindow.aPane, 1344, 686);
+                              ShipmentWindow.aPane, 1342, 686);
         
         ShipmentWindow.shipmentWindow.setIconified(false);
     }
@@ -52,15 +66,30 @@ public class SchedulingController {
         });
     }
     
-    public static void populateDestinations() { 
-        ArrayList<String> locationList = new ArrayList<>();
+    public static void populateOrigins() { 
+        ArrayList<String> origList = new ArrayList<>();
         
         // "Converts" Location into String objects for later use
         for (int i = 0; i < MainWindow.dbConn.getLocations().size(); i++)
-            locationList.add(MainWindow.dbConn.getLocations().get(i).getCity());
+            origList.add(MainWindow.dbConn.getLocations().get(i).getCity());
+  
+        ObservableList<String> origDropdownList
+                = FXCollections.observableArrayList(origList);
+        ShipmentWindow.ORIG_DROPDOWN.getItems().addAll(origDropdownList);
+        ShipmentWindow.ORIG_DROPDOWN.setOnAction(e -> {
+            origDropdownList.indexOf(ShipmentWindow.ORIG_DROPDOWN.getValue());
+        });
+    }
+    
+    public static void populateDestinations() { 
+        ArrayList<String> destList = new ArrayList<>();
+        
+        // "Converts" Location into String objects for later use
+        for (int i = 0; i < MainWindow.dbConn.getLocations().size(); i++)
+            destList.add(MainWindow.dbConn.getLocations().get(i).getCity());
   
         ObservableList<String> destDropdownList
-                = FXCollections.observableArrayList(locationList);
+                = FXCollections.observableArrayList(destList);
         ShipmentWindow.DEST_DROPDOWN.getItems().addAll(destDropdownList);
         ShipmentWindow.DEST_DROPDOWN.setOnAction(e -> {
                 destDropdownList.indexOf(ShipmentWindow.DEST_DROPDOWN.getValue());
@@ -101,9 +130,11 @@ public class SchedulingController {
                 }
             }
         }
+        
         for (int i = 0; i < counts.length; i++) {
             series.getData().add(new XYChart.Data(locations.get(i).getCity(), counts[i]));
         }
+        
         ShipmentWindow.DESTINATIONS_CHART.getData().add(series);
     }
 }
