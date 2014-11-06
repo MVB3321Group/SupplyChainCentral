@@ -11,9 +11,9 @@ import windows.*;
 import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TableView.TableViewSelectionModel;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 
@@ -83,5 +83,27 @@ public class SchedulingController {
         priorityCol.setCellValueFactory(new PropertyValueFactory<Shipment,String>("priority"));
         
         shipTable.getColumns().setAll(riginatorCol, originCol, destCol, priorityCol);
+    }
+    
+    public static void populateShipmentChart() {
+        ShipmentWindow.X_AXIS.setLabel("Destination City");
+        ShipmentWindow.Y_AXIS.setLabel("Number of Shipments");
+        XYChart.Series<String, Integer> series = new XYChart.Series<>();
+        ArrayList<Shipment> shipments = MainWindow.dbConn.getShipments();
+        ArrayList<Location> locations = MainWindow.dbConn.getLocations();
+        int[] counts = new int[locations.size()];
+        for (int h = 0; h < shipments.size(); h++) {
+            
+            for (int i = 0; i < locations.size(); i++) {
+                if (shipments.get(h).getDestination().equals(locations.get(i).getLocationCode())) {
+                    counts[i]++;
+                    break;
+                }
+            }
+        }
+        for (int i = 0; i < counts.length; i++) {
+            series.getData().add(new XYChart.Data(locations.get(i).getCity(), counts[i]));
+        }
+        ShipmentWindow.DESTINATIONS_CHART.getData().add(series);
     }
 }

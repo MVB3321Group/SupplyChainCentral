@@ -7,15 +7,12 @@
 package windows;
 
 import controllers.*;
-import databaseconnection.*;
-import java.util.ArrayList;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import tableobjects.*;
-import tools.Toolbar;
-import windows.*;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -37,6 +34,12 @@ public class ShipmentWindow {
     public static final ComboBox<String> PROD_DROPDOWN = new ComboBox<>();
     public static final ComboBox<String> DEST_DROPDOWN = new ComboBox<>();
     public static final TableView<Shipment> SHIPMENTS_TABLE = new TableView<>();
+    public static final NumberAxis Y_AXIS = new NumberAxis();
+    public static final CategoryAxis X_AXIS = new CategoryAxis();
+    public static final BarChart DESTINATIONS_CHART = new BarChart(X_AXIS, Y_AXIS);
+    public static final NumberAxis Y_AXIS2 = new NumberAxis();
+    public static final CategoryAxis X_AXIS2 = new CategoryAxis();
+    public static final BarChart ORIGINS_CHART = new BarChart(X_AXIS2, Y_AXIS2);
 
     public static Stage shipmentWindow = new Stage();
     
@@ -58,6 +61,7 @@ public class ShipmentWindow {
         gPane.add(DEST_DROPDOWN, 1, 3);
         gPane.add(CREATE_SHIPMENT_BUTTON, 1, 6);
         gPane.add(SHIPMENTS_TABLE, 1, 7);
+        gPane.add(DESTINATIONS_CHART, 2, 7);
         
         PROD_DROPDOWN.setPrefWidth(150);
         DEST_DROPDOWN.setPrefWidth(150);
@@ -68,6 +72,7 @@ public class ShipmentWindow {
         SchedulingController.populateProducts();
         SchedulingController.populateDestinations();
         SchedulingController.populateShipmentsTable();
+        SchedulingController.populateShipmentChart();
 
         // Set properties for UI
         QUANTITY_TF.setAlignment(Pos.BOTTOM_RIGHT);
