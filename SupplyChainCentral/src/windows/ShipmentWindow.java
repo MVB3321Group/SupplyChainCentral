@@ -46,8 +46,8 @@ public class ShipmentWindow {
     
     public ShipmentWindow() {
         
-        gPane.setHgap(7);
-        gPane.setVgap(7);
+        gPane.setHgap(10);
+        gPane.setVgap(10);
         gPane.add(new Label("Product(s) to Ship:"), 0, 0);
         gPane.add(PROD_DROPDOWN, 1, 0);
         gPane.add(new Label("Quantity:"), 0, 1);
@@ -62,12 +62,13 @@ public class ShipmentWindow {
         PROD_DROPDOWN.setPrefWidth(150);
         DEST_DROPDOWN.setPrefWidth(150);
         
+        PROD_DROPDOWN.setPromptText("Select product(s).");
+        DEST_DROPDOWN.setPromptText("Select destination.");
+        
         SchedulingController.populateProducts();
         SchedulingController.populateDestinations();
 
         // Set properties for UI
-        PRODUCT_SHIPPED_TF.setAlignment(Pos.BOTTOM_RIGHT);
-        PRODUCT_SHIPPED_TF.setPromptText("Select product(s).");
         QUANTITY_TF.setAlignment(Pos.BOTTOM_RIGHT);
         QUANTITY_TF.setPromptText("Select shipment quantity.");
         PRIORITY_TF.setAlignment(Pos.BOTTOM_RIGHT);

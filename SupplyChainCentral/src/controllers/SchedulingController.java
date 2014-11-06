@@ -40,7 +40,7 @@ public class SchedulingController {
         ArrayList<String> productList = new ArrayList<>();
         
         // "Converts" Location into String objects for later use
-        for (int i = 0; i < MainWindow.dbConn.getProducts().size() - 1; i++)
+        for (int i = 0; i < MainWindow.dbConn.getProducts().size(); i++)
             productList.add(MainWindow.dbConn.getProducts().get(i).getPName());
   
         ObservableList<String> prodDropdownList
@@ -55,7 +55,7 @@ public class SchedulingController {
         ArrayList<String> locationList = new ArrayList<>();
         
         // "Converts" Location into String objects for later use
-        for (int i = 0; i < MainWindow.dbConn.getLocations().size() - 1; i++)
+        for (int i = 0; i < MainWindow.dbConn.getLocations().size(); i++)
             locationList.add(MainWindow.dbConn.getLocations().get(i).getCity());
   
         ObservableList<String> destDropdownList
