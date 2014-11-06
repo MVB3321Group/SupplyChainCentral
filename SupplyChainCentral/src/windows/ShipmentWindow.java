@@ -57,8 +57,6 @@ public class ShipmentWindow {
         gPane.add(DEST_DROPDOWN, 1, 3);
         gPane.add(CREATE_SHIPMENT_BUTTON, 1, 6);
         
-        gPane.add(SHIPMENTS_TABLE, 1, 7);
-        
         PROD_DROPDOWN.setPrefWidth(150);
         DEST_DROPDOWN.setPrefWidth(150);
         

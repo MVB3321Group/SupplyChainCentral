@@ -226,7 +226,7 @@ public class DatabaseConnection {
             rs = stmt.executeQuery("SELECT * FROM Products");
             while (rs.next()) {
                 Product p = new Product(
-                        rs.getString("productName"),
+                        rs.getString("pName"),
                         rs.getInt("productID"),
                         rs.getDouble("height"),
                         rs.getDouble("length"),
