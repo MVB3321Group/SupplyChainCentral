@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 01, 2014 at 09:20 PM
+-- Generation Time: Nov 06, 2014 at 03:33 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -121,14 +121,14 @@ INSERT INTO `products` (`pName`, `productID`, `height`, `length`, `width`, `weig
 --
 
 CREATE TABLE IF NOT EXISTS `productsshipped` (
-  `detailID` int(11) NOT NULL COMMENT 'uniquely identifies detail id',
+  `detailID` int(11) NOT NULL AUTO_INCREMENT,
   `shipID` int(11) NOT NULL COMMENT 'foreign key to shipments (pending and current)',
   `productID` int(11) NOT NULL COMMENT 'foreign key to products',
   `quantity` int(11) NOT NULL,
   PRIMARY KEY (`detailID`),
   KEY `shipmentID` (`shipID`,`productID`),
   KEY `fk_ProductshipProducts` (`productID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='associates products with shipments';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='associates products with shipments' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -180,7 +180,7 @@ CREATE TABLE IF NOT EXISTS `schedules` (
 --
 
 CREATE TABLE IF NOT EXISTS `shipments` (
-  `shipID` int(11) NOT NULL COMMENT 'unique shipment ID',
+  `shipID` int(11) NOT NULL AUTO_INCREMENT,
   `originatorID` int(11) NOT NULL COMMENT 'User who originated the shipment.',
   `origin` varchar(5) NOT NULL COMMENT 'foreign key to locations',
   `destination` varchar(5) NOT NULL COMMENT 'foreign key to locations',
@@ -195,7 +195,33 @@ CREATE TABLE IF NOT EXISTS `shipments` (
   KEY `fk_ShipmentsSchedules` (`scheduleID`),
   KEY `fk_ShipmentsDestinations` (`destination`),
   KEY `fk_ShipmentsUsers` (`originatorID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=21 ;
+
+--
+-- Dumping data for table `shipments`
+--
+
+INSERT INTO `shipments` (`shipID`, `originatorID`, `origin`, `destination`, `priority`, `scheduleID`, `startTime`, `endTime`, `currentLocation`) VALUES
+(1, 2222, 'LA', 'DET', 4, NULL, NULL, NULL, NULL),
+(2, 2222, 'SAV', 'PORT', 5, NULL, NULL, NULL, NULL),
+(3, 2222, 'NY', 'LA', 5, NULL, NULL, NULL, NULL),
+(4, 2222, 'PHX', 'LA', 3, NULL, NULL, NULL, NULL),
+(5, 2222, 'LA', 'DET', 5, NULL, NULL, NULL, NULL),
+(6, 2222, 'NY', 'LA', 5, NULL, NULL, NULL, NULL),
+(7, 2222, 'LA', 'NY', 1, NULL, NULL, NULL, NULL),
+(8, 2222, 'NY', 'LA', 5, NULL, NULL, NULL, NULL),
+(9, 2222, 'SAV', 'PHX', 3, NULL, NULL, NULL, NULL),
+(10, 2222, 'PHX', 'DET', 1, NULL, NULL, NULL, NULL),
+(11, 2223, 'PORT', 'SAV', 5, NULL, NULL, NULL, NULL),
+(12, 2223, 'SAV', 'LA', 1, NULL, NULL, NULL, NULL),
+(13, 2223, 'SAV', 'PHX', 5, NULL, NULL, NULL, NULL),
+(14, 2223, 'PHX', 'LA', 5, NULL, NULL, NULL, NULL),
+(15, 2223, 'PHX', 'NY', 4, NULL, NULL, NULL, NULL),
+(16, 2223, 'LA', 'PHX', 3, NULL, NULL, NULL, NULL),
+(17, 2223, 'PHX', 'SAV', 3, NULL, NULL, NULL, NULL),
+(18, 2223, 'SAV', 'DET', 3, NULL, NULL, NULL, NULL),
+(19, 2223, 'LA', 'SAV', 3, NULL, NULL, NULL, NULL),
+(20, 2223, 'SAV', 'LA', 1, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -265,24 +291,22 @@ ALTER TABLE `inventory`
 -- Constraints for table `priorityrequests`
 --
 ALTER TABLE `priorityrequests`
-  ADD CONSTRAINT `fk_PriorityShipments` FOREIGN KEY (`shipID`) REFERENCES `shipments` (`shipID`),
   ADD CONSTRAINT `fk_PriorityUsers` FOREIGN KEY (`employeeID`) REFERENCES `users` (`employeeID`);
 
 --
 -- Constraints for table `productsshipped`
 --
 ALTER TABLE `productsshipped`
-  ADD CONSTRAINT `fk_ProductshipProducts` FOREIGN KEY (`productID`) REFERENCES `products` (`productID`),
-  ADD CONSTRAINT `fk_ProductshipShipments` FOREIGN KEY (`shipID`) REFERENCES `shipments` (`shipID`);
+  ADD CONSTRAINT `fk_ProductshipProducts` FOREIGN KEY (`productID`) REFERENCES `products` (`productID`);
 
 --
 -- Constraints for table `shipments`
 --
 ALTER TABLE `shipments`
-  ADD CONSTRAINT `fk_ShipmentsUsers` FOREIGN KEY (`originatorID`) REFERENCES `users` (`employeeID`),
   ADD CONSTRAINT `fk_ShipmentsDestinations` FOREIGN KEY (`destination`) REFERENCES `locations` (`locationCode`),
   ADD CONSTRAINT `fk_ShipmentsOrigins` FOREIGN KEY (`origin`) REFERENCES `locations` (`locationCode`),
-  ADD CONSTRAINT `fk_ShipmentsSchedules` FOREIGN KEY (`scheduleID`) REFERENCES `schedules` (`scheduleID`);
+  ADD CONSTRAINT `fk_ShipmentsSchedules` FOREIGN KEY (`scheduleID`) REFERENCES `schedules` (`scheduleID`),
+  ADD CONSTRAINT `fk_ShipmentsUsers` FOREIGN KEY (`originatorID`) REFERENCES `users` (`employeeID`);
 
 --
 -- Constraints for table `shippingunits`
