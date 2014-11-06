@@ -43,7 +43,7 @@ public class ShipmentWindow {
     GridPane gPane = new GridPane();
     
     public ShipmentWindow() {
-
+        
         gPane.setHgap(7);
         gPane.setVgap(7);
         gPane.add(new Label("Product(s) to Ship:"), 0, 0);
@@ -58,8 +58,10 @@ public class ShipmentWindow {
         
         PROD_DROPDOWN.setPrefWidth(150);
         DEST_DROPDOWN.setPrefWidth(150);
-        SchedulingController.populateDestinations(); // Testing database method
         
+        SchedulingController.populateProducts();
+        SchedulingController.populateDestinations();
+
         // Set properties for UI
         PRODUCT_SHIPPED_TF.setAlignment(Pos.BOTTOM_RIGHT);
         PRODUCT_SHIPPED_TF.setPromptText("Select product(s).");
