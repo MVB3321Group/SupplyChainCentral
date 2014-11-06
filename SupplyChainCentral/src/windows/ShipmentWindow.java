@@ -36,7 +36,7 @@ public class ShipmentWindow {
         
     public static final ComboBox<String> PROD_DROPDOWN = new ComboBox<>();
     public static final ComboBox<String> DEST_DROPDOWN = new ComboBox<>();
-    public TableView<Shipment> SHIPMENTS_TABLE = new TableView<>();
+    public static final TableView<Shipment> SHIPMENTS_TABLE = new TableView<>();
 
     public static Stage shipmentWindow = new Stage();
     
@@ -64,6 +64,7 @@ public class ShipmentWindow {
         
         SchedulingController.populateProducts();
         SchedulingController.populateDestinations();
+        SchedulingController.populateShipmentsTable();
 
         // Set properties for UI
         PRODUCT_SHIPPED_TF.setAlignment(Pos.BOTTOM_RIGHT);

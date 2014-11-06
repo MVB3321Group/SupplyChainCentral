@@ -6,14 +6,15 @@
 
 package controllers;
 
-import controllers.*;
-import databaseconnection.*;
 import tableobjects.*;
-import tools.Toolbar;
 import windows.*;
 import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TableView.TableViewSelectionModel;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 
 /**
@@ -40,7 +41,7 @@ public class SchedulingController {
         ArrayList<String> productList = new ArrayList<>();
         
         // "Converts" Location into String objects for later use
-        for (int i = 0; i < MainWindow.dbConn.getProducts().size() - 1; i++)
+        for (int i = 0; i < MainWindow.dbConn.getProducts().size(); i++)
             productList.add(MainWindow.dbConn.getProducts().get(i).getPName());
   
         ObservableList<String> prodDropdownList
@@ -55,7 +56,7 @@ public class SchedulingController {
         ArrayList<String> locationList = new ArrayList<>();
         
         // "Converts" Location into String objects for later use
-        for (int i = 0; i < MainWindow.dbConn.getLocations().size() - 1; i++)
+        for (int i = 0; i < MainWindow.dbConn.getLocations().size(); i++)
             locationList.add(MainWindow.dbConn.getLocations().get(i).getCity());
   
         ObservableList<String> destDropdownList
@@ -64,5 +65,23 @@ public class SchedulingController {
         ShipmentWindow.DEST_DROPDOWN.setOnAction(e -> {
                 destDropdownList.indexOf(ShipmentWindow.DEST_DROPDOWN.getValue());
         });
+    }
+    
+    public static void populateShipmentsTable() {
+        ObservableList<Shipment> shipmentList
+                = FXCollections.observableArrayList(MainWindow.dbConn.getShipments());
+        TableView<Shipment> shipTable = ShipmentWindow.SHIPMENTS_TABLE;
+        shipTable.setItems(shipmentList);
+        
+        TableColumn<Shipment, String> riginatorCol = new TableColumn<>("Originator");
+        riginatorCol.setCellValueFactory(new PropertyValueFactory<Shipment,String>("originatorID"));
+        TableColumn<Shipment, String> originCol = new TableColumn<>("Origin");
+        originCol.setCellValueFactory(new PropertyValueFactory<Shipment,String>("origin"));
+        TableColumn<Shipment, String> destCol = new TableColumn<>("Destination");
+        destCol.setCellValueFactory(new PropertyValueFactory<Shipment,String>("destination"));
+        TableColumn<Shipment, String> priorityCol = new TableColumn<>("Priority");
+        priorityCol.setCellValueFactory(new PropertyValueFactory<Shipment,String>("priority"));
+        
+        shipTable.getColumns().setAll(riginatorCol, originCol, destCol, priorityCol);
     }
 }
