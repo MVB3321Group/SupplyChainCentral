@@ -25,7 +25,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 public class SchedulingController {
     
     public static void createShipment() {
-        int originatorID = 1234;
+        int originatorID = 2222;
         String orig = ShipmentWindow.ORIG_DROPDOWN.getValue();
         String dest = ShipmentWindow.DEST_DROPDOWN.getValue();
         int priority = Integer.valueOf(ShipmentWindow.PRIORITY_TF.getText());
@@ -71,7 +71,7 @@ public class SchedulingController {
         
         // "Converts" Location into String objects for later use
         for (int i = 0; i < MainWindow.dbConn.getLocations().size(); i++)
-            origList.add(MainWindow.dbConn.getLocations().get(i).getCity());
+            origList.add(MainWindow.dbConn.getLocations().get(i).getLocationCode());
   
         ObservableList<String> origDropdownList
                 = FXCollections.observableArrayList(origList);
@@ -86,7 +86,7 @@ public class SchedulingController {
         
         // "Converts" Location into String objects for later use
         for (int i = 0; i < MainWindow.dbConn.getLocations().size(); i++)
-            destList.add(MainWindow.dbConn.getLocations().get(i).getCity());
+            destList.add(MainWindow.dbConn.getLocations().get(i).getLocationCode());
   
         ObservableList<String> destDropdownList
                 = FXCollections.observableArrayList(destList);
