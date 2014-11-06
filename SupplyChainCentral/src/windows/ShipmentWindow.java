@@ -36,6 +36,7 @@ public class ShipmentWindow {
         
     public static final ComboBox<String> PROD_DROPDOWN = new ComboBox<>();
     public static final ComboBox<String> DEST_DROPDOWN = new ComboBox<>();
+    public TableView<Shipment> SHIPMENTS_TABLE = new TableView<>();
 
     public static Stage shipmentWindow = new Stage();
     
@@ -56,6 +57,7 @@ public class ShipmentWindow {
         gPane.add(new Label("Destination:"), 0, 3);
         gPane.add(DEST_DROPDOWN, 1, 3);
         gPane.add(CREATE_SHIPMENT_BUTTON, 1, 6);
+        gPane.add(SHIPMENTS_TABLE, 1, 7);
         
         PROD_DROPDOWN.setPrefWidth(150);
         DEST_DROPDOWN.setPrefWidth(150);
