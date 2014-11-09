@@ -28,11 +28,13 @@ public class ShipmentWindow {
     public static final TextField QUANTITY_TF = new TextField();
     public static final TextField PRIORITY_TF = new TextField();
     public static final Button CREATE_SHIPMENT_BUTTON = new Button("Create Shipment");
+    public static final Button SCHEDULE_SHIPMENTS_BUTTON = new Button("Schedule Shipments");
         
     public static final ComboBox<String> PROD_DROPDOWN = new ComboBox<>();
     public static final ComboBox<String> ORIG_DROPDOWN = new ComboBox<>();
     public static final ComboBox<String> DEST_DROPDOWN = new ComboBox<>();
     
+    public static final TableView<Shipment> SCHEDULE_TABLE = new TableView<>();
     public static final TableView<Shipment> SHIPMENTS_TABLE = new TableView<>();
     public static final NumberAxis Y_AXIS = new NumberAxis();
     public static final CategoryAxis X_AXIS = new CategoryAxis();
@@ -61,6 +63,8 @@ public class ShipmentWindow {
         gPane.add(new Label("Destination: "), 0, 4);
         gPane.add(DEST_DROPDOWN, 1, 4);
         gPane.add(CREATE_SHIPMENT_BUTTON, 1, 5);
+        gPane.add(SCHEDULE_SHIPMENTS_BUTTON, 0, 5);
+        gPane.add(SCHEDULE_TABLE, 1, 7);
         gPane.add(SHIPMENTS_TABLE, 1, 7);
         gPane.add(DESTINATIONS_CHART, 2, 7);
         gPane.setHgap(10);
@@ -94,6 +98,13 @@ public class ShipmentWindow {
             SHIPMENTS_TABLE.getItems().clear();
             SHIPMENTS_TABLE.getColumns().clear();
             SchedulingController.populateShipmentsTable();
+        });
+        
+        SCHEDULE_SHIPMENTS_BUTTON.setOnAction(e -> {
+            SchedulingController.doScheduleShipments();
+            SCHEDULE_TABLE.getItems().clear();
+            SCHEDULE_TABLE.getColumns().clear();
+            SchedulingController.populateScheduleTable();          
         });
         
         GridPane.setHalignment(CREATE_SHIPMENT_BUTTON, HPos.RIGHT);
