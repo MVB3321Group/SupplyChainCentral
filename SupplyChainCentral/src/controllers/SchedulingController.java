@@ -18,6 +18,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import static windows.ShipmentWindow.CREATE_SHIPMENT_BUTTON;
 
+import java.util.Comparator;
+import java.util.PriorityQueue;
+import java.util.Queue;
+
+
 
 /**
  *
@@ -117,6 +122,38 @@ public class SchedulingController {
         
         shipTable.getColumns().setAll(riginatorCol, originCol, destCol, priorityCol);
     }
+    
+    public static void doScheduleShipments() {
+        // get an arraylist of the current shipments.
+        ArrayList<Shipment> shipments = MainWindow.dbConn.getShipments();
+        // create a priorityqueue. This PQ will be accessed to see 
+        // what shipment is to be sent out next. By this I mean a 
+        // starttime will be given to the shipment.
+        Queue<Shipment> schedulePriorityQueue = new PriorityQueue<>(5, priorityComparator);
+        
+        for(int i = 0; i < shipments.size(); i++){
+            schedulePriorityQueue.add(shipments.get(i));
+        }
+    }
+    
+    
+     //Comparator anonymous class implementation
+    public static Comparator<Shipment> priorityComparator = new Comparator<Shipment>(){
+        @Override
+        public int compare(Shipment s1, Shipment s2) {
+            return (int) (s1.getPriority() - s2.getPriority());
+        }
+    };
+    
+    public static void getScheduledShipments (Queue<Shipment> schedulePriorityQueue){
+         while(true){
+            Shipment shpm = schedulePriorityQueue.poll();
+            if(shpm == null) break;
+            System.out.println("Processing Shipment with Priority="+shpm.getPriority());
+        }
+    }
+
+    
     
     public static void populateShipmentChart() {
         ShipmentWindow.X_AXIS.setLabel("Destination City");
