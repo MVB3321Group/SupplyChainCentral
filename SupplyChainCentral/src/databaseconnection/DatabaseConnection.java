@@ -159,7 +159,6 @@ public class DatabaseConnection {
         }
     }
     
-    //warning: not tested (at all)
     public ArrayList<Shipment> getShipments() {
         Statement stmt;
         ResultSet rs;
@@ -167,6 +166,38 @@ public class DatabaseConnection {
         try {
             stmt = connection.createStatement();
             rs = stmt.executeQuery("SELECT * FROM Shipments");
+            while (rs.next()) {
+                Shipment s = new Shipment(
+                        rs.getInt("shipID"),
+                        rs.getInt("originatorID"),
+                        rs.getString("origin"),
+                        rs.getString("destination"),
+                        rs.getInt("priority"),
+                        rs.getInt("scheduleID"),
+                        rs.getDate("startTime"),
+                        rs.getDate("endTime"),
+                        rs.getString("currentLocation")
+                );
+                shipments.add(s);
+            }
+        }
+        catch (SQLException e) {
+            System.err.println("Unable to retrieve shipment list.");
+            e.printStackTrace();
+        }
+        return shipments;
+    }
+    
+    //warning: not tested (at all)
+    public ArrayList<Shipment> getPendingShipments() {
+        Statement stmt;
+        ResultSet rs;
+        ArrayList<Shipment> shipments = new ArrayList<>();
+        try {
+            stmt = connection.createStatement();
+            rs = stmt.executeQuery("SELECT * FROM Shipments WHERE "
+                    + "scheduleID IS NULL AND startTime IS NULL AND "
+                    + "endTime IS NULL AND currentLocation IS NULL");
             while (rs.next()) {
                 Shipment s = new Shipment(
                         rs.getInt("shipID"),
