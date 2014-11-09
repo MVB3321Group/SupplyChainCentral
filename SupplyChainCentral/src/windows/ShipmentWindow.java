@@ -23,7 +23,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-public class ShipmentWindow {
+public class ShipmentWindow extends Stage {
 
     public static final TextField QUANTITY_TF = new TextField();
     public static final TextField PRIORITY_TF = new TextField();
@@ -76,8 +76,8 @@ public class ShipmentWindow {
         SchedulingController.populateProducts();
         SchedulingController.populateOrigins();
         SchedulingController.populateDestinations();
-        SchedulingController.populateShipmentsTable();
-        SchedulingController.populateShipmentChart();
+//        SchedulingController.populateShipmentsTable();
+       // SchedulingController.populateShipmentChart();
 
         QUANTITY_TF.setAlignment(Pos.BOTTOM_RIGHT);
         QUANTITY_TF.setPromptText("Select a quantity.");
@@ -90,10 +90,10 @@ public class ShipmentWindow {
         CREATE_SHIPMENT_BUTTON.setOnAction(e -> {
             SchedulingController.createShipment();
             DESTINATIONS_CHART.getData().clear();
-            SchedulingController.populateShipmentChart();
+            //SchedulingController.populateShipmentChart();
             SHIPMENTS_TABLE.getItems().clear();
             SHIPMENTS_TABLE.getColumns().clear();
-            SchedulingController.populateShipmentsTable();
+            //SchedulingController.populateShipmentsTable();
         });
         
         GridPane.setHalignment(CREATE_SHIPMENT_BUTTON, HPos.RIGHT);
