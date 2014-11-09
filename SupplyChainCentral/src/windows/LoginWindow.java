@@ -21,13 +21,18 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class LoginWindow extends Application {
-    @Override
-    public void start(Stage primaryStage) {
+public class LoginWindow extends Stage {
+    public Button btnLogin = new Button("Log in");
+    public Button btnHelp = new Button("Help");
+    public TextField employeeIDField = new TextField();
+    public PasswordField pwBox = new PasswordField();
+    public TextField outputField = new TextField();
+    
+    public LoginWindow() {
 
-        primaryStage.setTitle("Welcome to SCM");
+        setTitle("Welcome to SCM");
 
-        primaryStage.show();
+        show();
 
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
@@ -42,47 +47,31 @@ public class LoginWindow extends Application {
         Label userName = new Label("Employee ID:");
         grid.add(userName, 0, 1);
 
-        TextField employeeIDField = new TextField();
+        
         grid.add(employeeIDField, 1, 1);
 
         Label pw = new Label("Password:");
         grid.add(pw, 0, 2);
 
-        PasswordField pwBox = new PasswordField();
+        
         grid.add(pwBox, 1, 2);
         
         Label out = new Label("Output:");
         grid.add(out, 0, 3);
         
-        TextField outputField = new TextField();
+        
         grid.add(outputField, 1, 3);
-
-        Button btn1 = new Button("Log in");
-        Button btn2 = new Button("Help");
+        
         HBox hbBtn = new HBox(10); //spacing is 10.
         hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
 
-        hbBtn.getChildren().addAll(btn1, btn2);
+        hbBtn.getChildren().addAll(btnLogin, btnHelp);
         grid.add(hbBtn, 1, 4);
-
-        
-        btn1.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-//                if(controller.isValidUser(Integer.parseInt(employeeIDField.getText()),pwBox.getText())){
-//                    outputField.setText("Correct");
-//                }              
-            }
-        });
 
         Scene scene1 = new Scene(grid, 800, 600);
         scene1.getStylesheets().add
                 (LoginWindow.class.getResource("LoginCSS.css").toExternalForm());
-        primaryStage.setScene(scene1);
-    }
-    
-    public static void main(String[] args) {
-        launch(args);
+        setScene(scene1);
     }
 }
     
