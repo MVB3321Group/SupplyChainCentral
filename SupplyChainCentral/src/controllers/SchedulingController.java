@@ -9,6 +9,7 @@ package controllers;
 import tableobjects.*;
 import windows.*;
 import java.util.ArrayList;
+import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
@@ -16,7 +17,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import static windows.ShipmentWindow.CREATE_SHIPMENT_BUTTON;
 
 
 /**
@@ -24,7 +24,9 @@ import static windows.ShipmentWindow.CREATE_SHIPMENT_BUTTON;
  * @author Benjamin
  */
 
-public class SchedulingController {
+public class SchedulingController extends Application {
+    public ShipmentWindow shipWindow;
+    
     
     public static void createShipment() {
         int originatorID = 2222;
@@ -33,7 +35,7 @@ public class SchedulingController {
         int priority = Integer.valueOf(ShipmentWindow.PRIORITY_TF.getText());
         
         Shipment shpmt = new Shipment(originatorID, orig, dest, priority);
-        MainWindow.dbConn.insertShipment(shpmt);
+        //MainWindow.dbConn.insertShipment(shpmt);
         
         // Confirm success
         ShipmentWindow.gPane.add(ShipmentWindow.success, 1, 6);
@@ -48,10 +50,10 @@ public class SchedulingController {
             ShipmentWindow obj = new ShipmentWindow(); // "dummy" instance
         }
         
-        MainWindow.mainWindow.close(); // First close main window
-        Controller.openWindow(ShipmentWindow.shipmentWindow,
-                              ShipmentWindow.aPane, 1342, 686);
-        
+//        MainWindow.mainWindow.close(); // First close main window
+//        Controller.openWindow(ShipmentWindow.shipmentWindow,
+//                              ShipmentWindow.aPane, 1342, 686);
+//        
         ShipmentWindow.shipmentWindow.setIconified(false);
     }
     
@@ -59,8 +61,8 @@ public class SchedulingController {
         ArrayList<String> productList = new ArrayList<>();
         
         // "Converts" Location into String objects for later use
-        for (int i = 0; i < MainWindow.dbConn.getProducts().size(); i++)
-            productList.add(MainWindow.dbConn.getProducts().get(i).getPName());
+//        for (int i = 0; i < MainWindow.dbConn.getProducts().size(); i++)
+//            productList.add(MainWindow.dbConn.getProducts().get(i).getPName());
   
         ObservableList<String> prodDropdownList
                 = FXCollections.observableArrayList(productList);
@@ -74,8 +76,8 @@ public class SchedulingController {
         ArrayList<String> origList = new ArrayList<>();
         
         // "Converts" Location into String objects for later use
-        for (int i = 0; i < MainWindow.dbConn.getLocations().size(); i++)
-            origList.add(MainWindow.dbConn.getLocations().get(i).getLocationCode());
+//        for (int i = 0; i < MainWindow.dbConn.getLocations().size(); i++)
+//            origList.add(MainWindow.dbConn.getLocations().get(i).getLocationCode());
   
         ObservableList<String> origDropdownList
                 = FXCollections.observableArrayList(origList);
@@ -89,8 +91,8 @@ public class SchedulingController {
         ArrayList<String> destList = new ArrayList<>();
         
         // "Converts" Location into String objects for later use
-        for (int i = 0; i < MainWindow.dbConn.getLocations().size(); i++)
-            destList.add(MainWindow.dbConn.getLocations().get(i).getLocationCode());
+//        for (int i = 0; i < MainWindow.dbConn.getLocations().size(); i++)
+//            destList.add(MainWindow.dbConn.getLocations().get(i).getLocationCode());
   
         ObservableList<String> destDropdownList
                 = FXCollections.observableArrayList(destList);
@@ -100,45 +102,50 @@ public class SchedulingController {
         });
     }
     
-    public static void populateShipmentsTable() {
-        ObservableList<Shipment> shipmentList
-                = FXCollections.observableArrayList(MainWindow.dbConn.getShipments());
-        TableView<Shipment> shipTable = ShipmentWindow.SHIPMENTS_TABLE;
-        shipTable.setItems(shipmentList);
-        
-        TableColumn<Shipment, String> riginatorCol = new TableColumn<>("Originator");
-        riginatorCol.setCellValueFactory(new PropertyValueFactory<Shipment,String>("originatorID"));
-        TableColumn<Shipment, String> originCol = new TableColumn<>("Origin");
-        originCol.setCellValueFactory(new PropertyValueFactory<Shipment,String>("origin"));
-        TableColumn<Shipment, String> destCol = new TableColumn<>("Destination");
-        destCol.setCellValueFactory(new PropertyValueFactory<Shipment,String>("destination"));
-        TableColumn<Shipment, String> priorityCol = new TableColumn<>("Priority");
-        priorityCol.setCellValueFactory(new PropertyValueFactory<Shipment,String>("priority"));
-        
-        shipTable.getColumns().setAll(riginatorCol, originCol, destCol, priorityCol);
-    }
+//    public static void populateShipmentsTable() {
+//        ObservableList<Shipment> shipmentList
+//                = FXCollections.observableArrayList(MainWindow.dbConn.getShipments());
+//        TableView<Shipment> shipTable = ShipmentWindow.SHIPMENTS_TABLE;
+//        shipTable.setItems(shipmentList);
+//        
+//        TableColumn<Shipment, String> riginatorCol = new TableColumn<>("Originator");
+//        riginatorCol.setCellValueFactory(new PropertyValueFactory<Shipment,String>("originatorID"));
+//        TableColumn<Shipment, String> originCol = new TableColumn<>("Origin");
+//        originCol.setCellValueFactory(new PropertyValueFactory<Shipment,String>("origin"));
+//        TableColumn<Shipment, String> destCol = new TableColumn<>("Destination");
+//        destCol.setCellValueFactory(new PropertyValueFactory<Shipment,String>("destination"));
+//        TableColumn<Shipment, String> priorityCol = new TableColumn<>("Priority");
+//        priorityCol.setCellValueFactory(new PropertyValueFactory<Shipment,String>("priority"));
+//        
+//        shipTable.getColumns().setAll(riginatorCol, originCol, destCol, priorityCol);
+//    }
     
-    public static void populateShipmentChart() {
-        ShipmentWindow.X_AXIS.setLabel("Destination City");
-        ShipmentWindow.Y_AXIS.setLabel("Number of Shipments");
-        XYChart.Series<String, Integer> series = new XYChart.Series<>();
-        ArrayList<Shipment> shipments = MainWindow.dbConn.getShipments();
-        ArrayList<Location> locations = MainWindow.dbConn.getLocations();
-        int[] counts = new int[locations.size()];
-        for (int h = 0; h < shipments.size(); h++) {
-            
-            for (int i = 0; i < locations.size(); i++) {
-                if (shipments.get(h).getDestination().equals(locations.get(i).getLocationCode())) {
-                    counts[i]++;
-                    break;
-                }
-            }
-        }
+//    public static void populateShipmentChart() {
+//        ShipmentWindow.X_AXIS.setLabel("Destination City");
+//        ShipmentWindow.Y_AXIS.setLabel("Number of Shipments");
+//        XYChart.Series<String, Integer> series = new XYChart.Series<>();
+//        ArrayList<Shipment> shipments = MainWindow.dbConn.getShipments();
+//        ArrayList<Location> locations = MainWindow.dbConn.getLocations();
+//        int[] counts = new int[locations.size()];
+//        for (int h = 0; h < shipments.size(); h++) {
+//            
+//            for (int i = 0; i < locations.size(); i++) {
+//                if (shipments.get(h).getDestination().equals(locations.get(i).getLocationCode())) {
+//                    counts[i]++;
+//                    break;
+//                }
+//            }
+//        }
+//        
+//        for (int i = 0; i < counts.length; i++) {
+//            series.getData().add(new XYChart.Data(locations.get(i).getCity(), counts[i]));
+//        }
+//        
+//        ShipmentWindow.DESTINATIONS_CHART.getData().add(series);
+//    }
+
+    @Override
+    public void start(Stage start) throws Exception {
         
-        for (int i = 0; i < counts.length; i++) {
-            series.getData().add(new XYChart.Data(locations.get(i).getCity(), counts[i]));
-        }
-        
-        ShipmentWindow.DESTINATIONS_CHART.getData().add(series);
     }
 }
