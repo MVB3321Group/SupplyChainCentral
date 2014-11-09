@@ -24,7 +24,6 @@ public class Controller extends Application {
     //Will get a user object based on input from login window.
     private final int MAX_LOGIN_ATTEMPTS = 5;
     private int loginAttempts;
-    private SchedulingController sController;
     private TrackingController tController;
     private User user;//user for this session
     public LoginWindow loginWindow;
@@ -37,7 +36,6 @@ public class Controller extends Application {
         //in order to get the user, you need the connection
         //therefore, the role implementation will not work as written
 //        dbConn = new DatabaseConnection(0);
-        sController = new SchedulingController();
         tController = new TrackingController();
         
         dbConn = new DatabaseConnection(0);
