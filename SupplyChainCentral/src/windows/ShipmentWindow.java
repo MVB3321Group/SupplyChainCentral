@@ -25,30 +25,30 @@ import javafx.stage.Stage;
 
 public class ShipmentWindow extends Stage {
 
-    public static final TextField QUANTITY_TF = new TextField();
-    public static final TextField PRIORITY_TF = new TextField();
-    public static final Button CREATE_SHIPMENT_BUTTON = new Button("Create Shipment");
-    public static final Button SCHEDULE_SHIPMENTS_BUTTON = new Button("Schedule Shipments");
+    public TextField QUANTITY_TF = new TextField();
+    public TextField PRIORITY_TF = new TextField();
+    public Button CREATE_SHIPMENT_BUTTON = new Button("Create Shipment");
+    public Button SCHEDULE_SHIPMENTS_BUTTON = new Button("Schedule Shipments");
         
-    public static final ComboBox<String> PROD_DROPDOWN = new ComboBox<>();
-    public static final ComboBox<String> ORIG_DROPDOWN = new ComboBox<>();
-    public static final ComboBox<String> DEST_DROPDOWN = new ComboBox<>();
+    public ComboBox<String> PROD_DROPDOWN = new ComboBox<>();
+    public ComboBox<String> ORIG_DROPDOWN = new ComboBox<>();
+    public ComboBox<String> DEST_DROPDOWN = new ComboBox<>();
     
-    public static final TableView<Shipment> SCHEDULE_TABLE = new TableView<>();
-    public static final TableView<Shipment> SHIPMENTS_TABLE = new TableView<>();
-    public static final NumberAxis Y_AXIS = new NumberAxis();
-    public static final CategoryAxis X_AXIS = new CategoryAxis();
-    public static final BarChart DESTINATIONS_CHART = new BarChart(X_AXIS, Y_AXIS);
-    public static final NumberAxis Y_AXIS2 = new NumberAxis();
-    public static final CategoryAxis X_AXIS2 = new CategoryAxis();
-    public static final BarChart ORIGINS_CHART = new BarChart(X_AXIS2, Y_AXIS2);
+    public TableView<Shipment> SCHEDULE_TABLE = new TableView<>();
+    public TableView<Shipment> SHIPMENTS_TABLE = new TableView<>();
+    public NumberAxis Y_AXIS = new NumberAxis();
+    public CategoryAxis X_AXIS = new CategoryAxis();
+    public BarChart DESTINATIONS_CHART = new BarChart(X_AXIS, Y_AXIS);
+    public NumberAxis Y_AXIS2 = new NumberAxis();
+    public CategoryAxis X_AXIS2 = new CategoryAxis();
+    public BarChart ORIGINS_CHART = new BarChart(X_AXIS2, Y_AXIS2);
 
-    public static Stage shipmentWindow = new Stage();
+    public Stage shipmentWindow = new Stage();
     
-    public static AnchorPane aPane = new AnchorPane();
-    public static GridPane gPane = new GridPane();
+    public AnchorPane aPane = new AnchorPane();
+    public GridPane gPane = new GridPane();
             
-    public static Label success = new Label("Shipment added succesfully. ");  
+    public Label success = new Label("Shipment added succesfully. ");  
 
     public ShipmentWindow() {
         
@@ -77,11 +77,13 @@ public class ShipmentWindow extends Stage {
         ORIG_DROPDOWN.setPromptText("Select an origin.");
         DEST_DROPDOWN.setPromptText("Select a destination.");
         
+        //MOVE THIS to Scheduling Controller
+        /*
         SchedulingController.populateProducts();
         SchedulingController.populateOrigins();
         SchedulingController.populateDestinations();
-//        SchedulingController.populateShipmentsTable();
-       // SchedulingController.populateShipmentChart();
+        SchedulingController.populateShipmentsTable();
+        SchedulingController.populateShipmentChart();*/
 
         QUANTITY_TF.setAlignment(Pos.BOTTOM_RIGHT);
         QUANTITY_TF.setPromptText("Select a quantity.");
@@ -91,20 +93,14 @@ public class ShipmentWindow extends Stage {
         PRIORITY_TF.setTooltip(new Tooltip("Must be an integer between 1 and 5"));
         PRIORITY_TF.setAlignment(Pos.CENTER);
         
+        //MOVE THIS to SchedulingController
         CREATE_SHIPMENT_BUTTON.setOnAction(e -> {
-            SchedulingController.createShipment();
+            //SchedulingController.createShipment();
             DESTINATIONS_CHART.getData().clear();
             //SchedulingController.populateShipmentChart();
             SHIPMENTS_TABLE.getItems().clear();
             SHIPMENTS_TABLE.getColumns().clear();
             //SchedulingController.populateShipmentsTable();
-        });
-        
-        SCHEDULE_SHIPMENTS_BUTTON.setOnAction(e -> {
-            SchedulingController.doScheduleShipments();
-            SCHEDULE_TABLE.getItems().clear();
-            SCHEDULE_TABLE.getColumns().clear();
-            SchedulingController.populateScheduleTable();          
         });
         
         GridPane.setHalignment(CREATE_SHIPMENT_BUTTON, HPos.RIGHT);

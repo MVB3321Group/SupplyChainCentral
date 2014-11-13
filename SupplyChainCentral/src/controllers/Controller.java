@@ -13,8 +13,10 @@ import windows.*;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.ComboBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import tools.Toolbar;
 
 /**
  *
@@ -30,20 +32,6 @@ public class Controller extends Application {
     public MainWindow mainWindow;
     private DatabaseConnection dbConn;
     
-    public Controller() {
-        //in order to get the connection, you need the role.
-        //in order to get the role, you need the user
-        //in order to get the user, you need the connection
-        //therefore, the role implementation will not work as written
-//        dbConn = new DatabaseConnection(0);
-        tController = new TrackingController();
-        
-        dbConn = new DatabaseConnection(0);
-        loginAttempts = 0;
-        loginWindow = new LoginWindow();
-        
-    }
-    
     private boolean isValidUser(int employeeID, String password) {
        User vUser = null;
         if (dbConn.getUser(employeeID, password) != null)
@@ -53,7 +41,7 @@ public class Controller extends Application {
     
     //To be called on any exit event
     public void exit() {
-        //dbConn.close();
+        dbConn.close();
     }
 
 
@@ -62,66 +50,39 @@ public class Controller extends Application {
                                    double width, double height) {
         
     }
-    
-//    public static void main(String [] args) {
-//        Controller controller = new Controller();
-//        //TODO: Show login page
-//        /*int numAttempts = 0;
-//        while (! isValidUser(loginPage.txtUsername.Text, loginPage.txtPassword.Text)) {
-//            if (numAttempts >= MAX_LOGIN_ATTEMPTS) {
-//                loginPage.showWarning();
-//                break;
-//            }
-//            loginPage.txtUsername.Text = "";
-//            loginPage.txtPassword.Text = "";
-//            numAttempts++;
-//        }*/
-//
-//        //Begin simple test code
-//        int username = -1;
-//        String password = "";
-////        while (username != 0) {
-////            System.out.print("Enter username & password or 0 to quit: ");
-////            Scanner scan = new Scanner(System.in);
-////            username = scan.nextInt();
-////            password = scan.next();
-////            if (controller.isValidUser(username, password)) {
-////                controller.user = controller.dbConn.getUser(username, password);
-////                break;
-////            }
-////        }
-//        System.out.println("Welcome " + controller.user.getfName() + " "
-//                            + controller.user.getlName());
-//        //End simple test code
-//        //controller.validateUser(employeeID, password);
-//        //TODO: Show main page
-//        
-//        controller.exit();
-//    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        loginWindow.btnLogin.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                if (isValidUser(Integer.parseInt(loginWindow.employeeIDField.getText()),
-                    loginWindow.pwBox.getText())){
-                    loginAttempts = 0;
-                    user = dbConn.getUser(Integer.parseInt(loginWindow.employeeIDField.getText()),
-                            loginWindow.pwBox.getText());
-                    dbConn.switchUser(user.getRoleID());
+        tController = new TrackingController();
+        dbConn = new DatabaseConnection(0);
+        loginAttempts = 0;
+        mainWindow = new MainWindow();
+        loginWindow = new LoginWindow();
+        loginWindow.show();
+        loginWindow.btnLogin.setOnAction(e -> {
+            if (isValidUser(Integer.parseInt(loginWindow.employeeIDField.getText()),
+                    loginWindow.pwBox.getText())) {
+                loginAttempts = 0;
+                user = dbConn.getUser(Integer.parseInt(loginWindow.employeeIDField.getText()),
+                        loginWindow.pwBox.getText());
+                dbConn.switchUser(user.getRoleID());
+                loginWindow.close();
+                mainWindow.show();
+            } else {
+                loginAttempts++;
+                //TODO: indicate incorrect login
+                if (loginAttempts > MAX_LOGIN_ATTEMPTS) {
                     loginWindow.close();
-                    mainWindow = new MainWindow();
+                    //TODO: indicate too many incorrect logins
                 }
-                else
-                {
-                    loginAttempts++;
-                    //TODO: indicate incorrect login
-                    if (loginAttempts > MAX_LOGIN_ATTEMPTS) {
-                        loginWindow.close();
-                        //TODO: indicate too many incorrect logins
-                    }
-                }
+            }
+        });
+        mainWindow.toolbar.FILE_DROPDOWN.setOnAction(e -> {
+            switch (mainWindow.toolbar.FILE_DROPDOWN.getValue()) {
+                case "New Shipment":
+                    mainWindow.close();
+                    //sController.shipmentWindow.show();
+                    break;
             }
         });
     }

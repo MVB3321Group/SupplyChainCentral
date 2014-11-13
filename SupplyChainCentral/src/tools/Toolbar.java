@@ -19,19 +19,19 @@ import javafx.scene.layout.Pane;
 
 public class Toolbar {
 
-    private final ComboBox<String> FILE_DROPDOWN = new ComboBox<>();
-    private final ComboBox<String> VIEW_DROPDOWN = new ComboBox<>();
-    private final ComboBox<String> RUN_DROPDOWN = new ComboBox<>();
-    private final ComboBox<String> TRACK_DROPDOWN = new ComboBox<>();
-    private final ComboBox<String> TOOLS_DROPDOWN = new ComboBox<>();
-    private final ComboBox<String> HELP_DROPDOWN = new ComboBox<>();
+    public ComboBox<String> FILE_DROPDOWN = new ComboBox<>();
+    public ComboBox<String> VIEW_DROPDOWN = new ComboBox<>();
+    public ComboBox<String> RUN_DROPDOWN = new ComboBox<>();
+    public ComboBox<String> TRACK_DROPDOWN = new ComboBox<>();
+    public ComboBox<String> TOOLS_DROPDOWN = new ComboBox<>();
+    public ComboBox<String> HELP_DROPDOWN = new ComboBox<>();
 
-    private final String[] FILE_DROPDOWN_OPTIONS = new String[4];
-    private final String[] VIEW_DROPDOWN_OPTIONS = new String[4];
-    private final String[] RUN_DROPDOWN_OPTIONS = new String[4];
-    private final String[] TRACK_DROPDOWN_OPTIONS = new String[4];
-    private final String[] TOOLS_DROPDOWN_OPTIONS = new String[4];
-    private final String[] HELP_DROPDOWN_OPTIONS = new String[4];
+    public String[] FILE_DROPDOWN_OPTIONS = new String[4];
+    public String[] VIEW_DROPDOWN_OPTIONS = new String[4];
+    public String[] RUN_DROPDOWN_OPTIONS = new String[4];
+    public String[] TRACK_DROPDOWN_OPTIONS = new String[4];
+    public String[] TOOLS_DROPDOWN_OPTIONS = new String[4];
+    public String[] HELP_DROPDOWN_OPTIONS = new String[4];
     
     public Pane pane = new Pane();
 
@@ -78,29 +78,28 @@ public class Toolbar {
         FILE_DROPDOWN.setPrefWidth(60);
         FILE_DROPDOWN.setValue("File");
         
-        ObservableList<String> fileDropdownList
-                = FXCollections.observableArrayList(FILE_DROPDOWN_OPTIONS);
-        FILE_DROPDOWN.getItems().addAll(fileDropdownList);
-        
-        FILE_DROPDOWN.setOnAction(e -> {
-            switch (fileDropdownList.indexOf(FILE_DROPDOWN.getValue())) {
-                case 0:
-                    SchedulingController.openShipmentWindow();
-                    break;
-                case 1:
-                    System.out.println("Navigating to " + FILE_DROPDOWN_OPTIONS[1] + "...");
-                    break;
-                case 2:
-                    System.out.println("Navigating to " + FILE_DROPDOWN_OPTIONS[2] + "...");
-                    break;
-                case 3:
-                    System.out.println("Navigating to " + FILE_DROPDOWN_OPTIONS[3] + "...");
-                    break;
-            }
-
-            // Simple fix to not allow selected option to change dropdown title
-            FILE_DROPDOWN.setValue("File");
-        });
+        FILE_DROPDOWN.getItems().addAll(FILE_DROPDOWN_OPTIONS);
+                
+//        FILE_DROPDOWN.setOnAction(e -> {
+//            switch (fileDropdownList.indexOf(FILE_DROPDOWN.getValue())) {
+//                case 0:
+//                    //Need to transfer handling to SchedulingController instance
+//                    SchedulingController.openShipmentWindow();
+//                    break;
+//                case 1:
+//                    System.out.println("Navigating to " + FILE_DROPDOWN_OPTIONS[1] + "...");
+//                    break;
+//                case 2:
+//                    System.out.println("Navigating to " + FILE_DROPDOWN_OPTIONS[2] + "...");
+//                    break;
+//                case 3:
+//                    System.out.println("Navigating to " + FILE_DROPDOWN_OPTIONS[3] + "...");
+//                    break;
+//            }
+//
+//            // Simple fix to not allow selected option to change dropdown title
+//            FILE_DROPDOWN.setValue("File");
+//        });
 
         // "View" dropdown list
         VIEW_DROPDOWN.setPrefWidth(68);
