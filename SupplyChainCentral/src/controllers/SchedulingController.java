@@ -6,6 +6,7 @@
 
 package controllers;
 
+import databaseconnection.DatabaseConnection;
 import tableobjects.*;
 import windows.*;
 import java.util.ArrayList;
@@ -34,9 +35,14 @@ import java.util.Queue;
  * @author Benjamin
  */
 
-public class SchedulingController extends Application {
+public class SchedulingController {
     public ShipmentWindow shipmentWindow;
+    DatabaseConnection dbConn;
     
+    public SchedulingController(DatabaseConnection dbConn) {
+        this.dbConn = dbConn;
+        shipmentWindow = new ShipmentWindow();
+    }
     
     public void createShipment() {
         int originatorID = 2222;//dummy test code
@@ -138,7 +144,7 @@ public class SchedulingController extends Application {
 //        shipmentWindow.DESTINATIONS_CHART.getData().add(series);
 //    }
 
-    @Override
+    /*@Override
     public void start(Stage start) throws Exception {
     //public static void doScheduleShipments() {
         // get an arraylist of the current shipments.
@@ -147,11 +153,20 @@ public class SchedulingController extends Application {
         // what shipment is to be sent out next. By this I mean a 
         // starttime will be given to the shipment.
         Queue<Shipment> schedulePriorityQueue = new PriorityQueue<>(5, priorityComparator);
+        //MOVE THIS to SchedulingController
+        shipmentWindow.CREATE_SHIPMENT_BUTTON.setOnAction(e -> {
+            createShipment();
+            shipmentWindow.DESTINATIONS_CHART.getData().clear();
+            populateShipmentChart();
+            //shipmentWindow.getItems().clear();
+            //shipmentWindow.getColumns().clear();
+            //populateShipmentsTable();
+        });
         
 //        for(int i = 0; i < shipments.size(); i++){
 //            schedulePriorityQueue.add(shipments.get(i));
 //        }
-    }
+    }*/
     
     
      //Comparator anonymous class implementation

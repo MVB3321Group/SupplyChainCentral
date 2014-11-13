@@ -14,6 +14,7 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.ComboBox;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import tools.Toolbar;
@@ -27,6 +28,7 @@ public class Controller extends Application {
     private final int MAX_LOGIN_ATTEMPTS = 5;
     private int loginAttempts;
     private TrackingController tController;
+    private SchedulingController sController;
     private User user;//user for this session
     public LoginWindow loginWindow;
     public MainWindow mainWindow;
@@ -53,8 +55,9 @@ public class Controller extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        tController = new TrackingController();
         dbConn = new DatabaseConnection(0);
+        tController = new TrackingController();
+        sController = new SchedulingController(dbConn);
         loginAttempts = 0;
         mainWindow = new MainWindow();
         loginWindow = new LoginWindow();
@@ -77,11 +80,17 @@ public class Controller extends Application {
                 }
             }
         });
+        
+        loginWindow.pwBox.setOnKeyPressed(e -> {
+            if (e.getCode().equals(KeyCode.ENTER)) {
+                loginWindow.btnLogin.fire();
+            }
+        });
         mainWindow.toolbar.FILE_DROPDOWN.setOnAction(e -> {
             switch (mainWindow.toolbar.FILE_DROPDOWN.getValue()) {
                 case "New Shipment":
                     mainWindow.close();
-                    //sController.shipmentWindow.show();
+                    sController.shipmentWindow.show();
                     break;
             }
         });

@@ -10,6 +10,7 @@ import controllers.*;
 import tableobjects.*;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
@@ -93,20 +94,11 @@ public class ShipmentWindow extends Stage {
         PRIORITY_TF.setTooltip(new Tooltip("Must be an integer between 1 and 5"));
         PRIORITY_TF.setAlignment(Pos.CENTER);
         
-        //MOVE THIS to SchedulingController
-        CREATE_SHIPMENT_BUTTON.setOnAction(e -> {
-            //SchedulingController.createShipment();
-            DESTINATIONS_CHART.getData().clear();
-            //SchedulingController.populateShipmentChart();
-            SHIPMENTS_TABLE.getItems().clear();
-            SHIPMENTS_TABLE.getColumns().clear();
-            //SchedulingController.populateShipmentsTable();
-        });
-        
         GridPane.setHalignment(CREATE_SHIPMENT_BUTTON, HPos.RIGHT);
         aPane.getChildren().add(gPane);
         AnchorPane.setRightAnchor(gPane, 10.0);
         
-        shipmentWindow.setIconified(true);
+        Scene scene = new Scene(aPane, 1342, 686);
+        setScene(scene);
     }
 }
