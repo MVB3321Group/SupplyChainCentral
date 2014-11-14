@@ -5,9 +5,11 @@
  */
 package tools;
 
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -25,10 +27,14 @@ public class DialogBox extends Stage {
         btnOk = new Button();
         btnOk.setText("Ok");
         setMessage(message);
-        VBox vb = new VBox();
+        BorderPane bp = new BorderPane();
+        VBox vb = new VBox(10);
         vb.getChildren().addAll(label, btnOk);
-        Scene scene = new Scene(vb, 300, 200);
+        bp.setCenter(vb);
+        BorderPane.setAlignment(vb, Pos.CENTER);
+        Scene scene = new Scene(bp, 300, 200);
         setScene(scene);
+        setTitle("Warning!");
     }
     
     public void setMessage(String message) {

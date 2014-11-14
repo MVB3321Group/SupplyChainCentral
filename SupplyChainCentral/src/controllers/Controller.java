@@ -58,70 +58,66 @@ public class Controller extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         try {
-            dbConn = new DatabaseConnection(0);
-        }
-        catch (SQLException sqlE) {
-            DialogBox db = new DialogBox("Unable to connect to database."
-                    + "\nPlease contact the system administrator.");
-            db.show();
-            db.btnOk.setOnAction(f -> {
-                try {
-                    stop();
+            dbConn = new DatabaseConnection(0);        
+            tController = new TrackingController();
+            sController = new SchedulingController(dbConn);
+            loginAttempts = 0;
+            mainWindow = new MainWindow();
+            loginWindow = new LoginWindow();
+            loginWindow.show();
+            loginWindow.btnLogin.setOnAction(e -> {
+                if (isValidUser(Integer.parseInt(loginWindow.employeeIDField.getText()),
+                        loginWindow.pwBox.getText())) {
+                    loginAttempts = 0;
+                    user = dbConn.getUser(Integer.parseInt(loginWindow.employeeIDField.getText()),
+                            loginWindow.pwBox.getText());
+                    try {
+                        dbConn.switchUser(user.getRoleID());
+                    }
+                    catch (SQLException sqlE) {
+                        loginWindow.close();
+                        showFailedConnection();
+                    }
+                    loginWindow.close();
+                    mainWindow.show();
+                } else {
+                    loginAttempts++;
+                    //TODO: indicate incorrect login
+                    if (loginAttempts > MAX_LOGIN_ATTEMPTS) {
+                        loginWindow.close();
+                        //TODO: indicate too many incorrect logins
+                    }
                 }
-                catch (Exception ex) { }
+            });
+
+            loginWindow.pwBox.setOnKeyPressed(e -> {
+                if (e.getCode().equals(KeyCode.ENTER)) {
+                    loginWindow.btnLogin.fire();
+                }
+            });
+            mainWindow.toolbar.FILE_DROPDOWN.setOnAction(e -> {
+                switch (mainWindow.toolbar.FILE_DROPDOWN.getValue()) {
+                    case "New Shipment":
+                        mainWindow.close();
+                        sController.shipmentWindow.show();
+                        break;
+                }
             });
         }
-        tController = new TrackingController();
-        sController = new SchedulingController(dbConn);
-        loginAttempts = 0;
-        mainWindow = new MainWindow();
-        loginWindow = new LoginWindow();
-        loginWindow.show();
-        loginWindow.btnLogin.setOnAction(e -> {
-            if (isValidUser(Integer.parseInt(loginWindow.employeeIDField.getText()),
-                    loginWindow.pwBox.getText())) {
-                loginAttempts = 0;
-                user = dbConn.getUser(Integer.parseInt(loginWindow.employeeIDField.getText()),
-                        loginWindow.pwBox.getText());
-                try {
-                    dbConn.switchUser(user.getRoleID());
-                }
-                catch (SQLException sqlE) {
-                    loginWindow.close();
-                    DialogBox db = new DialogBox("Unable to connect to database."
-                            + "\nPlease contact the system administrator.");
-                    db.show();
-                    db.btnOk.setOnAction(f -> {
-                        try {
-                            stop();
-                        }
-                        catch (Exception ex) { }
-                    });
-                }
-                loginWindow.close();
-                mainWindow.show();
-            } else {
-                loginAttempts++;
-                //TODO: indicate incorrect login
-                if (loginAttempts > MAX_LOGIN_ATTEMPTS) {
-                    loginWindow.close();
-                    //TODO: indicate too many incorrect logins
-                }
+        catch (SQLException sqlE) {
+            showFailedConnection();
+        }
+    }
+
+    private void showFailedConnection() {
+        DialogBox dialog = new DialogBox("Unable to connect to database."
+                + "\nPlease contact the system administrator.");
+        dialog.show();
+        dialog.btnOk.setOnAction(f -> {
+            try {
+                dialog.close();
             }
-        });
-        
-        loginWindow.pwBox.setOnKeyPressed(e -> {
-            if (e.getCode().equals(KeyCode.ENTER)) {
-                loginWindow.btnLogin.fire();
-            }
-        });
-        mainWindow.toolbar.FILE_DROPDOWN.setOnAction(e -> {
-            switch (mainWindow.toolbar.FILE_DROPDOWN.getValue()) {
-                case "New Shipment":
-                    mainWindow.close();
-                    sController.shipmentWindow.show();
-                    break;
-            }
+            catch (Exception ex) { }
         });
     }
     
