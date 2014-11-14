@@ -8,6 +8,7 @@
 package controllers;
 
 import databaseconnection.*;
+import java.sql.SQLException;
 import tableobjects.*;
 import windows.*;
 import javafx.application.Application;
@@ -17,6 +18,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import tools.DialogBox;
 import tools.Toolbar;
 
 /**
@@ -55,7 +57,20 @@ public class Controller extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        dbConn = new DatabaseConnection(0);
+        try {
+            dbConn = new DatabaseConnection(0);
+        }
+        catch (SQLException sqlE) {
+            DialogBox db = new DialogBox("Unable to connect to database."
+                    + "\nPlease contact the system administrator.");
+            db.show();
+            db.btnOk.setOnAction(f -> {
+                try {
+                    stop();
+                }
+                catch (Exception ex) { }
+            });
+        }
         tController = new TrackingController();
         sController = new SchedulingController(dbConn);
         loginAttempts = 0;
@@ -68,7 +83,21 @@ public class Controller extends Application {
                 loginAttempts = 0;
                 user = dbConn.getUser(Integer.parseInt(loginWindow.employeeIDField.getText()),
                         loginWindow.pwBox.getText());
-                dbConn.switchUser(user.getRoleID());
+                try {
+                    dbConn.switchUser(user.getRoleID());
+                }
+                catch (SQLException sqlE) {
+                    loginWindow.close();
+                    DialogBox db = new DialogBox("Unable to connect to database."
+                            + "\nPlease contact the system administrator.");
+                    db.show();
+                    db.btnOk.setOnAction(f -> {
+                        try {
+                            stop();
+                        }
+                        catch (Exception ex) { }
+                    });
+                }
                 loginWindow.close();
                 mainWindow.show();
             } else {

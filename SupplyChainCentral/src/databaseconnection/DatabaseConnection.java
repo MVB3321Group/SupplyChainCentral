@@ -27,27 +27,15 @@ public class DatabaseConnection {
     private int role;
     private Connection connection;
     
-    public DatabaseConnection(int role) {
+    public DatabaseConnection(int role) throws SQLException {
         this.role = role;
-        try {
-            connection = getConnection(role);
-        }
-        catch (SQLException e) {
-            System.err.println("Unable to connect to database.");
-            e.printStackTrace();
-        }
+        connection = getConnection(role);
     }
     
-    public void switchUser(int newRole) {
+    public void switchUser(int newRole) throws SQLException {
         this.role = newRole;
-        try {
-            connection.close();
-            connection = getConnection(newRole);
-        }
-        catch (SQLException e) {
-            System.err.println("Unable to switch users.");
-            e.printStackTrace();
-        }
+        connection.close();
+        connection = getConnection(newRole);
     }
     
     public void close() {
