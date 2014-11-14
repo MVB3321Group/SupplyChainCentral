@@ -16,6 +16,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
+import static windows.ShipmentWindow.CREATE_SHIPMENT_BUTTON;
+
 
 /**
  *
@@ -28,10 +30,13 @@ public class SchedulingController {
         int originatorID = 2222;
         String orig = ShipmentWindow.ORIG_DROPDOWN.getValue();
         String dest = ShipmentWindow.DEST_DROPDOWN.getValue();
-        int priority = Integer.valueOf(ShipmentWindow.PRTY_DROPDOWN.getValue());
+        int priority = Integer.valueOf(ShipmentWindow.PRIORITY_TF.getText());
         
         Shipment shpmt = new Shipment(originatorID, orig, dest, priority);
         MainWindow.dbConn.insertShipment(shpmt);
+        
+        // Confirm success
+        ShipmentWindow.gPane.add(ShipmentWindow.success, 1, 6);
     }
     
     public static void openShipmentWindow() {
