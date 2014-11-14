@@ -6,24 +6,23 @@
 
 package windows;
 
-import controllers.*;
-import databaseconnection.*;
-import javafx.application.Application;
+import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import tools.Toolbar;
 
-public class MainWindow extends Application {
-    public static AnchorPane mainPane = new AnchorPane(); // TODO: BorderPane
-    public static Stage mainWindow = new Stage();
-    public static DatabaseConnection dbConn;
+public class MainWindow extends Stage {
+    public AnchorPane mainPane = new AnchorPane(); // TODO: BorderPane
+    public Toolbar toolbar;
     
-    @Override
-    public void start(Stage window) {
-        dbConn = new DatabaseConnection(0); // Establish database connection!
-        Controller.openMainWindow();
-    }
-    
-    public static void main(String[] args) {
-        launch(args);
+    public MainWindow() {
+        toolbar = new Toolbar();
+        toolbar.generateDropdowns(mainPane);
+
+        Scene scene = new Scene(mainPane, 1342, 686);
+
+        setTitle("Supply Chain Central");
+        setScene(scene);
+        setResizable(false);
     }
 }

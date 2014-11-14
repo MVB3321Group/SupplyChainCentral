@@ -26,8 +26,8 @@ public class DataGeneratorUtility {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        DatabaseConnection conn = new DatabaseConnection(1);
-        ArrayList<Location> locations = conn.getLocations();
+        //DatabaseConnection conn = new DatabaseConnection(1);
+        //ArrayList<Location> locations = conn.getLocations();
 //        for (int i = 0; i < 10; i++) {
 //            int origIndex = (int) (Math.random() * locations.size());
 //            int destIndex = (int) (Math.random() * locations.size());

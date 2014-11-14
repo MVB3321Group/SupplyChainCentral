@@ -7,111 +7,121 @@
 
 package controllers;
 
-import controllers.*;
 import databaseconnection.*;
+import java.sql.SQLException;
 import tableobjects.*;
-import tools.Toolbar;
 import windows.*;
-import java.util.Scanner;
-import javafx.scene.Scene;
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.ComboBox;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import tools.DialogBox;
+import tools.Toolbar;
 
 /**
  *
  * @author Benjamin
  */
-public class Controller {
+public class Controller extends Application {
     //Will get a user object based on input from login window.
     private final int MAX_LOGIN_ATTEMPTS = 5;
+    private int loginAttempts;
+    private TrackingController tController;
     private SchedulingController sController;
-    User user;//user for this session
+    private User user;//user for this session
+    public LoginWindow loginWindow;
+    public MainWindow mainWindow;
+    private DatabaseConnection dbConn;
     
-    public Controller() {
-        //in order to get the connection, you need the role.
-        //in order to get the role, you need the user
-        //in order to get the user, you need the connection
-        //therefore, the role implementation will not work as written
-//        dbConn = new DatabaseConnection(0);
-//        sController = new SchedulingController(dbConn);
+    private boolean isValidUser(int employeeID, String password) {
+       User vUser = null;
+        if (dbConn.getUser(employeeID, password) != null)
+            vUser = dbConn.getUser(employeeID, password);
+        return (vUser != null);
     }
-    
-//    private boolean isValidUser(int employeeID, String password) {
-//        User vUser = dbConn.getUser(employeeID, password);
-//        return (vUser != null);
-//    }
     
     //To be called on any exit event
     public void exit() {
-        MainWindow.dbConn.close();
+        dbConn.close();
     }
 
-    // TODO: Fix attempts to open an already-open window
-    public static void openWindow(Stage window, Pane pane,
-                                  double width, double height) {
-        Toolbar toolbar = new Toolbar();
-        toolbar.generateDropdowns(pane);
-
-        Scene scene = new Scene(pane, width, height);
-
-        window.setTitle("Supply Chain Central");
-        window.setScene(scene);
-        window.show();
-        window.setResizable(false);
-    }
-    
-    public static void openMainWindow() {
-        /* Creating an instance object for a window class sets off the
-           entire flow of events for the class; only create instance object
-           if the window is not already open ("iconified," in this case)
-        */
-        if (! MainWindow.mainWindow.isIconified()) {
-            MainWindow obj = new MainWindow(); // "dummy" instance
-        }
-        
-        openWindow(MainWindow.mainWindow, MainWindow.mainPane, 1342, 686);
-        MainWindow.mainWindow.setIconified(false);
-    }
 
     // TODO
     public static void showSuccess(Stage window, Pane pane,
                                    double width, double height) {
         
     }
-    
-    public static void main(String [] args) {
-        Controller controller = new Controller();
-        //TODO: Show login page
-        /*int numAttempts = 0;
-        while (! isValidUser(loginPage.txtUsername.Text, loginPage.txtPassword.Text)) {
-            if (numAttempts >= MAX_LOGIN_ATTEMPTS) {
-                loginPage.showWarning();
-                break;
-            }
-            loginPage.txtUsername.Text = "";
-            loginPage.txtPassword.Text = "";
-            numAttempts++;
-        }*/
 
-        //Begin simple test code
-        int username = -1;
-        String password = "";
-//        while (username != 0) {
-//            System.out.print("Enter username & password or 0 to quit: ");
-//            Scanner scan = new Scanner(System.in);
-//            username = scan.nextInt();
-//            password = scan.next();
-//            if (controller.isValidUser(username, password)) {
-//                controller.user = controller.dbConn.getUser(username, password);
-//                break;
-//            }
-//        }
-        System.out.println("Welcome " + controller.user.getfName() + " "
-                            + controller.user.getlName());
-        //End simple test code
-        //controller.validateUser(employeeID, password);
-        //TODO: Show main page
-        
-        controller.exit();
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        try {
+            dbConn = new DatabaseConnection(0);        
+            tController = new TrackingController();
+            sController = new SchedulingController(dbConn);
+            loginAttempts = 0;
+            mainWindow = new MainWindow();
+            loginWindow = new LoginWindow();
+            loginWindow.show();
+            loginWindow.btnLogin.setOnAction(e -> {
+                if (isValidUser(Integer.parseInt(loginWindow.employeeIDField.getText()),
+                        loginWindow.pwBox.getText())) {
+                    loginAttempts = 0;
+                    user = dbConn.getUser(Integer.parseInt(loginWindow.employeeIDField.getText()),
+                            loginWindow.pwBox.getText());
+                    try {
+                        dbConn.switchUser(user.getRoleID());
+                    }
+                    catch (SQLException sqlE) {
+                        loginWindow.close();
+                        showFailedConnection();
+                    }
+                    loginWindow.close();
+                    mainWindow.show();
+                } else {
+                    loginAttempts++;
+                    //TODO: indicate incorrect login
+                    if (loginAttempts > MAX_LOGIN_ATTEMPTS) {
+                        loginWindow.close();
+                        //TODO: indicate too many incorrect logins
+                    }
+                }
+            });
+
+            loginWindow.pwBox.setOnKeyPressed(e -> {
+                if (e.getCode().equals(KeyCode.ENTER)) {
+                    loginWindow.btnLogin.fire();
+                }
+            });
+            mainWindow.toolbar.FILE_DROPDOWN.setOnAction(e -> {
+                switch (mainWindow.toolbar.FILE_DROPDOWN.getValue()) {
+                    case "New Shipment":
+                        mainWindow.close();
+                        sController.shipmentWindow.show();
+                        break;
+                }
+            });
+        }
+        catch (SQLException sqlE) {
+            showFailedConnection();
+        }
+    }
+
+    private void showFailedConnection() {
+        DialogBox dialog = new DialogBox("Unable to connect to database."
+                + "\nPlease contact the system administrator.");
+        dialog.show();
+        dialog.btnOk.setOnAction(f -> {
+            try {
+                dialog.close();
+            }
+            catch (Exception ex) { }
+        });
+    }
+    
+    public static void main(String[] args) {
+        launch(args);
     }
 }
