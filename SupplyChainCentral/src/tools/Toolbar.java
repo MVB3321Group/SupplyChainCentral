@@ -170,6 +170,10 @@ public class Toolbar {
         hBox.getChildren().add(TOOLS_DROPDOWN);
         hBox.getChildren().add(HELP_DROPDOWN);
 
+        FILE_DROPDOWN.getStyleClass().add("ComboBoxCSS.css");
+
+        hBox.getStylesheets().add
+                (Toolbar.class.getResource("DialogBoxCSS.css").toExternalForm());
         pane.getChildren().add(hBox);
     }
 }
