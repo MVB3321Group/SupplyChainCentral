@@ -217,10 +217,10 @@ public class DatabaseConnection {
         try {
             stmt = connection.createStatement();
             rs = stmt.executeQuery("SELECT locationCode, locationType, address,"
-                    + " zip, city, state, X(GPScoords), Y(GPScoords) " +
+                    + " zip, city, state, X(GPScoords) AS CoordX, Y(GPScoords) AS CoordY " +
                     "FROM locations");
             while (rs.next()) {
-                Point2D coords = new Point2D(rs.getDouble("X(GPScoords)"), rs.getDouble("Y(GPScoords"));
+                Point2D coords = new Point2D(rs.getDouble("CoordX"), rs.getDouble("CoordY"));
                 Location l = new Location(
                         rs.getString("locationCode"),
                         rs.getInt("locationType"),
