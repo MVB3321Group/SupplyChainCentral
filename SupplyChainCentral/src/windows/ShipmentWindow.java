@@ -6,7 +6,6 @@
 
 package windows;
 
-import controllers.*;
 import tableobjects.*;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
@@ -23,6 +22,7 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import tools.Toolbar;
 
 public class ShipmentWindow extends Stage {
 
@@ -48,10 +48,13 @@ public class ShipmentWindow extends Stage {
     
     public AnchorPane aPane = new AnchorPane();
     public GridPane gPane = new GridPane();
-            
+    public Toolbar toolbar;
+
     public Label success = new Label("Shipment added succesfully. ");  
 
     public ShipmentWindow() {
+        toolbar = new Toolbar();
+        toolbar.generateDropdowns(aPane);
         
         gPane.add(new Label("Product: "), 0, 0);
         gPane.add(PROD_DROPDOWN, 1, 0);
@@ -78,14 +81,6 @@ public class ShipmentWindow extends Stage {
         ORIG_DROPDOWN.setPromptText("Select an origin.");
         DEST_DROPDOWN.setPromptText("Select a destination.");
         
-        //MOVE THIS to Scheduling Controller
-        /*
-        SchedulingController.populateProducts();
-        SchedulingController.populateOrigins();
-        SchedulingController.populateDestinations();
-        SchedulingController.populateShipmentsTable();
-        SchedulingController.populateShipmentChart();*/
-
         QUANTITY_TF.setAlignment(Pos.BOTTOM_RIGHT);
         QUANTITY_TF.setPromptText("Select a quantity.");
         QUANTITY_TF.setAlignment(Pos.CENTER);
@@ -99,6 +94,9 @@ public class ShipmentWindow extends Stage {
         AnchorPane.setRightAnchor(gPane, 10.0);
         
         Scene scene = new Scene(aPane, 1342, 686);
+
+        setTitle("Supply Chain Central");
         setScene(scene);
+        setResizable(false);
     }
 }
