@@ -95,6 +95,7 @@ public class Controller extends Application {
                     loginWindow.btnLogin.fire();
                 }
             });
+            
             mainWindow.toolbar.FILE_DROPDOWN.setOnAction(e -> {
                 switch (mainWindow.toolbar.FILE_DROPDOWN.getValue()) {
                     case "New Shipment":
