@@ -29,12 +29,16 @@ public class DialogBox extends Stage {
         setMessage(message);
         BorderPane bp = new BorderPane();
         VBox vb = new VBox(10);
+        vb.setAlignment(Pos.CENTER);
         vb.getChildren().addAll(label, btnOk);
         bp.setCenter(vb);
-        BorderPane.setAlignment(vb, Pos.CENTER);
         Scene scene = new Scene(bp, 300, 200);
+        
+        scene.getStylesheets().add
+                (DialogBox.class.getResource("DialogBoxCSS.css").toExternalForm());
+        
         setScene(scene);
-        setTitle("Warning!");
+        setTitle("Warning!");        
     }
     
     public void setMessage(String message) {

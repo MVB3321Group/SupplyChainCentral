@@ -96,6 +96,9 @@ public class ShipmentWindow extends Stage {
         Scene scene = new Scene(aPane, 1342, 686);
 
         setTitle("Supply Chain Central");
+        
+        scene.getStylesheets().add
+                (ShipmentWindow.class.getResource("LoginCSS.css").toExternalForm());
         setScene(scene);
         setResizable(false);
     }
