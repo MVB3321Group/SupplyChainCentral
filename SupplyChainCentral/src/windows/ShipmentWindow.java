@@ -99,6 +99,9 @@ public class ShipmentWindow extends Stage {
         AnchorPane.setRightAnchor(gPane, 10.0);
         
         Scene scene = new Scene(aPane, 1342, 686);
+        
+        scene.getStylesheets().add
+                (ShipmentWindow.class.getResource("LoginCSS.css").toExternalForm());
         setScene(scene);
     }
 }
