@@ -5,6 +5,8 @@
 */
 package tableobjects;
 
+import javafx.geometry.Point2D;
+
 /**
  *
  * @author Benjamin
@@ -16,15 +18,17 @@ public class Location {
     private int zip;
     private String city;
     private String state;
+    private Point2D GPScoords;
     
     public Location(String locationCode, int locationType, String address,
-                    int zip, String city, String state) {
+                    int zip, String city, String state, Point2D GPScoords) {
         setLocationCode(locationCode);
         setLocationType(locationType);
         setAddress(address);
         setZip(zip);
         setCity(city);
         setState(state);
+        setGPScoords(GPScoords);
     }
     
     public String getLocationCode() {
@@ -74,4 +78,12 @@ public class Location {
     public void setState(String state) {
         this.state = state;
     }    
+
+    public Point2D getGPScoords() {
+        return GPScoords;
+    }
+
+    public void setGPScoords(Point2D GPScoords) {
+        this.GPScoords = GPScoords;
+    }
 }

@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import javafx.geometry.Point2D;
 import tableobjects.*;
 
 /**
@@ -215,15 +216,19 @@ public class DatabaseConnection {
         ArrayList<Location> locations = new ArrayList<>();
         try {
             stmt = connection.createStatement();
-            rs = stmt.executeQuery("SELECT * FROM Locations");
+            rs = stmt.executeQuery("SELECT locationCode, locationType, address,"
+                    + " zip, city, state, X(GPScoords), Y(GPScoords) " +
+                    "FROM locations");
             while (rs.next()) {
+                Point2D coords = new Point2D(rs.getDouble("X(GPScoords)"), rs.getDouble("Y(GPScoords"));
                 Location l = new Location(
                         rs.getString("locationCode"),
                         rs.getInt("locationType"),
                         rs.getString("address"),
                         rs.getInt("zip"),
                         rs.getString("city"),
-                        rs.getString("state")
+                        rs.getString("state"),
+                        coords
                 );
                 locations.add(l);
             }
