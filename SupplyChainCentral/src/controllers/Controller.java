@@ -9,6 +9,7 @@ package controllers;
 
 import databaseconnection.*;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import tableobjects.*;
 import windows.*;
 import javafx.application.Application;
