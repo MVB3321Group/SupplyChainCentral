@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 06, 2014 at 03:33 PM
+-- Generation Time: Nov 15, 2014 at 05:34 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -47,6 +47,7 @@ CREATE TABLE IF NOT EXISTS `locations` (
   `zip` int(5) NOT NULL COMMENT 'zip',
   `city` varchar(30) NOT NULL COMMENT 'city',
   `state` varchar(20) NOT NULL COMMENT 'state',
+  `GPScoords` point DEFAULT NULL COMMENT 'GPS coords of a given location',
   PRIMARY KEY (`locationCode`),
   KEY `locationType` (`locationType`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -55,14 +56,24 @@ CREATE TABLE IF NOT EXISTS `locations` (
 -- Dumping data for table `locations`
 --
 
-INSERT INTO `locations` (`locationCode`, `locationType`, `address`, `zip`, `city`, `state`) VALUES
-('DET', 1, '4 Back Road', 33833, 'Detroit', 'Michigan'),
-('LA', 1, '803 Sunshine Place', 88888, 'Los Angeles', 'California'),
-('NY', 1, '199 Production Pkwy.', 12345, 'New York', 'New York'),
-('PHX', 1, '796 Cactus Way', 77771, 'Phoenix', 'Arizona'),
-('PORT', 1, '26 Rainy St.', 67849, 'Portland', 'Oregon'),
-('SAV', 1, '420 Commerce Blvd.', 31419, 'Savannah', 'Georgia');
+INSERT INTO `locations` (`locationCode`, `locationType`, `address`, `zip`, `city`, `state`, `GPScoords`) VALUES
+('DET', 1, '4 Back Road', 33833, 'Detroit', 'Michigan', '\0\0\0\0\0\0\0\0\0\0\0\0ÀT@\0\0\0\0\0\0E@'),
+('LA', 1, '803 Sunshine Place', 88888, 'Los Angeles', 'California', '\0\0\0\0\0\0\0\0\0\0\0\0€]@\0\0\0\0\0\0A@'),
+('NY', 1, '199 Production Pkwy.', 12345, 'New York', 'New York', '\0\0\0\0\0\0\0\0\0\0\0\0€R@\0\0\0\0\0\0D@'),
+('PHX', 1, '796 Cactus Way', 77771, 'Phoenix', 'Arizona', '\0\0\0\0\0\0\0\0\0\0\0\0\0\\@\0\0\0\0\0€@@'),
+('PORT', 1, '26 Rainy St.', 67849, 'Portland', 'Oregon', '\0\0\0\0\0\0\0\0\0\0\0\0€^@\0\0\0\0\0€F@'),
+('SAV', 1, '420 Commerce Blvd.', 31419, 'Savannah', 'Georgia', '\0\0\0\0\0\0\0\0\0\0\0\0@T@\0\0\0\0\0\0@@');
 
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `locationsview`
+--
+CREATE TABLE IF NOT EXISTS `locationsview` (
+`locationCode` varchar(5)
+,`X(GPScoords)` double
+,`Y(GPScoords)` double
+);
 -- --------------------------------------------------------
 
 --
@@ -195,7 +206,7 @@ CREATE TABLE IF NOT EXISTS `shipments` (
   KEY `fk_ShipmentsSchedules` (`scheduleID`),
   KEY `fk_ShipmentsDestinations` (`destination`),
   KEY `fk_ShipmentsUsers` (`originatorID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=21 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=24 ;
 
 --
 -- Dumping data for table `shipments`
@@ -221,7 +232,10 @@ INSERT INTO `shipments` (`shipID`, `originatorID`, `origin`, `destination`, `pri
 (17, 2223, 'PHX', 'SAV', 3, NULL, NULL, NULL, NULL),
 (18, 2223, 'SAV', 'DET', 3, NULL, NULL, NULL, NULL),
 (19, 2223, 'LA', 'SAV', 3, NULL, NULL, NULL, NULL),
-(20, 2223, 'SAV', 'LA', 1, NULL, NULL, NULL, NULL);
+(20, 2223, 'SAV', 'LA', 1, NULL, NULL, NULL, NULL),
+(21, 2222, 'LA', 'PHX', 3, NULL, NULL, NULL, NULL),
+(22, 2222, 'PHX', 'SAV', 2, NULL, NULL, NULL, NULL),
+(23, 2222, 'LA', 'PHX', 3, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -266,6 +280,15 @@ INSERT INTO `users` (`fName`, `lName`, `employeeID`, `managerID`, `roleID`, `loc
 ('Jerry', 'Williamson', 2223, 1111, 2, 'SAV', 'abc123'),
 ('George', 'Parker', 3333, 1111, 3, 'LA', 'gpark'),
 ('Fred', 'Smith', 4444, 3333, 4, 'LA', 'fsmith');
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `locationsview`
+--
+DROP TABLE IF EXISTS `locationsview`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `locationsview` AS select `locations`.`locationCode` AS `locationCode`,st_x(`locations`.`GPScoords`) AS `X(GPScoords)`,st_y(`locations`.`GPScoords`) AS `Y(GPScoords)` from `locations`;
 
 -- --------------------------------------------------------
 
