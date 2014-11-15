@@ -99,6 +99,9 @@ public class Controller extends Application {
             mainWindow.toolbar.FILE_DROPDOWN.setOnAction(e -> {
                 switch (mainWindow.toolbar.FILE_DROPDOWN.getValue()) {
                     case "New Shipment":
+                        /* Simple fix to not allow selected option to
+                           change dropdown title */
+                        mainWindow.toolbar.FILE_DROPDOWN.setValue("File");
                         mainWindow.close();
                         sController.shipmentWindow.show();
                         break;

@@ -23,13 +23,6 @@ import java.util.Comparator;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
-
-import java.util.Comparator;
-import java.util.PriorityQueue;
-import java.util.Queue;
-
-
-
 /**
  *
  * @author Benjamin
@@ -42,6 +35,18 @@ public class SchedulingController {
     public SchedulingController(DatabaseConnection dbConn) {
         this.dbConn = dbConn;
         shipmentWindow = new ShipmentWindow();
+        
+        shipmentWindow.toolbar.FILE_DROPDOWN.setOnAction(e -> {
+            switch (shipmentWindow.toolbar.FILE_DROPDOWN.getValue()) {
+                case "New Shipment":
+                    /* Simple fix to not allow selected option to
+                     change dropdown title */
+                    shipmentWindow.toolbar.FILE_DROPDOWN.setValue("File");
+                    shipmentWindow.close();
+                    shipmentWindow.show();
+                    break;
+            }
+        });
 
         populateProducts();
         populateOrigins();
@@ -54,10 +59,10 @@ public class SchedulingController {
         int originatorID = 2222;//dummy test code
         String orig = shipmentWindow.ORIG_DROPDOWN.getValue();
         String dest = shipmentWindow.DEST_DROPDOWN.getValue();
-        int priority = Integer.valueOf(shipmentWindow.PRIORITY_TF.getText());
+        int priority = Integer.valueOf(shipmentWindow.PRTY_DROPDOWN.getValue());
         
         Shipment shpmt = new Shipment(originatorID, orig, dest, priority);
-        //dbConn.insertShipment(shpmt);
+        dbConn.insertShipment(shpmt);
         
         // Confirm success
         shipmentWindow.gPane.add(shipmentWindow.success, 1, 6);
@@ -82,8 +87,8 @@ public class SchedulingController {
         ArrayList<String> origList = new ArrayList<>();
         
         // "Converts" Location into String objects for later use
-//        for (int i = 0; i < dbConn.getLocations().size(); i++)
-//            origList.add(dbConn.getLocations().get(i).getLocationCode());
+        for (int i = 0; i < dbConn.getLocations().size(); i++)
+            origList.add(dbConn.getLocations().get(i).getLocationCode());
   
         ObservableList<String> origDropdownList
                 = FXCollections.observableArrayList(origList);
@@ -133,10 +138,9 @@ public class SchedulingController {
         ArrayList<Shipment> shipments = dbConn.getShipments();
         ArrayList<Location> locations = dbConn.getLocations();
         int[] counts = new int[locations.size()];
-        for (int h = 0; h < shipments.size(); h++) {
-            
+        for (Shipment shipment : shipments) {
             for (int i = 0; i < locations.size(); i++) {
-                if (shipments.get(h).getDestination().equals(locations.get(i).getLocationCode())) {
+                if (shipment.getDestination().equals(locations.get(i).getLocationCode())) {
                     counts[i]++;
                     break;
                 }
@@ -150,7 +154,7 @@ public class SchedulingController {
         shipmentWindow.DESTINATIONS_CHART.getData().add(series);
     }
 
-    public void doScheduleShipments() {
+    public void scheduleShipments() {
         // get an arraylist of the current shipments.
         ArrayList<Shipment> shipments = dbConn.getShipments();
         // create a priorityqueue. This PQ will be accessed to see 
@@ -173,17 +177,13 @@ public class SchedulingController {
     }
 
      //Comparator anonymous class implementation
-    public Comparator<Shipment> priorityComparator = new Comparator<Shipment>(){
-        @Override
-        public int compare(Shipment s1, Shipment s2) {
-            return (int) (s1.getPriority() - s2.getPriority());
-        }
-    };
+    public Comparator<Shipment> priorityComparator =
+      (Shipment s1, Shipment s2) -> (int) (s1.getPriority() - s2.getPriority());
     
     public void getScheduledShipments (Queue<Shipment> schedulePriorityQueue){
-         while(true){
+         while (true) {
             Shipment shpm = schedulePriorityQueue.poll();
-            if(shpm == null) break;
+            if (shpm == null) break;
             System.out.println("Processing Shipment with Priority="+shpm.getPriority());
         }
     }

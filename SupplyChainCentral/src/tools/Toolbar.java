@@ -76,11 +76,9 @@ public class Toolbar {
 
         // "File" dropdown list
         FILE_DROPDOWN.setPrefWidth(60);
+        FILE_DROPDOWN.setValue("File");
         FILE_DROPDOWN.getItems().addAll(FILE_DROPDOWN_OPTIONS);
         
-        // Simple fix to not allow selected option to change dropdown title
-        FILE_DROPDOWN.setValue("File");
-
         // "View" dropdown list
         VIEW_DROPDOWN.setPrefWidth(68);
         VIEW_DROPDOWN.setValue("View");
