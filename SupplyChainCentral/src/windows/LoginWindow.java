@@ -17,6 +17,7 @@ public class LoginWindow extends Stage {
     public Button btnLogin = new Button("Log in");
     public Button btnHelp = new Button("Help");
     public Label lblInvalid = new Label("Invalid username or password");
+    public Label lblAttempts = new Label();
     public TextField employeeIDField = new TextField();
     public PasswordField pwField = new PasswordField();
     public GridPane grid = new GridPane();
@@ -45,7 +46,10 @@ public class LoginWindow extends Stage {
         
         lblInvalid.setId("errormessage");
         grid.add(lblInvalid, 1, 3);
+        
+        grid.add(lblAttempts, 1, 4);
         lblInvalid.setVisible(false); // By default
+        lblAttempts.setVisible(false); // By default
 
         HBox hbBtn = new HBox(10); //spacing is 10.
         hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
@@ -57,5 +61,6 @@ public class LoginWindow extends Stage {
         scene1.getStylesheets().add
                 (LoginWindow.class.getResource("LoginCSS.css").toExternalForm());
         setScene(scene1);
+        setResizable(false);
     }
 }

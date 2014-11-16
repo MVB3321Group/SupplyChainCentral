@@ -20,25 +20,26 @@ import javafx.stage.Stage;
 public class DialogBox extends Stage {
     private String message;
     public Label label;
-    public Button btnOk;
+    public Button btnOK;
     
     public DialogBox(String message) {
         label = new Label();
-        btnOk = new Button();
-        btnOk.setText("Ok");
+        btnOK = new Button();
+        btnOK.setText("OK");
         setMessage(message);
         BorderPane bp = new BorderPane();
-        VBox vb = new VBox(10);
-        vb.setAlignment(Pos.CENTER);
-        vb.getChildren().addAll(label, btnOk);
-        bp.setCenter(vb);
-        Scene scene = new Scene(bp, 300, 200);
+        VBox vBox = new VBox(10);
+        vBox.setAlignment(Pos.CENTER);
+        vBox.getChildren().addAll(label, btnOK);
+        bp.setCenter(vBox);
+        Scene scene = new Scene(bp, 300, 100);
         
         scene.getStylesheets().add
                 (DialogBox.class.getResource("DialogBoxCSS.css").toExternalForm());
         
         setScene(scene);
         setTitle("Warning!");     
+        setResizable(false);
     }
     
     public void setMessage(String message) {
