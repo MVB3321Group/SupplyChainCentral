@@ -18,7 +18,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Tooltip;
+
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -57,7 +57,7 @@ public class ShipmentWindow extends Stage {
     public ShipmentWindow() {
         toolbar = new Toolbar();
         toolbar.generateDropdowns(aPane);
-        
+
         gPane.add(new Label("Product: "), 0, 0);
         gPane.add(PROD_DROPDOWN, 1, 0);
         gPane.add(new Label("Quantity: "), 0, 1);
@@ -90,16 +90,17 @@ public class ShipmentWindow extends Stage {
         QUANTITY_TF.setAlignment(Pos.BOTTOM_RIGHT);
         QUANTITY_TF.setPromptText("Select a quantity.");
         QUANTITY_TF.setAlignment(Pos.CENTER);
+        QUANTITY_TF.setMaxWidth(150);
 
         GridPane.setHalignment(CREATE_SHIPMENT_BUTTON, HPos.RIGHT);
         aPane.getChildren().add(gPane);
         AnchorPane.setRightAnchor(gPane, 10.0);
         
         Scene scene = new Scene(aPane, 1342, 686);
-        
         scene.getStylesheets().add
-                (ShipmentWindow.class.getResource("LoginCSS.css").toExternalForm());
+                (MainWindow.class.getResource("LoginCSS.css").toExternalForm());
         setScene(scene);
         setResizable(false);
+        setTitle("Supply Chain Central");
     }
 }

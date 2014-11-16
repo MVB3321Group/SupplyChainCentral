@@ -15,6 +15,7 @@ import windows.*;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Cursor;
 import javafx.scene.control.ComboBox;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
@@ -38,7 +39,7 @@ public class Controller extends Application {
     private DatabaseConnection dbConn;
     
     private boolean isValidUser(int employeeID, String password) {
-       User vUser = null;
+        User vUser = null;
         if (dbConn.getUser(employeeID, password) != null)
             vUser = dbConn.getUser(employeeID, password);
         return (vUser != null);
@@ -61,17 +62,18 @@ public class Controller extends Application {
         try {
             dbConn = new DatabaseConnection(0);        
             tController = new TrackingController();
-            sController = new SchedulingController(dbConn);
+            sController = new SchedulingController(dbConn, user);
             loginAttempts = 0;
             mainWindow = new MainWindow();
             loginWindow = new LoginWindow();
             loginWindow.show();
             loginWindow.btnLogin.setOnAction(e -> {
                 if (isValidUser(Integer.parseInt(loginWindow.employeeIDField.getText()),
-                        loginWindow.pwBox.getText())) {
+                    loginWindow.pwField.getText())) {
+                    
                     loginAttempts = 0;
                     user = dbConn.getUser(Integer.parseInt(loginWindow.employeeIDField.getText()),
-                            loginWindow.pwBox.getText());
+                            loginWindow.pwField.getText());
                     try {
                         dbConn.switchUser(user.getRoleID());
                     }
@@ -82,6 +84,10 @@ public class Controller extends Application {
                     loginWindow.close();
                     mainWindow.show();
                 } else {
+                    loginWindow.lblInvalid.setVisible(true);
+                    loginWindow.employeeIDField.clear();
+                    loginWindow.employeeIDField.requestFocus();
+                    loginWindow.pwField.clear();
                     loginAttempts++;
                     //TODO: indicate incorrect login
                     if (loginAttempts > MAX_LOGIN_ATTEMPTS) {
@@ -91,7 +97,14 @@ public class Controller extends Application {
                 }
             });
 
-            loginWindow.pwBox.setOnKeyPressed(e -> {
+            // The two following blocks make "ENTER" a valid login key for either
+            loginWindow.pwField.setOnKeyPressed(e -> {
+                if (e.getCode().equals(KeyCode.ENTER)) {
+                    loginWindow.btnLogin.fire();
+                }
+            });
+            
+            loginWindow.employeeIDField.setOnKeyPressed(e -> {
                 if (e.getCode().equals(KeyCode.ENTER)) {
                     loginWindow.btnLogin.fire();
                 }

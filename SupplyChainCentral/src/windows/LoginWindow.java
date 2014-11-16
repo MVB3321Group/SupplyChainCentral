@@ -16,15 +16,14 @@ import javafx.stage.Stage;
 public class LoginWindow extends Stage {
     public Button btnLogin = new Button("Log in");
     public Button btnHelp = new Button("Help");
-    public Label lblBadUser = new Label("Incorrect username");
-    public Label lblBadPassword = new Label("Incorrect password");
+    public Label lblInvalid = new Label("Invalid username or password");
     public TextField employeeIDField = new TextField();
-    public PasswordField pwBox = new PasswordField();
+    public PasswordField pwField = new PasswordField();
     public GridPane grid = new GridPane();
     
     public LoginWindow() {
 
-        setTitle("Welcome to SCM");
+        setTitle("Welcome to SCM!");
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
         grid.setVgap(10);
@@ -39,27 +38,24 @@ public class LoginWindow extends Stage {
 
         employeeIDField.setId("errormessage");
         grid.add(employeeIDField, 1, 1);
-        lblBadUser.setId("errormessage");
-        grid.add(lblBadUser, 2, 1);
 
         Label pw = new Label("Password:");
         grid.add(pw, 0, 2);
-
-        pwBox.setId("errormessage");
-        grid.add(pwBox, 1, 2);
-        lblBadPassword.setId("errormessage");
-        grid.add(lblBadPassword, 2, 2);
+        grid.add(pwField, 1, 2);
         
+        lblInvalid.setId("errormessage");
+        grid.add(lblInvalid, 1, 3);
+        lblInvalid.setVisible(false); // By default
+
         HBox hbBtn = new HBox(10); //spacing is 10.
         hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
 
         hbBtn.getChildren().addAll(btnLogin, btnHelp);
-        grid.add(hbBtn, 1, 4);
+        grid.add(hbBtn, 1, 5);
 
         Scene scene1 = new Scene(grid, 800, 600);
         scene1.getStylesheets().add
                 (LoginWindow.class.getResource("LoginCSS.css").toExternalForm());
         setScene(scene1);
     }
-    
 }

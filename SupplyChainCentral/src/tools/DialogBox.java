@@ -38,7 +38,7 @@ public class DialogBox extends Stage {
                 (DialogBox.class.getResource("DialogBoxCSS.css").toExternalForm());
         
         setScene(scene);
-        setTitle("Warning!");        
+        setTitle("Warning!");     
     }
     
     public void setMessage(String message) {

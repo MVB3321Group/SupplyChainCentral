@@ -30,9 +30,11 @@ import java.util.Queue;
 
 public class SchedulingController {
     public ShipmentWindow shipmentWindow;
+    TableView<Shipment> shipTable;
     DatabaseConnection dbConn;
+    User user; // TODO: Add as constructor parameter; first instantiate User object, dude!!!
     
-    public SchedulingController(DatabaseConnection dbConn) {
+    public SchedulingController(DatabaseConnection dbConn, User user) {
         this.dbConn = dbConn;
         shipmentWindow = new ShipmentWindow();
         
@@ -53,19 +55,23 @@ public class SchedulingController {
         populateDestinations();
         populateShipmentsTable();
         populateShipmentChart();
+        
+        shipmentWindow.CREATE_SHIPMENT_BUTTON.setOnAction(e -> {
+            shipmentWindow.DESTINATIONS_CHART.getData().clear();
+            createShipment();
+            populateShipmentChart();
+            populateShipmentsTable();
+        });
     }
     
     public void createShipment() {
-        int originatorID = 2222;//dummy test code
+        int originatorID = user.getEmployeeID();//dummy test code
         String orig = shipmentWindow.ORIG_DROPDOWN.getValue();
         String dest = shipmentWindow.DEST_DROPDOWN.getValue();
         int priority = Integer.valueOf(shipmentWindow.PRTY_DROPDOWN.getValue());
         
         Shipment shpmt = new Shipment(originatorID, orig, dest, priority);
         dbConn.insertShipment(shpmt);
-        
-        // Confirm success
-        shipmentWindow.gPane.add(shipmentWindow.success, 1, 6);
     }
     
     public void populateProducts() { 
@@ -116,7 +122,7 @@ public class SchedulingController {
     public void populateShipmentsTable() {
         ObservableList<Shipment> shipmentList
                 = FXCollections.observableArrayList(dbConn.getShipments());
-        TableView<Shipment> shipTable = shipmentWindow.SHIPMENTS_TABLE;
+        shipTable = shipmentWindow.SHIPMENTS_TABLE;
         shipTable.setItems(shipmentList);
         
         TableColumn<Shipment, String> riginatorCol = new TableColumn<>("Originator");
@@ -137,19 +143,18 @@ public class SchedulingController {
         XYChart.Series<String, Integer> series = new XYChart.Series<>();
         ArrayList<Shipment> shipments = dbConn.getShipments();
         ArrayList<Location> locations = dbConn.getLocations();
-        int[] counts = new int[locations.size()];
+        
+        int[] count = new int[locations.size()];
+        
         for (Shipment shipment : shipments) {
-            for (int i = 0; i < locations.size(); i++) {
-                if (shipment.getDestination().equals(locations.get(i).getLocationCode())) {
-                    counts[i]++;
+            for (int i = 0; i < locations.size(); i++)
+                if (shipment.getDestination().equals(locations.get(i).getLocationCode()))
+                    count[i]++;
                     break;
-                }
-            }
         }
         
-        for (int i = 0; i < counts.length; i++) {
-            series.getData().add(new XYChart.Data(locations.get(i).getCity(), counts[i]));
-        }
+        for (int i = 0; i < count.length; i++)
+            series.getData().add(new XYChart.Data(locations.get(i).getCity(), count[i]));
         
         shipmentWindow.DESTINATIONS_CHART.getData().add(series);
     }
@@ -161,16 +166,7 @@ public class SchedulingController {
         // what shipment is to be sent out next. By this I mean a 
         // starttime will be given to the shipment.
         Queue<Shipment> schedulePriorityQueue = new PriorityQueue<>(5, priorityComparator);
-        //MOVE THIS to SchedulingController
-        shipmentWindow.CREATE_SHIPMENT_BUTTON.setOnAction(e -> {
-            createShipment();
-            shipmentWindow.DESTINATIONS_CHART.getData().clear();
-            populateShipmentChart();
-//            shipmentWindow.getItems().clear();
-//            shipmentWindow.getColumns().clear();
-            populateShipmentsTable();
-        });
-        
+
         for (Shipment shipment : shipments) {
             schedulePriorityQueue.add(shipment);
         }
