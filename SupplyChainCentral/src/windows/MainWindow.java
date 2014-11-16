@@ -20,12 +20,10 @@ public class MainWindow extends Stage {
         toolbar.generateDropdowns(mainPane);
 
         Scene scene = new Scene(mainPane, 1342, 686);
-
-        setTitle("Supply Chain Central");
-        
         scene.getStylesheets().add
                 (MainWindow.class.getResource("LoginCSS.css").toExternalForm());
         setScene(scene);
         setResizable(false);
+        setTitle("Supply Chain Central");
     }
 }

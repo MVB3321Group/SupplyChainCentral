@@ -77,30 +77,8 @@ public class Toolbar {
         // "File" dropdown list
         FILE_DROPDOWN.setPrefWidth(60);
         FILE_DROPDOWN.setValue("File");
-        
         FILE_DROPDOWN.getItems().addAll(FILE_DROPDOWN_OPTIONS);
-                
-//        FILE_DROPDOWN.setOnAction(e -> {
-//            switch (fileDropdownList.indexOf(FILE_DROPDOWN.getValue())) {
-//                case 0:
-//                    //Need to transfer handling to SchedulingController instance
-//                    SchedulingController.openShipmentWindow();
-//                    break;
-//                case 1:
-//                    System.out.println("Navigating to " + FILE_DROPDOWN_OPTIONS[1] + "...");
-//                    break;
-//                case 2:
-//                    System.out.println("Navigating to " + FILE_DROPDOWN_OPTIONS[2] + "...");
-//                    break;
-//                case 3:
-//                    System.out.println("Navigating to " + FILE_DROPDOWN_OPTIONS[3] + "...");
-//                    break;
-//            }
-//
-//            // Simple fix to not allow selected option to change dropdown title
-//            FILE_DROPDOWN.setValue("File");
-//        });
-
+        
         // "View" dropdown list
         VIEW_DROPDOWN.setPrefWidth(68);
         VIEW_DROPDOWN.setValue("View");

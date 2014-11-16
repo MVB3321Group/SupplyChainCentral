@@ -23,13 +23,6 @@ import java.util.Comparator;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
-
-import java.util.Comparator;
-import java.util.PriorityQueue;
-import java.util.Queue;
-
-
-
 /**
  *
  * @author Benjamin
@@ -37,32 +30,56 @@ import java.util.Queue;
 
 public class SchedulingController {
     public ShipmentWindow shipmentWindow;
+    TableView<Shipment> shipTable;
     DatabaseConnection dbConn;
+    User user; // TODO: Add as constructor parameter; first instantiate User object, dude!!!
     
-    public SchedulingController(DatabaseConnection dbConn) {
+    public SchedulingController(DatabaseConnection dbConn, User user) {
         this.dbConn = dbConn;
         shipmentWindow = new ShipmentWindow();
+        
+        shipmentWindow.toolbar.FILE_DROPDOWN.setOnAction(e -> {
+            switch (shipmentWindow.toolbar.FILE_DROPDOWN.getValue()) {
+                case "New Shipment":
+                    /* Simple fix to not allow selected option to
+                     change dropdown title */
+                    shipmentWindow.toolbar.FILE_DROPDOWN.setValue("File");
+                    shipmentWindow.close();
+                    shipmentWindow.show();
+                    break;
+            }
+        });
+
+        populateProducts();
+        populateOrigins();
+        populateDestinations();
+        populateShipmentsTable();
+        populateShipmentChart();
+        
+        shipmentWindow.CREATE_SHIPMENT_BUTTON.setOnAction(e -> {
+            shipmentWindow.DESTINATIONS_CHART.getData().clear();
+            createShipment();
+            populateShipmentChart();
+            populateShipmentsTable();
+        });
     }
     
     public void createShipment() {
-        int originatorID = 2222;//dummy test code
+        int originatorID = user.getEmployeeID();//dummy test code
         String orig = shipmentWindow.ORIG_DROPDOWN.getValue();
         String dest = shipmentWindow.DEST_DROPDOWN.getValue();
-        int priority = Integer.valueOf(shipmentWindow.PRIORITY_TF.getText());
+        int priority = Integer.valueOf(shipmentWindow.PRTY_DROPDOWN.getValue());
         
         Shipment shpmt = new Shipment(originatorID, orig, dest, priority);
-        //MainWindow.dbConn.insertShipment(shpmt);
-        
-        // Confirm success
-        shipmentWindow.gPane.add(shipmentWindow.success, 1, 6);
+        dbConn.insertShipment(shpmt);
     }
     
     public void populateProducts() { 
         ArrayList<String> productList = new ArrayList<>();
         
         // "Converts" Location into String objects for later use
-//        for (int i = 0; i < MainWindow.dbConn.getProducts().size(); i++)
-//            productList.add(MainWindow.dbConn.getProducts().get(i).getPName());
+        for (int i = 0; i < dbConn.getProducts().size(); i++)
+            productList.add(dbConn.getProducts().get(i).getPName());
   
         ObservableList<String> prodDropdownList
                 = FXCollections.observableArrayList(productList);
@@ -76,8 +93,8 @@ public class SchedulingController {
         ArrayList<String> origList = new ArrayList<>();
         
         // "Converts" Location into String objects for later use
-//        for (int i = 0; i < MainWindow.dbConn.getLocations().size(); i++)
-//            origList.add(MainWindow.dbConn.getLocations().get(i).getLocationCode());
+        for (int i = 0; i < dbConn.getLocations().size(); i++)
+            origList.add(dbConn.getLocations().get(i).getLocationCode());
   
         ObservableList<String> origDropdownList
                 = FXCollections.observableArrayList(origList);
@@ -91,8 +108,8 @@ public class SchedulingController {
         ArrayList<String> destList = new ArrayList<>();
         
         // "Converts" Location into String objects for later use
-//        for (int i = 0; i < MainWindow.dbConn.getLocations().size(); i++)
-//            destList.add(MainWindow.dbConn.getLocations().get(i).getLocationCode());
+        for (int i = 0; i < dbConn.getLocations().size(); i++)
+            destList.add(dbConn.getLocations().get(i).getLocationCode());
   
         ObservableList<String> destDropdownList
                 = FXCollections.observableArrayList(destList);
@@ -102,139 +119,68 @@ public class SchedulingController {
         });
     }
     
-//    public static void populateShipmentsTable() {
-//        ObservableList<Shipment> shipmentList
-//                = FXCollections.observableArrayList(MainWindow.dbConn.getShipments());
-//        TableView<Shipment> shipTable = shipmentWindow.SHIPMENTS_TABLE;
-//        shipTable.setItems(shipmentList);
-//        
-//        TableColumn<Shipment, String> riginatorCol = new TableColumn<>("Originator");
-//        riginatorCol.setCellValueFactory(new PropertyValueFactory<Shipment,String>("originatorID"));
-//        TableColumn<Shipment, String> originCol = new TableColumn<>("Origin");
-//        originCol.setCellValueFactory(new PropertyValueFactory<Shipment,String>("origin"));
-//        TableColumn<Shipment, String> destCol = new TableColumn<>("Destination");
-//        destCol.setCellValueFactory(new PropertyValueFactory<Shipment,String>("destination"));
-//        TableColumn<Shipment, String> priorityCol = new TableColumn<>("Priority");
-//        priorityCol.setCellValueFactory(new PropertyValueFactory<Shipment,String>("priority"));
-//        
-//        shipTable.getColumns().setAll(riginatorCol, originCol, destCol, priorityCol);
-//    }
-    
-//    public static void populateShipmentChart() {
-//        shipmentWindow.X_AXIS.setLabel("Destination City");
-//        shipmentWindow.Y_AXIS.setLabel("Number of Shipments");
-//        XYChart.Series<String, Integer> series = new XYChart.Series<>();
-//        ArrayList<Shipment> shipments = MainWindow.dbConn.getShipments();
-//        ArrayList<Location> locations = MainWindow.dbConn.getLocations();
-//        int[] counts = new int[locations.size()];
-//        for (int h = 0; h < shipments.size(); h++) {
-//            
-//            for (int i = 0; i < locations.size(); i++) {
-//                if (shipments.get(h).getDestination().equals(locations.get(i).getLocationCode())) {
-//                    counts[i]++;
-//                    break;
-//                }
-//            }
-//        }
-//        
-//        for (int i = 0; i < counts.length; i++) {
-//            series.getData().add(new XYChart.Data(locations.get(i).getCity(), counts[i]));
-//        }
-//        
-//        shipmentWindow.DESTINATIONS_CHART.getData().add(series);
-//    }
-
-    /*@Override
-    public void start(Stage start) throws Exception {
-    //public static void doScheduleShipments() {
-        // get an arraylist of the current shipments.
-        //ArrayList<Shipment> shipments = MainWindow.dbConn.getShipments();
-        // create a priorityqueue. This PQ will be accessed to see 
-        // what shipment is to be sent out next. By this I mean a 
-        // starttime will be given to the shipment.
-        Queue<Shipment> schedulePriorityQueue = new PriorityQueue<>(5, priorityComparator);
-        //MOVE THIS to SchedulingController
-        shipmentWindow.CREATE_SHIPMENT_BUTTON.setOnAction(e -> {
-            createShipment();
-            shipmentWindow.DESTINATIONS_CHART.getData().clear();
-            populateShipmentChart();
-            //shipmentWindow.getItems().clear();
-            //shipmentWindow.getColumns().clear();
-            //populateShipmentsTable();
-        });
+    public void populateShipmentsTable() {
+        ObservableList<Shipment> shipmentList
+                = FXCollections.observableArrayList(dbConn.getShipments());
+        shipTable = shipmentWindow.SHIPMENTS_TABLE;
+        shipTable.setItems(shipmentList);
         
-//        for(int i = 0; i < shipments.size(); i++){
-//            schedulePriorityQueue.add(shipments.get(i));
-//        }
-    }*/
-    
-    
-     //Comparator anonymous class implementation
-    public static Comparator<Shipment> priorityComparator = new Comparator<Shipment>(){
-        @Override
-        public int compare(Shipment s1, Shipment s2) {
-            return (int) (s1.getPriority() - s2.getPriority());
-        }
-    };
-    
-    public static void getScheduledShipments (Queue<Shipment> schedulePriorityQueue){
-         while(true){
-            Shipment shpm = schedulePriorityQueue.poll();
-            if(shpm == null) break;
-            System.out.println("Processing Shipment with Priority="+shpm.getPriority());
-        }
-    }
-
-    
-    
-    public static void doScheduleShipments() {
-        // get an arraylist of the current shipments.
-       //ArrayList<Shipment> shipments = MainWindow.dbConn.getShipments();
-        // create a priorityqueue. This PQ will be accessed to see 
-        // what shipment is to be sent out next. By this I mean a 
-        // starttime will be given to the shipment.
-        Queue<Shipment> schedulePriorityQueue = new PriorityQueue<>(5, priorityComparator);
+        TableColumn<Shipment, String> riginatorCol = new TableColumn<>("Originator");
+        riginatorCol.setCellValueFactory(new PropertyValueFactory<>("originatorID"));
+        TableColumn<Shipment, String> originCol = new TableColumn<>("Origin");
+        originCol.setCellValueFactory(new PropertyValueFactory<>("origin"));
+        TableColumn<Shipment, String> destCol = new TableColumn<>("Destination");
+        destCol.setCellValueFactory(new PropertyValueFactory<>("destination"));
+        TableColumn<Shipment, String> priorityCol = new TableColumn<>("Priority");
+        priorityCol.setCellValueFactory(new PropertyValueFactory<>("priority"));
         
-//        for(int i = 0; i < shipments.size(); i++){
-//            schedulePriorityQueue.add(shipments.get(i));
-//        }
+        shipTable.getColumns().setAll(riginatorCol, originCol, destCol, priorityCol);
     }
-    
-    
-     //Comparator anonymous class implementation
-//    public Comparator<Shipment> priorityComparator = new Comparator<Shipment>(){
-//        @Override
-//        public int compare(Shipment s1, Shipment s2) {
-//            return (int) (s1.getPriority() - s2.getPriority());
-//        }
-//    };
-    
-//    public static void getScheduledShipments (Queue<Shipment> schedulePriorityQueue){
-//         while(true){
-//            Shipment shpm = schedulePriorityQueue.poll();
-//            if(shpm == null) break;
-//            System.out.println("Processing Shipment with Priority="+shpm.getPriority());
-//        }
-//    }
-
-    
     
     public void populateShipmentChart() {
         shipmentWindow.X_AXIS.setLabel("Destination City");
         shipmentWindow.Y_AXIS.setLabel("Number of Shipments");
         XYChart.Series<String, Integer> series = new XYChart.Series<>();
-//        ArrayList<Shipment> shipments = MainWindow.dbConn.getShipments();
-//        ArrayList<Location> locations = MainWindow.dbConn.getLocations();
-//        int[] counts = new int[locations.size()];
-//        for (int h = 0; h < shipments.size(); h++) {
-//            
-//            for (int i = 0; i < locations.size(); i++) {
-//                if (shipments.get(h).getDestination().equals(locations.get(i).getLocationCode())) {
-//                    counts[i]++;
-//                    break;
-//                }
-//            }
-//        }
+        ArrayList<Shipment> shipments = dbConn.getShipments();
+        ArrayList<Location> locations = dbConn.getLocations();
         
+        int[] count = new int[locations.size()];
+        
+        for (Shipment shipment : shipments) {
+            for (int i = 0; i < locations.size(); i++)
+                if (shipment.getDestination().equals(locations.get(i).getLocationCode()))
+                    count[i]++;
+                    break;
+        }
+        
+        for (int i = 0; i < count.length; i++)
+            series.getData().add(new XYChart.Data(locations.get(i).getCity(), count[i]));
+        
+        shipmentWindow.DESTINATIONS_CHART.getData().add(series);
+    }
+
+    public void scheduleShipments() {
+        // get an arraylist of the current shipments.
+        ArrayList<Shipment> shipments = dbConn.getShipments();
+        // create a priorityqueue. This PQ will be accessed to see 
+        // what shipment is to be sent out next. By this I mean a 
+        // starttime will be given to the shipment.
+        Queue<Shipment> schedulePriorityQueue = new PriorityQueue<>(5, priorityComparator);
+
+        for (Shipment shipment : shipments) {
+            schedulePriorityQueue.add(shipment);
+        }
+    }
+
+     //Comparator anonymous class implementation
+    public Comparator<Shipment> priorityComparator =
+      (Shipment s1, Shipment s2) -> (int) (s1.getPriority() - s2.getPriority());
+    
+    public void getScheduledShipments (Queue<Shipment> schedulePriorityQueue){
+         while (true) {
+            Shipment shpm = schedulePriorityQueue.poll();
+            if (shpm == null) break;
+            System.out.println("Processing Shipment with Priority="+shpm.getPriority());
+        }
     }
 }
