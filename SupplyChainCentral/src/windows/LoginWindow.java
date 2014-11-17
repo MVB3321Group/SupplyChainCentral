@@ -62,7 +62,7 @@ public class LoginWindow extends Stage {
         hbBtn.getChildren().addAll(btnLogin, btnHelp);
         grid.add(hbBtn, 1, 5);
 
-        Scene scene1 = new Scene(grid, 800, 600);
+        Scene scene1 = new Scene(grid, 400, 280);
         scene1.getStylesheets().add
                 (LoginWindow.class.getResource("LoginCSS.css").toExternalForm());
         setScene(scene1);
