@@ -54,6 +54,7 @@ public class SchedulingController {
         populateProducts();
         populateOrigins();
         populateDestinations();
+        populateShipmentChart();
         
         shipmentWindow.CREATE_SHIPMENT_BUTTON.setOnAction(e -> {
             shipmentWindow.DESTINATIONS_CHART.getData().clear();
@@ -65,6 +66,7 @@ public class SchedulingController {
     
     public void setUser(User user) {
         this.user = user;
+        populateShipmentsTable();
     }
     
     public void createShipment() {
@@ -123,8 +125,14 @@ public class SchedulingController {
     }
     
     public void populateShipmentsTable() {
+        ArrayList<Shipment> shipments = new ArrayList<Shipment>();
+        for (Shipment s : dbConn.getShipments()) {
+            if (s.getOriginatorID() == user.getEmployeeID()) {
+                shipments.add(s);
+            }
+        }
         ObservableList<Shipment> shipmentList
-                = FXCollections.observableArrayList(dbConn.getShipments());
+                = FXCollections.observableArrayList(shipments);
         shipTable = shipmentWindow.SHIPMENTS_TABLE;
         shipTable.setItems(shipmentList);
         
@@ -150,10 +158,12 @@ public class SchedulingController {
         int[] count = new int[locations.size()];
         
         for (Shipment shipment : shipments) {
-            for (int i = 0; i < locations.size(); i++)
-                if (shipment.getDestination().equals(locations.get(i).getLocationCode()))
+            for (int i = 0; i < locations.size(); i++) {
+                if (shipment.getDestination().equals(locations.get(i).getLocationCode())) {
                     count[i]++;
                     break;
+                }
+            }
         }
         
         for (int i = 0; i < count.length; i++)

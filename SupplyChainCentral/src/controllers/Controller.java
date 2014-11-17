@@ -85,6 +85,8 @@ public class Controller extends Application {
                         showFailedConnection();
                     }
                     loginWindow.close();
+                    mainWindow.welcomeLabel.setText("Welcome, " +
+                            user.getfName() + " " + user.getlName());
                     mainWindow.show();
                 } else {
                     loginAttempts++;
