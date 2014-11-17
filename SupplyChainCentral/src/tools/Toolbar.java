@@ -17,7 +17,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
-public class Toolbar {
+public class Toolbar extends HBox {
 
     public ComboBox<String> FILE_DROPDOWN = new ComboBox<>();
     public ComboBox<String> VIEW_DROPDOWN = new ComboBox<>();
@@ -35,9 +35,7 @@ public class Toolbar {
     
     public Pane pane = new Pane();
 
-    public Toolbar() {} // No-arg constructor
-
-    public void generateDropdowns(Pane pane) {
+    public Toolbar() {
         // "File" dropdown options
         FILE_DROPDOWN_OPTIONS[0] = "New Shipment";
         FILE_DROPDOWN_OPTIONS[1] = "New 1";
@@ -140,18 +138,16 @@ public class Toolbar {
         });
 
         // Toolbar HBox
-        HBox hBox = new HBox();
-        hBox.getChildren().add(FILE_DROPDOWN);
-        hBox.getChildren().add(VIEW_DROPDOWN);
-        hBox.getChildren().add(RUN_DROPDOWN);
-        hBox.getChildren().add(TRACK_DROPDOWN);
-        hBox.getChildren().add(TOOLS_DROPDOWN);
-        hBox.getChildren().add(HELP_DROPDOWN);
+        getChildren().add(FILE_DROPDOWN);
+        getChildren().add(VIEW_DROPDOWN);
+        getChildren().add(RUN_DROPDOWN);
+        getChildren().add(TRACK_DROPDOWN);
+        getChildren().add(TOOLS_DROPDOWN);
+        getChildren().add(HELP_DROPDOWN);
 
         FILE_DROPDOWN.getStyleClass().add("ComboBoxCSS.css");
 
-        hBox.getStylesheets().add
+        getStylesheets().add
                 (Toolbar.class.getResource("DialogBoxCSS.css").toExternalForm());
-        pane.getChildren().add(hBox);
-    }
+    } // No-arg constructor
 }

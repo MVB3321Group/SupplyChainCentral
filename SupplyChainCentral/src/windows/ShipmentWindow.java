@@ -56,7 +56,7 @@ public class ShipmentWindow extends Stage {
 
     public ShipmentWindow() {
         toolbar = new Toolbar();
-        toolbar.generateDropdowns(aPane);
+        aPane.getChildren().add(toolbar);
 
         gPane.add(new Label("Product: "), 0, 0);
         gPane.add(PROD_DROPDOWN, 1, 0);
