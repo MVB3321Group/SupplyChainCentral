@@ -33,7 +33,7 @@ public class SchedulingController {
     TableView<Shipment> shipTable;
     DatabaseConnection dbConn;
     User user;
-    
+
     public SchedulingController(DatabaseConnection dbConn) {
         this.dbConn = dbConn;
         shipmentWindow = new ShipmentWindow();
@@ -50,6 +50,7 @@ public class SchedulingController {
             }
         });
 
+        // Population for dropdown
         populateProducts();
         populateOrigins();
         populateDestinations();
@@ -58,8 +59,8 @@ public class SchedulingController {
         shipmentWindow.CREATE_SHIPMENT_BUTTON.setOnAction(e -> {
             shipmentWindow.DESTINATIONS_CHART.getData().clear();
             createShipment();
-            populateShipmentChart();
             populateShipmentsTable();
+            populateShipmentChart();
         });
     }
     
@@ -69,7 +70,7 @@ public class SchedulingController {
     }
     
     public void createShipment() {
-        int originatorID = user.getEmployeeID();//dummy test code
+        int originatorID = user.getEmployeeID();
         String orig = shipmentWindow.ORIG_DROPDOWN.getValue();
         String dest = shipmentWindow.DEST_DROPDOWN.getValue();
         int priority = Integer.valueOf(shipmentWindow.PRTY_DROPDOWN.getValue());
@@ -81,7 +82,7 @@ public class SchedulingController {
     public void populateProducts() { 
         ArrayList<String> productList = new ArrayList<>();
         
-        // "Converts" Location into String objects for later use
+        // "Converts" Product objects into String objects for later use
         for (int i = 0; i < dbConn.getProducts().size(); i++)
             productList.add(dbConn.getProducts().get(i).getPName());
   
@@ -96,7 +97,7 @@ public class SchedulingController {
     public void populateOrigins() { 
         ArrayList<String> origList = new ArrayList<>();
         
-        // "Converts" Location into String objects for later use
+        // "Converts" Location objects into String objects for later use
         for (int i = 0; i < dbConn.getLocations().size(); i++)
             origList.add(dbConn.getLocations().get(i).getLocationCode());
   
@@ -111,7 +112,7 @@ public class SchedulingController {
     public void populateDestinations() { 
         ArrayList<String> destList = new ArrayList<>();
         
-        // "Converts" Location into String objects for later use
+        // "Converts" Destination objects into String objects for later use
         for (int i = 0; i < dbConn.getLocations().size(); i++)
             destList.add(dbConn.getLocations().get(i).getLocationCode());
   
@@ -148,7 +149,7 @@ public class SchedulingController {
     }
     
     public void populateShipmentChart() {
-        shipmentWindow.X_AXIS.setLabel("Destination City");
+        shipmentWindow.X_AXIS.setLabel("Destination");
         shipmentWindow.Y_AXIS.setLabel("Number of Shipments");
         XYChart.Series<String, Integer> series = new XYChart.Series<>();
         ArrayList<Shipment> shipments = dbConn.getShipments();
@@ -192,7 +193,7 @@ public class SchedulingController {
          while (true) {
             Shipment shpm = schedulePriorityQueue.poll();
             if (shpm == null) break;
-            System.out.println("Processing Shipment with Priority="+shpm.getPriority());
+            System.out.println("Processing Shipment with Priority " + shpm.getPriority());
         }
     }
 }
