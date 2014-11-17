@@ -32,10 +32,9 @@ public class SchedulingController {
     public ShipmentWindow shipmentWindow;
     TableView<Shipment> shipTable;
     DatabaseConnection dbConn;
-    User user; // TODO: Add as constructor parameter; first instantiate User object, dude!!!
-    
-    public SchedulingController(DatabaseConnection dbConn, User user) {
-        
+    User user;
+
+    public SchedulingController(DatabaseConnection dbConn) {
         this.dbConn = dbConn;
         shipmentWindow = new ShipmentWindow();
         
@@ -62,6 +61,10 @@ public class SchedulingController {
             populateShipmentsTable();
             populateShipmentChart();
         });
+    }
+    
+    public void setUser(User user) {
+        this.user = user;
     }
     
     public void createShipment() {

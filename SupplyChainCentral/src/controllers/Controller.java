@@ -64,7 +64,7 @@ public class Controller extends Application {
         try {
             dbConn = new DatabaseConnection(0);        
             tController = new TrackingController();
-            sController = new SchedulingController(dbConn, user);
+            sController = new SchedulingController(dbConn);
             loginAttempts = 0;
             mainWindow = new MainWindow();
             loginWindow = new LoginWindow();
@@ -76,6 +76,7 @@ public class Controller extends Application {
                     loginAttempts = 0;
                     user = dbConn.getUser(Integer.parseInt(loginWindow.employeeIDField.getText()),
                             loginWindow.pwField.getText());
+                    sController.setUser(user);
                     try {
                         dbConn.switchUser(user.getRoleID());
                     }
