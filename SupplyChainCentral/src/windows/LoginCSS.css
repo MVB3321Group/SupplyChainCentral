@@ -1,11 +1,9 @@
-
 .root {
-/*     -fx-background-image: url("background.png");*/
+/*    -fx-background-image: );*/
     -fx-background-color: #333333;
 }
 
 .label {
-/*    -fx-background-color: #0099FF;*/
     -fx-font-size: 12px;
     -fx-font-weight: bold;
     -fx-text-fill: #60aab2;

@@ -10,18 +10,17 @@ import databaseconnection.DatabaseConnection;
 import tableobjects.*;
 import windows.*;
 import java.util.ArrayList;
-import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
 
 import java.util.Comparator;
 import java.util.PriorityQueue;
 import java.util.Queue;
+import javafx.scene.paint.Color;
 
 /**
  *
@@ -150,16 +149,19 @@ public class SchedulingController {
     
     public void populateShipmentChart() {
         shipmentWindow.X_AXIS.setLabel("Destination");
+        shipmentWindow.X_AXIS.setTickLabelFill(Color.WHITE);
+        shipmentWindow.X_AXIS.setTickLabelGap(1.0);
         shipmentWindow.Y_AXIS.setLabel("Number of Shipments");
+        shipmentWindow.Y_AXIS.setTickLabelFill(Color.WHITE);
         XYChart.Series<String, Integer> series = new XYChart.Series<>();
         ArrayList<Shipment> shipments = dbConn.getShipments();
         ArrayList<Location> locations = dbConn.getLocations();
         
         int[] count = new int[locations.size()];
         
-        for (Shipment shipment : shipments) {
+        for (Shipment s : shipments) {
             for (int i = 0; i < locations.size(); i++) {
-                if (shipment.getDestination().equals(locations.get(i).getLocationCode())) {
+                if (s.getDestination().equals(locations.get(i).getLocationCode())) {
                     count[i]++;
                     break;
                 }
@@ -180,8 +182,8 @@ public class SchedulingController {
         // starttime will be given to the shipment.
         Queue<Shipment> schedulePriorityQueue = new PriorityQueue<>(5, priorityComparator);
 
-        for (Shipment shipment : shipments) {
-            schedulePriorityQueue.add(shipment);
+        for (Shipment s : shipments) {
+            schedulePriorityQueue.add(s);
         }
     }
 
@@ -191,9 +193,9 @@ public class SchedulingController {
     
     public void getScheduledShipments (Queue<Shipment> schedulePriorityQueue){
          while (true) {
-            Shipment shpm = schedulePriorityQueue.poll();
-            if (shpm == null) break;
-            System.out.println("Processing Shipment with Priority " + shpm.getPriority());
+            Shipment shpmt = schedulePriorityQueue.poll();
+            if (shpmt == null) break;
+            System.out.println("Processing Shipment with Priority " + shpmt.getPriority());
         }
     }
 }
