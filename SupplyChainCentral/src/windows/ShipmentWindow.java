@@ -18,7 +18,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -29,7 +28,7 @@ public class ShipmentWindow extends Stage {
     public TextField QUANTITY_TF = new TextField();
     public Button CREATE_SHIPMENT_BUTTON = new Button("Create Shipment");
     public Button SCHEDULE_SHIPMENTS_BUTTON = new Button("Schedule Shipments");
-        
+
     public ComboBox<String> PROD_DROPDOWN = new ComboBox<>();
     public ComboBox<String> PRTY_DROPDOWN = new ComboBox<>();
     public ComboBox<String> ORIG_DROPDOWN = new ComboBox<>();
