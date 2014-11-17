@@ -29,6 +29,7 @@ public class ShipmentWindow extends Stage {
     public TextField QUANTITY_TF = new TextField();
     public Button CREATE_SHIPMENT_BUTTON = new Button("Create Shipment");
     public Button SCHEDULE_SHIPMENTS_BUTTON = new Button("Schedule Shipments");
+    public Button addProductsButton = new Button("Add Products to Shipment");
         
     public ComboBox<String> PROD_DROPDOWN = new ComboBox<>();
     public ComboBox<String> PRTY_DROPDOWN = new ComboBox<>();
@@ -62,6 +63,8 @@ public class ShipmentWindow extends Stage {
         gPane.add(PROD_DROPDOWN, 1, 0);
         gPane.add(new Label("Quantity: "), 0, 1);
         gPane.add(QUANTITY_TF, 1, 1);
+        addProductsButton.setAlignment(Pos.CENTER_LEFT);
+        gPane.add(addProductsButton, 2, 1);
         gPane.add(new Label("Priority: "), 0, 2);
         gPane.add(PRTY_DROPDOWN, 1, 2);
         gPane.add(new Label("Origin: "), 0, 3);
