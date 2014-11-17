@@ -20,7 +20,7 @@ public class MainWindow extends Stage {
     
     public MainWindow() {
         toolbar = new Toolbar();
-        toolbar.generateDropdowns(mainPane);
+        mainPane.getChildren().add(toolbar);
         welcomeLabel = new Label();
         mainPane.setRight(welcomeLabel);
 
