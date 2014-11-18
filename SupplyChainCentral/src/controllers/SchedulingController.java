@@ -157,14 +157,18 @@ public class SchedulingController {
         
         int[] count = new int[locations.size()];
         
+        int max = 0;
         for (Shipment shipment : shipments) {
             for (int i = 0; i < locations.size(); i++) {
                 if (shipment.getDestination().equals(locations.get(i).getLocationCode())) {
                     count[i]++;
+                    if (count[i] > max)
+                        max = count[i];
                     break;
                 }
             }
         }
+        shipmentWindow.Y_AXIS.setUpperBound(max + 5);
         
         for (int i = 0; i < count.length; i++)
             series.getData().add(new XYChart.Data(locations.get(i).getCity(), count[i]));
