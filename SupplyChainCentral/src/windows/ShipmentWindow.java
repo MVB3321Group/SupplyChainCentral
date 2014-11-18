@@ -8,6 +8,7 @@ package windows;
 
 import tableobjects.*;
 import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
@@ -55,6 +56,7 @@ public class ShipmentWindow extends Stage {
     
     public BorderPane bPane = new BorderPane();
     public GridPane gPane = new GridPane();
+    public GridPane layoutPane = new GridPane();
     HBox titlePane = new HBox();
     public Toolbar toolbar;
 
@@ -81,9 +83,9 @@ public class ShipmentWindow extends Stage {
         gPane.add(DEST_DROPDOWN, 1, 4);
         gPane.add(CREATE_SHIPMENT_BUTTON, 1, 5);
         gPane.add(SCHEDULE_SHIPMENTS_BUTTON, 0, 5);
-        gPane.add(SCHEDULE_TABLE, 1, 7);
-        gPane.add(SHIPMENTS_TABLE, 1, 7);
-        gPane.add(DESTINATIONS_CHART, 2, 7);
+        //gPane.add(SCHEDULE_TABLE, 1, 7);
+        //gPane.add(SHIPMENTS_TABLE, 1, 7);
+        //gPane.add(DESTINATIONS_CHART, 2, 7);
         gPane.setHgap(10);
         gPane.setVgap(10);
         
@@ -103,10 +105,15 @@ public class ShipmentWindow extends Stage {
         QUANTITY_TF.setAlignment(Pos.CENTER);
         QUANTITY_TF.setMaxWidth(150);
 
+        //FLAG
         GridPane.setHalignment(CREATE_SHIPMENT_BUTTON, HPos.RIGHT);
         gPane.setAlignment(Pos.CENTER);
-        bPane.setCenter(gPane);
-        AnchorPane.setRightAnchor(gPane, 10.0);
+        layoutPane.add(gPane, 0, 0);
+        layoutPane.add(SHIPMENTS_TABLE, 0, 1);
+        layoutPane.add(DESTINATIONS_CHART, 1, 1);
+        layoutPane.setAlignment(Pos.CENTER);
+        gPane.setPadding(new Insets(20, 20, 20, 0));
+        bPane.setCenter(layoutPane);
         
         X_AXIS.setLabel("Destination");
         X_AXIS.setTickLabelFill(Color.WHITE);
