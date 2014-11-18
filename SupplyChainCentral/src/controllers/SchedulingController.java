@@ -165,9 +165,7 @@ public class SchedulingController {
                 }
             }
         }
-        shipmentWindow.Y_AXIS.setUpperBound(max + 5);
-        
-        shipmentWindow.Y_AXIS.setUpperBound(max + 5);
+        shipmentWindow.Y_AXIS.setUpperBound(Math.ceil(max * 1.1));
         
         for (int i = 0; i < count.length; i++)
             series.getData().add(new XYChart.Data(locations.get(i).getCity(), count[i]));

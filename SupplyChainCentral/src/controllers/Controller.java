@@ -87,6 +87,8 @@ public class Controller extends Application {
                     loginWindow.close();
                     mainWindow.welcomeLabel.setText("Welcome, " +
                             user.getfName() + " " + user.getlName());
+                    sController.shipmentWindow.welcomeLabel.setText("Welcome, " +
+                            user.getfName() + " " + user.getlName());
                     mainWindow.show();
                 } else {
                     loginAttempts++;

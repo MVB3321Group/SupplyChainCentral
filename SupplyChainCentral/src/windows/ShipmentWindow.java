@@ -19,7 +19,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import tools.Toolbar;
@@ -48,16 +51,21 @@ public class ShipmentWindow extends Stage {
     public BarChart ORIGINS_CHART = new BarChart(X_AXIS2, Y_AXIS2);
 
     public Stage shipmentWindow = new Stage();
+    public Label welcomeLabel = new Label();
     
-    public AnchorPane aPane = new AnchorPane();
+    public BorderPane bPane = new BorderPane();
     public GridPane gPane = new GridPane();
+    HBox titlePane = new HBox();
     public Toolbar toolbar;
 
     public Label success = new Label("Shipment added succesfully. ");  
 
     public ShipmentWindow() {
         toolbar = new Toolbar();
-        aPane.getChildren().add(toolbar);
+        HBox.setHgrow(toolbar, Priority.ALWAYS);
+        titlePane.getChildren().addAll(toolbar, welcomeLabel);
+        titlePane.setAlignment(Pos.CENTER);
+        bPane.setTop(titlePane);
 
         gPane.add(new Label("Product: "), 0, 0);
         gPane.add(PROD_DROPDOWN, 1, 0);
@@ -96,7 +104,8 @@ public class ShipmentWindow extends Stage {
         QUANTITY_TF.setMaxWidth(150);
 
         GridPane.setHalignment(CREATE_SHIPMENT_BUTTON, HPos.RIGHT);
-        aPane.getChildren().add(gPane);
+        gPane.setAlignment(Pos.CENTER);
+        bPane.setCenter(gPane);
         AnchorPane.setRightAnchor(gPane, 10.0);
         
         X_AXIS.setLabel("Destination");
@@ -108,7 +117,7 @@ public class ShipmentWindow extends Stage {
         Y_AXIS.setTickUnit(1);
         Y_AXIS.setMinorTickVisible(false);
         
-        Scene scene = new Scene(aPane, 1342, 686);
+        Scene scene = new Scene(bPane, 1342, 686);
         scene.getStylesheets().add
                 (MainWindow.class.getResource("LoginCSS.css").toExternalForm());
         setScene(scene);
