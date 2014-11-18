@@ -26,6 +26,7 @@ public class DialogBox extends Stage {
         label = new Label();
         btnOK = new Button();
         btnOK.setText("OK");
+        btnOK.setDefaultButton(true);
         setMessage(message);
         BorderPane bp = new BorderPane();
         VBox vBox = new VBox(10);

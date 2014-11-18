@@ -40,13 +40,13 @@ public class SchedulingController {
         shipmentWindow.toolbar.FILE_DROPDOWN.setOnAction(e -> {
             switch (shipmentWindow.toolbar.FILE_DROPDOWN.getValue()) {
                 case "New Shipment":
-                    /* Simple fix to not allow selected option to
-                     change dropdown title */
-                    shipmentWindow.toolbar.FILE_DROPDOWN.setValue("File");
                     shipmentWindow.close();
                     shipmentWindow.show();
                     break;
             }
+            
+            // Simple fix to not allow selected option to change dropdown title
+            shipmentWindow.toolbar.FILE_DROPDOWN.setValue("File");
         });
 
         // Population for dropdown
