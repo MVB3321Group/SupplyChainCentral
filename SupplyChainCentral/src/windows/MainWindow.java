@@ -6,6 +6,7 @@
 
 package windows;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -30,11 +31,12 @@ public class MainWindow extends Stage {
         HBox.setHgrow(toolbar, Priority.ALWAYS);
         toolbarHBox.getChildren().add(toolbar);
         welcomeLabel = new Label();
+        welcomeLabel.setPadding(new Insets(5, 20, 5, 5));
         toolbarHBox.getChildren().add(welcomeLabel);
         toolbarHBox.setAlignment(Pos.CENTER);
         mainPane.setTop(toolbarHBox);
 
-        // First, instantiate buttons...
+        // First, instantiate buttons for navPane...
         for (int i = 0; i < buttons.length; i++) {
             buttons[i] = new Button();
             buttons[i].setPrefSize(100, 125);

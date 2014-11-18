@@ -57,7 +57,7 @@ public class ShipmentWindow extends Stage {
     public BorderPane bPane = new BorderPane();
     public GridPane gPane = new GridPane();
     public GridPane layoutPane = new GridPane();
-    HBox titlePane = new HBox();
+    HBox headerPane = new HBox();
     public Toolbar toolbar;
 
     public Label success = new Label("Shipment added succesfully. ");  
@@ -65,9 +65,10 @@ public class ShipmentWindow extends Stage {
     public ShipmentWindow() {
         toolbar = new Toolbar();
         HBox.setHgrow(toolbar, Priority.ALWAYS);
-        titlePane.getChildren().addAll(toolbar, welcomeLabel);
-        titlePane.setAlignment(Pos.CENTER);
-        bPane.setTop(titlePane);
+        welcomeLabel.setPadding(new Insets(5, 20, 5, 5));
+        headerPane.getChildren().addAll(toolbar, welcomeLabel);
+        headerPane.setAlignment(Pos.CENTER);
+        bPane.setTop(headerPane);
 
         gPane.add(new Label("Product: "), 0, 0);
         gPane.add(PROD_DROPDOWN, 1, 0);
