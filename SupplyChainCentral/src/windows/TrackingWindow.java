@@ -22,7 +22,7 @@ public class TrackingWindow extends Application {
     pane.setLeft(getVBox());
     
     Scene scene = new Scene(pane, 800, 600);
-    primaryStage.setTitle("SCM Tracking Module"); 
+    primaryStage.setTitle("SCC Tracking Module"); 
     primaryStage.setScene(scene);
     primaryStage.show(); 
   }

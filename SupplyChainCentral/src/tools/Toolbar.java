@@ -67,7 +67,7 @@ public class Toolbar extends HBox {
         HELP_DROPDOWN_OPTIONS[0] = "Help Contents";
         HELP_DROPDOWN_OPTIONS[1] = "Keyboard Shortcuts";
         HELP_DROPDOWN_OPTIONS[2] = "Start Page";
-        HELP_DROPDOWN_OPTIONS[3] = "About";
+        HELP_DROPDOWN_OPTIONS[3] = "About SCC";
 
         // "File" dropdown list
         FILE_DROPDOWN.setPrefWidth(60);

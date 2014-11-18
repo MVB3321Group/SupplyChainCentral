@@ -37,17 +37,21 @@ public class SchedulingController {
         this.dbConn = dbConn;
         shipmentWindow = new ShipmentWindow();
         
-        shipmentWindow.toolbar.FILE_DROPDOWN.setOnAction(e -> {
-            switch (shipmentWindow.toolbar.FILE_DROPDOWN.getValue()) {
-                case "New Shipment":
-                    shipmentWindow.close();
-                    shipmentWindow.show();
-                    break;
-            }
-            
-            // Simple fix to not allow selected option to change dropdown title
-            shipmentWindow.toolbar.FILE_DROPDOWN.setValue("File");
-        });
+        /* At this time, because toolbar is an object of each window, toolbar
+           logic has to be re-implemented in each controller; this should not be
+           the case */
+        
+//        shipmentWindow.toolbar.FILE_DROPDOWN.setOnAction(e -> {
+//            switch (shipmentWindow.toolbar.FILE_DROPDOWN.getValue()) {
+//                case "New Shipment":
+//                    shipmentWindow.close();
+//                    shipmentWindow.show();
+//                    break;
+//            }
+//            
+//            // Simple fix to not allow selected option to change dropdown title
+//            shipmentWindow.toolbar.FILE_DROPDOWN.setValue("File");
+//        });
 
         // Population for dropdown
         populateProducts();
