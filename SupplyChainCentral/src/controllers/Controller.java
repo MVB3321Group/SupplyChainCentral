@@ -200,7 +200,8 @@ public class Controller extends Application {
         DialogBox dialog = new DialogBox("Supply Chain Central (SCC) is a supply chain company\n" +
                                          "headquartered in Savannah, Georgia.\n" +
                                          "\nApplication Software Developers:\n" + "\nBenjamin Chopson" +
-                                         "\nMichael Bernard" + "\nVasily Kushakov", "About Us", "Close", 400, 200);
+                                         "\nMichael Bernard" + "\nVasily Kushakov",
+                                         "About Us", "Close", 400, 200);
         dialog.show();
         dialog.label.setTextFill(Color.WHITE);
         dialog.btn.setOnAction(e -> {
