@@ -115,10 +115,68 @@ public class Controller extends Application {
                 mainWindow.toolbar.FILE_DROPDOWN.setValue("File");
             });
             
+            mainWindow.toolbar.VIEW_DROPDOWN.setOnAction(e -> {
+                switch (mainWindow.toolbar.VIEW_DROPDOWN.getValue()) {
+                    case "":
+                        
+                        break;
+                }
+                
+            // Simple fix to not allow selected option to change dropdown title
+                mainWindow.toolbar.VIEW_DROPDOWN.setValue("View");
+            });
+            
+            mainWindow.toolbar.RUN_DROPDOWN.setOnAction(e -> {
+                switch (mainWindow.toolbar.RUN_DROPDOWN.getValue()) {
+                    case "":
+                        
+                        break;
+                }
+                
+            // Simple fix to not allow selected option to change dropdown title
+                mainWindow.toolbar.RUN_DROPDOWN.setValue("Run");
+            });
+            
+            mainWindow.toolbar.TRACK_DROPDOWN.setOnAction(e -> {
+                switch (mainWindow.toolbar.TRACK_DROPDOWN.getValue()) {
+                    case "":
+                        
+                        break;
+                }
+                
+            // Simple fix to not allow selected option to change dropdown title
+                mainWindow.toolbar.TRACK_DROPDOWN.setValue("Track");
+            });
+            
+            mainWindow.toolbar.TOOLS_DROPDOWN.setOnAction(e -> {
+                switch (mainWindow.toolbar.TOOLS_DROPDOWN.getValue()) {
+                    case "":
+                        
+                        break;
+                }
+                
+            // Simple fix to not allow selected option to change dropdown title
+                mainWindow.toolbar.TOOLS_DROPDOWN.setValue("Tools");
+            });
+            
+            mainWindow.toolbar.HELP_DROPDOWN.setOnAction(e -> {
+                switch (mainWindow.toolbar.HELP_DROPDOWN.getValue()) {
+                    case "About SCC":
+                        aboutUs();
+                        break;
+                }
+                
+            // Simple fix to not allow selected option to change dropdown title
+                mainWindow.toolbar.HELP_DROPDOWN.setValue("Help");
+            });
+            
             // Actions for navPane buttons
             mainWindow.buttons[0].setOnAction(e -> {
                 mainWindow.close();
                 sController.shipmentWindow.show();
+            });
+            mainWindow.buttons[8].setOnAction(e -> {
+                aboutUs();
             });
             
         } catch (SQLException sqlE) {
@@ -128,16 +186,30 @@ public class Controller extends Application {
 
     private void showFailedConnection() {
         DialogBox dialog = new DialogBox("Unable to connect to database."
-                + "\nPlease contact system administrator.");
+                + "\nPlease contact system administrator.", "Error!", "Close", 300, 100);
         dialog.show();
-        dialog.btnOK.setOnAction(e -> dialog.close());
+        dialog.btn.setOnAction(e -> dialog.close());
     }
 
     private void showExceededAttempts() {
         DialogBox dialog = new DialogBox("Maximum login attempts reached."
-                + "\nYou are denied system access.");
+                + "\nYou are denied system access.", "Error!", "Close", 300, 100);
         dialog.show();
-        dialog.btnOK.setOnAction(e -> dialog.close());
+        dialog.btn.setOnAction(e -> dialog.close());
+    }
+    
+    private void aboutUs() {
+        DialogBox dialog = new DialogBox("Supply Chain Central (SCC) is a supply chain company\n" +
+                                         "headquartered in Savannah, Georgia.\n" +
+                                         "\nApplication Software Developers:\n" + "\nBenjamin Chopson" +
+                                         "\nMichael Bernard" + "\nVasily Kushakov",
+                                         "About Us", "Close", 400, 200);
+        dialog.show();
+        dialog.label.setTextFill(Color.WHITE);
+        dialog.btn.setOnAction(e -> {
+            dialog.close();
+            mainWindow.show();
+        });
     }
 
     public static void main(String[] args) {

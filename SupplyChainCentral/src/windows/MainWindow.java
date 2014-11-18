@@ -57,7 +57,7 @@ public class MainWindow extends Stage {
         buttons[5].setText("Account Options");
         buttons[6].setText("Help");
         buttons[7].setText("Contacts");
-        buttons[8].setText("About SCM");
+        buttons[8].setText("About SCC");
 
         navPane.setAlignment(Pos.CENTER); // Remember this alignment step!
         mainPane.setCenter(navPane);

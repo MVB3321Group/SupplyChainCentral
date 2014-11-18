@@ -30,7 +30,7 @@ public class LoginWindow extends Stage {
     public LoginWindow() {
 
         btnLogin.setDefaultButton(true);
-        setTitle("Welcome to SCM!");
+        setTitle("Welcome to SCC!");
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
         grid.setVgap(10);
