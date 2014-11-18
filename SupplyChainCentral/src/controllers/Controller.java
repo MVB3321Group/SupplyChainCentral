@@ -134,13 +134,18 @@ public class Controller extends Application {
                 }
             });
             
-            mainWindow.buttons[0].setOnAction(e -> {
-                mainWindow.toolbar.FILE_DROPDOWN.setValue("File");
-                mainWindow.close();
-                sController.shipmentWindow.show();
-            });
+//            mainWindow.navPane.FILE_DROPDOWN.setOnAction(e -> {
+//                switch (mainWindow.toolbar.FILE_DROPDOWN.getValue()) {
+//                    case "New Shipment":
+//                        /* Simple fix to not allow selected option to
+//                           change dropdown title */
+//                        mainWindow.toolbar.FILE_DROPDOWN.setValue("File");
+//                        mainWindow.close();
+//                        sController.shipmentWindow.show();
+//                        break;
+//                }
+//            });
         }
-        
         catch (SQLException sqlE) {
             showFailedConnection();
         }
