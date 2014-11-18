@@ -159,6 +159,7 @@ public class SchedulingController {
         
         int[] count = new int[locations.size()];
         
+        int max = 0;
         for (Shipment s : shipments) {
             for (int i = 0; i < locations.size(); i++) {
                 if (s.getDestination().equals(locations.get(i).getLocationCode())) {
