@@ -17,6 +17,7 @@ import tools.Toolbar;
 
 public class MainWindow extends Stage {
     public BorderPane mainPane = new BorderPane(); // TODO: BorderPane
+    public HBox topPane = new HBox();
     public GridPane navPane = new GridPane();
     public Button buttons[] = new Button[9];
     public Toolbar toolbar;
@@ -24,9 +25,12 @@ public class MainWindow extends Stage {
     
     public MainWindow() {
         toolbar = new Toolbar();
-        mainPane.setTop(toolbar);
+        HBox.setHgrow(toolbar, Priority.ALWAYS);
+        topPane.getChildren().add(toolbar);
         welcomeLabel = new Label();
-        mainPane.setRight(welcomeLabel);
+        topPane.getChildren().add(welcomeLabel);
+        topPane.setAlignment(Pos.CENTER);
+        mainPane.setTop(topPane);
 
         // First, instantiate buttons...
         for (int i = 0; i < 9; i++) {
