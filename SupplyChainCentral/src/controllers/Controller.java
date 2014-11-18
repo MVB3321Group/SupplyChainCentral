@@ -133,7 +133,14 @@ public class Controller extends Application {
                         break;
                 }
             });
+            
+            mainWindow.buttons[0].setOnAction(e -> {
+                mainWindow.toolbar.FILE_DROPDOWN.setValue("File");
+                mainWindow.close();
+                sController.shipmentWindow.show();
+            });
         }
+        
         catch (SQLException sqlE) {
             showFailedConnection();
         }

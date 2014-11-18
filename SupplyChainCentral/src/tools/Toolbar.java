@@ -15,7 +15,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 
 public class Toolbar extends HBox {
 
@@ -32,8 +31,6 @@ public class Toolbar extends HBox {
     public String[] TRACK_DROPDOWN_OPTIONS = new String[4];
     public String[] TOOLS_DROPDOWN_OPTIONS = new String[4];
     public String[] HELP_DROPDOWN_OPTIONS = new String[4];
-    
-    public Pane pane = new Pane();
 
     public Toolbar() {
         // "File" dropdown options
@@ -86,6 +83,7 @@ public class Toolbar extends HBox {
         VIEW_DROPDOWN.setOnAction(e -> {
                 viewDropdownList.indexOf(VIEW_DROPDOWN.getValue());
                 
+            // Simple fix to not allow selected option to change dropdown title
             VIEW_DROPDOWN.setValue("View");    
         });
 

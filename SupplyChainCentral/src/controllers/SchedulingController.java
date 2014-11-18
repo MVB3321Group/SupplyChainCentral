@@ -72,9 +72,9 @@ public class SchedulingController {
         int originatorID = user.getEmployeeID();
         String orig = shipmentWindow.ORIG_DROPDOWN.getValue();
         String dest = shipmentWindow.DEST_DROPDOWN.getValue();
-        int priority = Integer.valueOf(shipmentWindow.PRTY_DROPDOWN.getValue());
+        int prty = Integer.valueOf(shipmentWindow.PRTY_DROPDOWN.getValue());
         
-        Shipment shpmt = new Shipment(originatorID, orig, dest, priority);
+        Shipment shpmt = new Shipment(originatorID, orig, dest, prty);
         dbConn.insertShipment(shpmt);
     }
     
@@ -148,25 +148,25 @@ public class SchedulingController {
     }
     
     public void populateShipmentChart() {
-        shipmentWindow.X_AXIS.setLabel("Destination");
-        shipmentWindow.X_AXIS.setTickLabelFill(Color.WHITE);
-        shipmentWindow.X_AXIS.setTickLabelGap(1.0);
-        shipmentWindow.Y_AXIS.setLabel("Number of Shipments");
-        shipmentWindow.Y_AXIS.setTickLabelFill(Color.WHITE);
         XYChart.Series<String, Integer> series = new XYChart.Series<>();
         ArrayList<Shipment> shipments = dbConn.getShipments();
         ArrayList<Location> locations = dbConn.getLocations();
         
-        int[] count = new int[locations.size()];
+        int[] count = new int[locations.size()];    
+        int max = 0;
         
         for (Shipment s : shipments) {
             for (int i = 0; i < locations.size(); i++) {
                 if (s.getDestination().equals(locations.get(i).getLocationCode())) {
                     count[i]++;
+                    if (count[i] > max)
+                        max = count[i];
                     break;
                 }
             }
         }
+        
+        shipmentWindow.Y_AXIS.setUpperBound(max + 5);
         
         for (int i = 0; i < count.length; i++)
             series.getData().add(new XYChart.Data(locations.get(i).getCity(), count[i]));

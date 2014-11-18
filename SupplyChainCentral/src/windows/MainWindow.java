@@ -6,15 +6,19 @@
 
 package windows;
 
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import tools.Toolbar;
 
 public class MainWindow extends Stage {
     public BorderPane mainPane = new BorderPane(); // TODO: BorderPane
+    public GridPane navPane = new GridPane();
+    public Button buttons[] = new Button[9];
     public Toolbar toolbar;
     public Label welcomeLabel;
     
@@ -24,6 +28,23 @@ public class MainWindow extends Stage {
         welcomeLabel = new Label();
         mainPane.setRight(welcomeLabel);
 
+        // First, instantiate buttons...
+        for (int i = 0; i < 9; i++) {
+            buttons[i] = new Button();
+            buttons[i].setPrefSize(100, 100);
+        }
+        
+        // ... and then add them to navPane
+        for (int i = 0, b = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                navPane.add(buttons[b], i, j);
+                b++;
+            }
+        }
+
+        navPane.setAlignment(Pos.CENTER); // Remember this alignment step!
+        mainPane.setCenter(navPane);
+                
         Scene scene = new Scene(mainPane, 1342, 686);
         scene.getStylesheets().add
                 (MainWindow.class.getResource("LoginCSS.css").toExternalForm());

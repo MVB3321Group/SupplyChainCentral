@@ -20,6 +20,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import tools.Toolbar;
 
@@ -97,6 +98,15 @@ public class ShipmentWindow extends Stage {
         GridPane.setHalignment(CREATE_SHIPMENT_BUTTON, HPos.RIGHT);
         aPane.getChildren().add(gPane);
         AnchorPane.setRightAnchor(gPane, 10.0);
+        
+        X_AXIS.setLabel("Destination");
+        X_AXIS.setTickLabelFill(Color.WHITE);
+        Y_AXIS.setLabel("Number of Shipments");
+        Y_AXIS.setTickLabelFill(Color.WHITE);
+        Y_AXIS.setAutoRanging(false);
+        Y_AXIS.setLowerBound(0);
+        Y_AXIS.setTickUnit(1);
+        Y_AXIS.setMinorTickVisible(false);
         
         Scene scene = new Scene(aPane, 1342, 686);
         scene.getStylesheets().add
