@@ -16,12 +16,9 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-
 import java.util.Comparator;
 import java.util.PriorityQueue;
 import java.util.Queue;
-import javafx.scene.paint.Color;
-
 /**
  *
  * @author Benjamin
@@ -37,23 +34,7 @@ public class SchedulingController {
         this.dbConn = dbConn;
         shipmentWindow = new ShipmentWindow();
         
-        /* At this time, because toolbar is an object of each window, toolbar
-           logic has to be re-implemented in each controller; this should not be
-           the case */
-        
-//        shipmentWindow.toolbar.FILE_DROPDOWN.setOnAction(e -> {
-//            switch (shipmentWindow.toolbar.FILE_DROPDOWN.getValue()) {
-//                case "New Shipment":
-//                    shipmentWindow.close();
-//                    shipmentWindow.show();
-//                    break;
-//            }
-//            
-//            // Simple fix to not allow selected option to change dropdown title
-//            shipmentWindow.toolbar.FILE_DROPDOWN.setValue("File");
-//        });
-
-        // Population for dropdown
+        // Population of shipment data
         populateProducts();
         populateOrigins();
         populateDestinations();
@@ -128,7 +109,7 @@ public class SchedulingController {
     }
     
     public void populateShipmentsTable() {
-        ArrayList<Shipment> shipments = new ArrayList<Shipment>();
+        ArrayList<Shipment> shipments = new ArrayList<>();
         for (Shipment s : dbConn.getShipments()) {
             if (s.getOriginatorID() == user.getEmployeeID()) {
                 shipments.add(s);

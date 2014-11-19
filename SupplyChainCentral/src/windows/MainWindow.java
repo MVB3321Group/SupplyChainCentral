@@ -44,9 +44,8 @@ public class MainWindow extends Stage {
 
         // ... and then add them to navPane
         for (int i = 0, b = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
+            for (int j = 0; j < 3; j++, b++) {
                 navPane.add(buttons[b], i, j);
-                b++;
             }
         }
         

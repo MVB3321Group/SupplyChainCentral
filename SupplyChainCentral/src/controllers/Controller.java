@@ -104,7 +104,6 @@ public class Controller extends Application {
             mainWindow.toolbar.FILE_DROPDOWN.setOnAction(e -> {
                 switch (mainWindow.toolbar.FILE_DROPDOWN.getValue()) {
                     case "New Shipment":
-                        mainWindow.close();
                         sController.shipmentWindow.show();
                         break;
                 }
@@ -160,7 +159,7 @@ public class Controller extends Application {
             mainWindow.toolbar.HELP_DROPDOWN.setOnAction(e -> {
                 switch (mainWindow.toolbar.HELP_DROPDOWN.getValue()) {
                     case "About SCC":
-                        aboutUs();
+                        aboutSCC();
                         break;
                 }
                 
@@ -170,11 +169,10 @@ public class Controller extends Application {
             
             // Actions for navPane buttons
             mainWindow.buttons[0].setOnAction(e -> {
-                mainWindow.close();
                 sController.shipmentWindow.show();
             });
             mainWindow.buttons[8].setOnAction(e -> {
-                aboutUs();
+                aboutSCC();
             });
             
         } catch (SQLException sqlE) {
@@ -196,18 +194,15 @@ public class Controller extends Application {
         dialog.btn.setOnAction(e -> dialog.close());
     }
     
-    private void aboutUs() {
+    private void aboutSCC() {
         DialogBox dialog = new DialogBox("Supply Chain Central (SCC) is a supply chain company\n" +
                                          "headquartered in Savannah, Georgia.\n" +
                                          "\nApplication Software Developers:\n" + "\nBenjamin Chopson" +
                                          "\nMichael Bernard" + "\nVasily Kushakov",
-                                         "About Us", "Close", 400, 200);
+                                         "About SCC", "Close", 400, 200);
         dialog.show();
         dialog.label.setTextFill(Color.WHITE);
-        dialog.btn.setOnAction(e -> {
-            dialog.close();
-            mainWindow.show();
-        });
+        dialog.btn.setOnAction(e -> dialog.close());
     }
 
     public static void main(String[] args) {
