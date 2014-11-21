@@ -59,9 +59,19 @@ public class SchedulingController {
         populateDestinations();
         populateShipmentChart();
         
+        shipmentWindow.addProductsButton.setOnAction(e -> {
+            String productName = shipmentWindow.PROD_DROPDOWN.getValue();
+            int productID = dbConn.getProductIDByName(productName);
+            int quantity = Integer.valueOf(shipmentWindow.QUANTITY_TF.getText());
+            ProductShipped ps = new ProductShipped(productID, quantity);
+            ps.setProductName(productName);
+            shipmentWindow.productsTable.getItems().add(ps);
+        });
+        
         shipmentWindow.CREATE_SHIPMENT_BUTTON.setOnAction(e -> {
             shipmentWindow.DESTINATIONS_CHART.getData().clear();
             createShipment();
+            //TODO add products in createShipment method
             populateShipmentsTable();
             populateShipmentChart();
         });
@@ -80,6 +90,7 @@ public class SchedulingController {
         
         Shipment shpmt = new Shipment(originatorID, orig, dest, prty);
         dbConn.insertShipment(shpmt);
+        //TODO: add products
     }
     
     public void populateProducts() { 
@@ -97,7 +108,7 @@ public class SchedulingController {
         });
     }
     
-    public void populateOrigins() { 
+    public void populateOrigins() {
         ArrayList<String> origList = new ArrayList<>();
         
         // "Converts" Location objects into String objects for later use
