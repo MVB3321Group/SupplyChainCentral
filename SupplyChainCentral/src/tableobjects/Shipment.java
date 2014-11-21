@@ -21,6 +21,7 @@ public class Shipment {
     private Date startTime;
     private Date endTime;
     private String currentLocation;
+    private Date ETA;
     
     public Shipment(int originatorID, String origin, String destination, int priority) {
         setOriginatorID(originatorID);
@@ -31,7 +32,7 @@ public class Shipment {
     
     public Shipment(int shipID, int originatorID, String origin,
             String destination, int priority,int scheduleID, Date startTime,
-            Date endTime, String currentLocation) {
+            Date endTime, String currentLocatio) {
         setShipID(shipID);
         setOriginatorID(originatorID);
         setOrigin(origin);
@@ -41,6 +42,7 @@ public class Shipment {
         setStartTime(startTime);
         setEndTime(endTime);
         setCurrentLocation(currentLocation);
+        //setETA(ETA);
     }
     
     public Shipment() {} // No-arg constructor
@@ -115,5 +117,13 @@ public class Shipment {
 
     public void setOriginatorID(int originatorID) {
         this.originatorID = originatorID;
+    }
+    
+    public void setETA(Date ETA){
+            this.ETA = ETA;
+    }
+    
+    public Date getETA() {
+        return ETA;
     }
 }

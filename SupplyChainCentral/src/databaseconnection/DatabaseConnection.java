@@ -103,6 +103,58 @@ public class DatabaseConnection {
         }
     }
     
+    public int getProductIDByName(String name) {
+        PreparedStatement pstmt;
+        try {
+            pstmt = connection.prepareStatement("SELECT productID FROM products WHERE pName= ? ");
+            pstmt.setString(1, name);
+            ResultSet rs = pstmt.executeQuery();
+            int productID = -1;
+            while (rs.next()) {
+                productID = rs.getInt("productID");
+            }
+            return productID;
+        }
+        catch (SQLException e) {
+            System.err.println("Unable to find product.");
+            e.printStackTrace();
+            return -1;
+        }
+    }
+    
+    //Merge with insertShipment once functional
+    public boolean insertShipment2(Shipment shipment, ArrayList<ProductShipped> products) {
+        PreparedStatement pstmt;
+        PreparedStatement pstmt2;
+        try {
+            pstmt = connection.prepareStatement("INSERT INTO shipments " + 
+                    "(originatorID, origin, destination, priority)" +
+                    "VALUES (?, ?, ?, ?)");
+            pstmt.setInt(1, shipment.getOriginatorID());
+            pstmt.setString(2, shipment.getOrigin());
+            pstmt.setString(3, shipment.getDestination());
+            pstmt.setInt(4, shipment.getPriority());
+            pstmt.execute();
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT LAST_INSERT_ID()");
+            int shipID = rs.getInt("LAST_INSERT_ID()");
+            pstmt2 = connection.prepareStatement("INSERT INTO productsshipped" +
+                    " (shipID, productID, quantity) VALUES (?, ?, ?)");
+            pstmt2.setInt(1, shipID);
+            for (ProductShipped ps : products) {
+                pstmt2.setInt(2, ps.getProductID());
+                pstmt2.setInt(3, ps.getQuantity());
+                pstmt2.execute();
+            }
+            return true;
+        }
+        catch (SQLException e) {
+            System.err.println("Unable to insert shipment.");
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
     public boolean createPriorityRequest(PriorityRequest req) {
         PreparedStatement pstmt;
         try {

@@ -14,6 +14,7 @@ public class ProductShipped {
     private int shipID;
     private int productID;
     private int quantity;
+    private String productName;
     
     public ProductShipped(int productID, int quantity) {
         setProductID(productID);
@@ -50,5 +51,13 @@ public class ProductShipped {
 
     public void setShipID(int shipID) {
         this.shipID = shipID;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 }
