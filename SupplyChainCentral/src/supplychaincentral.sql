@@ -57,11 +57,11 @@ CREATE TABLE IF NOT EXISTS `locations` (
 --
 
 INSERT INTO `locations` (`locationCode`, `locationType`, `address`, `zip`, `city`, `state`, `GPScoords`) VALUES
-('DET', 1, '4 Back Road', 33833, 'Detroit', 'Michigan', '\0\0\0\0\0\0\0\0\0\0\0\0ÀT@\0\0\0\0\0\0E@'),
-('LA', 1, '803 Sunshine Place', 88888, 'Los Angeles', 'California', '\0\0\0\0\0\0\0\0\0\0\0\0€]@\0\0\0\0\0\0A@'),
-('NY', 1, '199 Production Pkwy.', 12345, 'New York', 'New York', '\0\0\0\0\0\0\0\0\0\0\0\0€R@\0\0\0\0\0\0D@'),
-('PHX', 1, '796 Cactus Way', 77771, 'Phoenix', 'Arizona', '\0\0\0\0\0\0\0\0\0\0\0\0\0\\@\0\0\0\0\0€@@'),
-('PORT', 1, '26 Rainy St.', 67849, 'Portland', 'Oregon', '\0\0\0\0\0\0\0\0\0\0\0\0€^@\0\0\0\0\0€F@'),
+('DET', 1, '4 Back Road', 33833, 'Detroit', 'Michigan', '\0\0\0\0\0\0\0\0\0\0\0\0ï¿½T@\0\0\0\0\0\0E@'),
+('LA', 1, '803 Sunshine Place', 88888, 'Los Angeles', 'California', '\0\0\0\0\0\0\0\0\0\0\0\0ï¿½]@\0\0\0\0\0\0A@'),
+('NY', 1, '199 Production Pkwy.', 12345, 'New York', 'New York', '\0\0\0\0\0\0\0\0\0\0\0\0ï¿½R@\0\0\0\0\0\0D@'),
+('PHX', 1, '796 Cactus Way', 77771, 'Phoenix', 'Arizona', '\0\0\0\0\0\0\0\0\0\0\0\0\0\\@\0\0\0\0\0ï¿½@@'),
+('PORT', 1, '26 Rainy St.', 67849, 'Portland', 'Oregon', '\0\0\0\0\0\0\0\0\0\0\0\0ï¿½^@\0\0\0\0\0ï¿½F@'),
 ('SAV', 1, '420 Commerce Blvd.', 31419, 'Savannah', 'Georgia', '\0\0\0\0\0\0\0\0\0\0\0\0@T@\0\0\0\0\0\0@@');
 
 -- --------------------------------------------------------
@@ -200,6 +200,7 @@ CREATE TABLE IF NOT EXISTS `shipments` (
   `startTime` datetime DEFAULT NULL COMMENT 'null if pending',
   `endTime` datetime DEFAULT NULL COMMENT 'null if pending or in progress',
   `currentLocation` varchar(100) DEFAULT NULL COMMENT 'null if pending, may be gps coords or lat/long',
+  `ETA` datetime DEFAULT NULL COMMENT 'can be null, but preferred to have a value',
   PRIMARY KEY (`shipID`),
   KEY `origin` (`origin`,`destination`),
   KEY `location` (`currentLocation`),
@@ -212,30 +213,30 @@ CREATE TABLE IF NOT EXISTS `shipments` (
 -- Dumping data for table `shipments`
 --
 
-INSERT INTO `shipments` (`shipID`, `originatorID`, `origin`, `destination`, `priority`, `scheduleID`, `startTime`, `endTime`, `currentLocation`) VALUES
-(1, 2222, 'LA', 'DET', 4, NULL, NULL, NULL, NULL),
-(2, 2222, 'SAV', 'PORT', 5, NULL, NULL, NULL, NULL),
-(3, 2222, 'NY', 'LA', 5, NULL, NULL, NULL, NULL),
-(4, 2222, 'PHX', 'LA', 3, NULL, NULL, NULL, NULL),
-(5, 2222, 'LA', 'DET', 5, NULL, NULL, NULL, NULL),
-(6, 2222, 'NY', 'LA', 5, NULL, NULL, NULL, NULL),
-(7, 2222, 'LA', 'NY', 1, NULL, NULL, NULL, NULL),
-(8, 2222, 'NY', 'LA', 5, NULL, NULL, NULL, NULL),
-(9, 2222, 'SAV', 'PHX', 3, NULL, NULL, NULL, NULL),
-(10, 2222, 'PHX', 'DET', 1, NULL, NULL, NULL, NULL),
-(11, 2223, 'PORT', 'SAV', 5, NULL, NULL, NULL, NULL),
-(12, 2223, 'SAV', 'LA', 1, NULL, NULL, NULL, NULL),
-(13, 2223, 'SAV', 'PHX', 5, NULL, NULL, NULL, NULL),
-(14, 2223, 'PHX', 'LA', 5, NULL, NULL, NULL, NULL),
-(15, 2223, 'PHX', 'NY', 4, NULL, NULL, NULL, NULL),
-(16, 2223, 'LA', 'PHX', 3, NULL, NULL, NULL, NULL),
-(17, 2223, 'PHX', 'SAV', 3, NULL, NULL, NULL, NULL),
-(18, 2223, 'SAV', 'DET', 3, NULL, NULL, NULL, NULL),
-(19, 2223, 'LA', 'SAV', 3, NULL, NULL, NULL, NULL),
-(20, 2223, 'SAV', 'LA', 1, NULL, NULL, NULL, NULL),
-(21, 2222, 'LA', 'PHX', 3, NULL, NULL, NULL, NULL),
-(22, 2222, 'PHX', 'SAV', 2, NULL, NULL, NULL, NULL),
-(23, 2222, 'LA', 'PHX', 3, NULL, NULL, NULL, NULL);
+INSERT INTO `shipments` (`shipID`, `originatorID`, `origin`, `destination`, `priority`, `scheduleID`, `startTime`, `endTime`, `currentLocation`, `ETA`) VALUES
+(1, 2222, 'LA', 'DET', 4, NULL, NULL, NULL, NULL, NULL),
+(2, 2222, 'SAV', 'PORT', 5, NULL, NULL, NULL, NULL, NULL),
+(3, 2222, 'NY', 'LA', 5, NULL, NULL, NULL, NULL, NULL),
+(4, 2222, 'PHX', 'LA', 3, NULL, NULL, NULL, NULL, NULL),
+(5, 2222, 'LA', 'DET', 5, NULL, NULL, NULL, NULL, NULL),
+(6, 2222, 'NY', 'LA', 5, NULL, NULL, NULL, NULL, NULL),
+(7, 2222, 'LA', 'NY', 1, NULL, NULL, NULL, NULL, NULL),
+(8, 2222, 'NY', 'LA', 5, NULL, NULL, NULL, NULL, NULL),
+(9, 2222, 'SAV', 'PHX', 3, NULL, NULL, NULL, NULL, NULL),
+(10, 2222, 'PHX', 'DET', 1, NULL, NULL, NULL, NULL, NULL),
+(11, 2223, 'PORT', 'SAV', 5, NULL, NULL, NULL, NULL, NULL),
+(12, 2223, 'SAV', 'LA', 1, NULL, NULL, NULL, NULL, NULL),
+(13, 2223, 'SAV', 'PHX', 5, NULL, NULL, NULL, NULL, NULL),
+(14, 2223, 'PHX', 'LA', 5, NULL, NULL, NULL, NULL, NULL),
+(15, 2223, 'PHX', 'NY', 4, NULL, NULL, NULL, NULL, NULL),
+(16, 2223, 'LA', 'PHX', 3, NULL, NULL, NULL, NULL, NULL),
+(17, 2223, 'PHX', 'SAV', 3, NULL, NULL, NULL, NULL, NULL),
+(18, 2223, 'SAV', 'DET', 3, NULL, NULL, NULL, NULL, NULL),
+(19, 2223, 'LA', 'SAV', 3, NULL, NULL, NULL, NULL, NULL),
+(20, 2223, 'SAV', 'LA', 1, NULL, NULL, NULL, NULL, NULL),
+(21, 2222, 'LA', 'PHX', 3, NULL, NULL, NULL, NULL, NULL),
+(22, 2222, 'PHX', 'SAV', 2, NULL, NULL, NULL, NULL, NULL),
+(23, 2222, 'LA', 'PHX', 3, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 

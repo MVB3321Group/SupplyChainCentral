@@ -83,7 +83,7 @@ public class ShipmentWindow extends Stage {
         gPane.add(new Label("Destination: "), 0, 5);
         gPane.add(DEST_DROPDOWN, 1, 5);
         gPane.add(CREATE_SHIPMENT_BUTTON, 1, 6);
-        gPane.add(SCHEDULE_SHIPMENTS_BUTTON, 0, 6);
+        gPane.add(SCHEDULE_SHIPMENTS_BUTTON, 3, 6);
         gPane.setHgap(10);
         gPane.setVgap(10);
         
