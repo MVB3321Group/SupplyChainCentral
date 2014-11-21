@@ -68,9 +68,6 @@ public class ShipmentWindow extends Stage {
         gPane.add(DEST_DROPDOWN, 1, 4);
         gPane.add(CREATE_SHIPMENT_BUTTON, 1, 5);
         gPane.add(SCHEDULE_SHIPMENTS_BUTTON, 0, 5);
-        //gPane.add(SCHEDULE_TABLE, 1, 7);
-        //gPane.add(SHIPMENTS_TABLE, 1, 7);
-        //gPane.add(DESTINATIONS_CHART, 2, 7);
         gPane.setHgap(10);
         gPane.setVgap(10);
         
@@ -96,6 +93,7 @@ public class ShipmentWindow extends Stage {
         layoutPane.add(gPane, 0, 0);
         layoutPane.add(SHIPMENTS_TABLE, 0, 1);
         layoutPane.add(DESTINATIONS_CHART, 1, 1);
+        layoutPane.add(SCHEDULE_TABLE, 0, 3);
         layoutPane.setAlignment(Pos.CENTER);
         gPane.setPadding(new Insets(20, 20, 20, 0));
         bPane.setCenter(layoutPane);
