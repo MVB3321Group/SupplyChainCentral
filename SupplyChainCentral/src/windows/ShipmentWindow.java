@@ -10,9 +10,7 @@ import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import tableobjects.*;
-import javafx.geometry.HPos;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
+import javafx.geometry.*;
 import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
@@ -31,7 +29,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import tools.Toolbar;
 
 public class ShipmentWindow extends Stage {
 
@@ -45,7 +42,7 @@ public class ShipmentWindow extends Stage {
     public ComboBox<String> ORIG_DROPDOWN = new ComboBox<>();
     public ComboBox<String> DEST_DROPDOWN = new ComboBox<>();
     
-    final String[] PRTY_OPTIONS = {"1", "2", "3", "4", "5"};
+    public final String[] PRTY_OPTIONS = {"1", "2", "3", "4", "5"};
     
     public TableView<Shipment> SCHEDULE_TABLE = new TableView<>();
     public TableView<Shipment> SHIPMENTS_TABLE = new TableView<>();
@@ -63,17 +60,15 @@ public class ShipmentWindow extends Stage {
     public BorderPane bPane = new BorderPane();
     public GridPane gPane = new GridPane();
     public GridPane layoutPane = new GridPane();
-    HBox titlePane = new HBox();
-    public Toolbar toolbar;
-
+    HBox headerPane = new HBox();
+    
     public Label success = new Label("Shipment added succesfully. ");  
 
     public ShipmentWindow() {
-        toolbar = new Toolbar();
-        HBox.setHgrow(toolbar, Priority.ALWAYS);
-        titlePane.getChildren().addAll(toolbar, welcomeLabel);
-        titlePane.setAlignment(Pos.CENTER);
-        bPane.setTop(titlePane);
+        headerPane.getChildren().add(welcomeLabel);
+        welcomeLabel.setPadding(new Insets(5, 20, 5, 5));
+        headerPane.setAlignment(Pos.TOP_RIGHT);
+        bPane.setTop(headerPane);
 
         gPane.add(new Label("Product: "), 0, 0);
         gPane.add(PROD_DROPDOWN, 1, 0);
@@ -108,7 +103,7 @@ public class ShipmentWindow extends Stage {
         QUANTITY_TF.setAlignment(Pos.CENTER);
         QUANTITY_TF.setMaxWidth(150);
 
-        //FLAG
+        // FLAG
         GridPane.setHalignment(CREATE_SHIPMENT_BUTTON, HPos.RIGHT);
         gPane.setAlignment(Pos.CENTER);
         layoutPane.add(gPane, 0, 0);
@@ -130,12 +125,12 @@ public class ShipmentWindow extends Stage {
         Y_AXIS.setTickUnit(1);
         Y_AXIS.setMinorTickVisible(false);
         
-        Scene scene = new Scene(bPane, 1342, 686);
+        Scene scene = new Scene(bPane, 1006, 515);
         scene.getStylesheets().add
                 (MainWindow.class.getResource("LoginCSS.css").toExternalForm());
         setScene(scene);
         setResizable(false);
-        setTitle("Supply Chain Central");
+        setTitle("New Shipment");
     }
     
     private void initializeProductsTable() {
