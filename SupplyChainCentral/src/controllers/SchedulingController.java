@@ -175,26 +175,33 @@ public class SchedulingController {
     }
 
     public void scheduleShipments() {
-        // get an arraylist of the current shipments.
-        ArrayList<Shipment> shipments = dbConn.getShipments();
+        // get an arraylist of the currently pending shipments.
+        ArrayList<Shipment> pendShipments = dbConn.getPendingShipments();
         // create a priorityqueue. This PQ will be accessed to see 
         // what shipment is to be sent out next. By this I mean a 
-        // starttime will be given to the shipment. Remember that you must 
+        // schedID and startTime will be given to the shipment. Remember that you must 
         // sort the queue to get the proper queue values.
         Queue<Shipment> schedulePriorityQueue = new PriorityQueue<>(20, scheduleComparator);
 
-        for(Shipment s : shipments) {
-            //check ShipID, if the shipment has not been scheduled, then add it
-            if (s.getScheduleID() == 0){
-                schedulePriorityQueue.add(s);
-            }
+        for(Shipment s : pendShipments) {
+            schedulePriorityQueue.add(s);           
         }
         
-        //now we create scheduleIDs.
+        // get an arraylist of the current shipments.
+        ArrayList<Shipment> shipments = dbConn.getShipments();
+        //get the biggest current ScheduleID 
+        int bigID = 1000;
+        for(Shipment s : shipments) {
+            if(bigID < s.getScheduleID()){
+                bigID = s.getScheduleID();
+            }           
+        }
+        //now we create scheduleIDs
         while(true){
+            bigID++;
             Shipment shpt = schedulePriorityQueue.poll();
             if(shpt == null) break;
-            shpt.setScheduleID(1001);
+            shpt.setScheduleID(bigID);
         }
         
     }
@@ -208,11 +215,11 @@ public class SchedulingController {
             int s2P = s2.getPriority();
             
             long current = System.currentTimeMillis( );
-            Date d1 = null;
+            Date d1 = new Date();
             if(s1.getETA()!= null){
                 d1 = s1.getETA();
             }
-            Date d2 = null;
+            Date d2 = new Date();
             if(s1.getETA()!= null){
                 d2 = s2.getETA();
             }
