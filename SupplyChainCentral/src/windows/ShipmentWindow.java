@@ -11,6 +11,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import tableobjects.*;
 import javafx.geometry.*;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
@@ -22,11 +23,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -35,7 +34,7 @@ public class ShipmentWindow extends Stage {
     public TextField QUANTITY_TF = new TextField();
     public Button CREATE_SHIPMENT_BUTTON = new Button("Create Shipment");
     public Button SCHEDULE_SHIPMENTS_BUTTON = new Button("Schedule Shipments");
-    public Button addProductsButton = new Button("Add Product to Shipment");
+    public Button ADD_PRODUCT_BUTTON = new Button("Add Product");
         
     public ComboBox<String> PROD_DROPDOWN = new ComboBox<>();
     public ComboBox<String> PRTY_DROPDOWN = new ComboBox<>();
@@ -46,7 +45,7 @@ public class ShipmentWindow extends Stage {
     
     public TableView<Shipment> SCHEDULE_TABLE = new TableView<>();
     public TableView<Shipment> SHIPMENTS_TABLE = new TableView<>();
-    public TableView<ProductShipped> productsTable = new TableView();
+    public TableView<ProductShipped> PRODUCTS_TABLE = new TableView();
     public NumberAxis Y_AXIS = new NumberAxis();
     public CategoryAxis X_AXIS = new CategoryAxis();
     public BarChart DESTINATIONS_CHART = new BarChart(X_AXIS, Y_AXIS);
@@ -56,6 +55,7 @@ public class ShipmentWindow extends Stage {
 
     public Stage shipmentWindow = new Stage();
     public Label welcomeLabel = new Label();
+    public Label noProductsAdded = new Label("No products added");
     
     public BorderPane bPane = new BorderPane();
     public GridPane gPane = new GridPane();
@@ -74,8 +74,7 @@ public class ShipmentWindow extends Stage {
         gPane.add(PROD_DROPDOWN, 1, 0);
         gPane.add(new Label("Quantity: "), 0, 1);
         gPane.add(QUANTITY_TF, 1, 1);
-        addProductsButton.setAlignment(Pos.CENTER_LEFT);
-        gPane.add(addProductsButton, 1, 2);
+        gPane.add(ADD_PRODUCT_BUTTON, 1, 2);
         gPane.add(new Label("Priority: "), 0, 3);
         gPane.add(PRTY_DROPDOWN, 1, 3);
         gPane.add(new Label("Origin: "), 0, 4);
@@ -90,9 +89,12 @@ public class ShipmentWindow extends Stage {
         PRTY_DROPDOWN.getItems().addAll(PRTY_OPTIONS);
 
         PROD_DROPDOWN.setPrefWidth(150);
+        QUANTITY_TF.setPrefWidth(150);  // TODO: Find alternative to TextField
+        ADD_PRODUCT_BUTTON.setPrefWidth(150);
         PRTY_DROPDOWN.setPrefWidth(150);
         ORIG_DROPDOWN.setPrefWidth(150);
         DEST_DROPDOWN.setPrefWidth(150);
+        
         PROD_DROPDOWN.setPromptText("Select a product.");
         PRTY_DROPDOWN.setPromptText("Select a priority.");
         ORIG_DROPDOWN.setPromptText("Select an origin.");
@@ -101,17 +103,19 @@ public class ShipmentWindow extends Stage {
         QUANTITY_TF.setAlignment(Pos.BOTTOM_RIGHT);
         QUANTITY_TF.setPromptText("Select a quantity.");
         QUANTITY_TF.setAlignment(Pos.CENTER);
-        QUANTITY_TF.setMaxWidth(150);
+
+        ADD_PRODUCT_BUTTON.setAlignment(Pos.CENTER);
 
         // FLAG
         GridPane.setHalignment(CREATE_SHIPMENT_BUTTON, HPos.RIGHT);
         gPane.setAlignment(Pos.CENTER);
         layoutPane.add(gPane, 0, 0);
+        PRODUCTS_TABLE.setPlaceholder(noProductsAdded);
         SHIPMENTS_TABLE.setMaxHeight(350);
         layoutPane.add(SHIPMENTS_TABLE, 0, 1);
         layoutPane.add(DESTINATIONS_CHART, 1, 1);
         initializeProductsTable();
-        layoutPane.add(productsTable, 1, 0);
+        layoutPane.add(PRODUCTS_TABLE, 1, 0);
         layoutPane.setAlignment(Pos.CENTER);
         gPane.setPadding(new Insets(20, 20, 20, 0));
         bPane.setCenter(layoutPane);
@@ -125,7 +129,7 @@ public class ShipmentWindow extends Stage {
         Y_AXIS.setTickUnit(1);
         Y_AXIS.setMinorTickVisible(false);
         
-        Scene scene = new Scene(bPane, 1006, 515);
+        Scene scene = new Scene(bPane, 1050, 564);
         scene.getStylesheets().add
                 (MainWindow.class.getResource("LoginCSS.css").toExternalForm());
         setScene(scene);
@@ -134,12 +138,12 @@ public class ShipmentWindow extends Stage {
     }
     
     private void initializeProductsTable() {
-        productsTable.setMaxWidth(160);
-        productsTable.setMaxHeight(200);
+        PRODUCTS_TABLE.setMaxWidth(160);
+        PRODUCTS_TABLE.setMaxHeight(200);
         
         ObservableList<ProductShipped> productList
                 = FXCollections.observableArrayList(new ArrayList<ProductShipped>());
-        productsTable.setItems(productList);
+        PRODUCTS_TABLE.setItems(productList);
         
         TableColumn<ProductShipped, String> productCol
                 = new TableColumn("Product");
@@ -147,7 +151,7 @@ public class ShipmentWindow extends Stage {
         TableColumn<ProductShipped, String> quantityCol
                 = new TableColumn("Quantity");
         quantityCol.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-        productsTable.getColumns().setAll(productCol, quantityCol);
+        PRODUCTS_TABLE.getColumns().setAll(productCol, quantityCol);
         ProductShipped pc = new ProductShipped(1, 5);
     }
 }

@@ -6,11 +6,6 @@
 
 package tools;
 
-import controllers.*;
-import databaseconnection.*;
-import tableobjects.*;
-import tools.Toolbar;
-import windows.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
@@ -40,8 +35,8 @@ public class Toolbar extends HBox {
         FILE_DROPDOWN_OPTIONS[3] = "New 3";
 
         // "View" dropdown options
-        VIEW_DROPDOWN_OPTIONS[0] = "View Shipment";
-        VIEW_DROPDOWN_OPTIONS[1] = "View 1";
+        VIEW_DROPDOWN_OPTIONS[0] = "View Shipments";
+        VIEW_DROPDOWN_OPTIONS[1] = "View Inventory";
         VIEW_DROPDOWN_OPTIONS[2] = "View 2";
         VIEW_DROPDOWN_OPTIONS[3] = "View 3";
 
@@ -52,7 +47,7 @@ public class Toolbar extends HBox {
         RUN_DROPDOWN_OPTIONS[3] = "Run 3";
 
         // "Track" dropdown options
-        TRACK_DROPDOWN_OPTIONS[0] = "Track Shipment";
+        TRACK_DROPDOWN_OPTIONS[0] = "Track Shipments";
         TRACK_DROPDOWN_OPTIONS[1] = "Track 1";
         TRACK_DROPDOWN_OPTIONS[2] = "Track 2";
         TRACK_DROPDOWN_OPTIONS[3] = "Track 3";

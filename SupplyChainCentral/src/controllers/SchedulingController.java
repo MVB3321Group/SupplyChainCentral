@@ -9,7 +9,6 @@ package controllers;
 import databaseconnection.DatabaseConnection;
 import tableobjects.*;
 import windows.*;
-import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
@@ -17,6 +16,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import java.util.*;
+
 /**
  *
  * @author Benjamin
@@ -39,27 +39,28 @@ public class SchedulingController {
         populateDestinations();
         populateShipmentChart();
         
-        shipmentWindow.addProductsButton.setOnAction(e -> {
+        shipmentWindow.ADD_PRODUCT_BUTTON.setOnAction(e -> {
             String productName = shipmentWindow.PROD_DROPDOWN.getValue();
             int productID = dbConn.getProductIDByName(productName);
             int quantity = Integer.valueOf(shipmentWindow.QUANTITY_TF.getText());
             ProductShipped ps = new ProductShipped(productID, quantity);
             ps.setProductName(productName);
-            shipmentWindow.productsTable.getItems().add(ps);
+
+            shipmentWindow.PRODUCTS_TABLE.getItems().add(ps);
         });
         
         shipmentWindow.CREATE_SHIPMENT_BUTTON.setOnAction(e -> {
             shipmentWindow.DESTINATIONS_CHART.getData().clear();
             createShipment();
-            //TODO add products in createShipment method
+            // TODO: Add products in createShipment method
             populateShipmentsTable();
             populateShipmentChart();
+            shipmentWindow.PRODUCTS_TABLE.getItems().clear();
         });
         
         shipmentWindow.SCHEDULE_SHIPMENTS_BUTTON.setOnAction(e -> {
             scheduleShipments();
             //getScheduledShipments();
-            
         });
     }
     
@@ -68,7 +69,7 @@ public class SchedulingController {
         populateShipmentsTable();
     }
     
-    public void createShipment() {
+    private void createShipment() {
         int originatorID = user.getEmployeeID();
         String orig = shipmentWindow.ORIG_DROPDOWN.getValue();
         String dest = shipmentWindow.DEST_DROPDOWN.getValue();
@@ -79,10 +80,9 @@ public class SchedulingController {
         //TODO: add products
     }
     
-    public void populateProducts() { 
+    private void populateProducts() { 
         ArrayList<String> productList = new ArrayList<>();
         
-        // "Converts" Product objects into String objects for later use
         for (int i = 0; i < dbConn.getProducts().size(); i++)
             productList.add(dbConn.getProducts().get(i).getPName());
   
@@ -94,7 +94,7 @@ public class SchedulingController {
         });
     }
     
-    public void populateOrigins() {
+    private void populateOrigins() {
         ArrayList<String> origList = new ArrayList<>();
         
         // "Converts" Location objects into String objects for later use
@@ -109,7 +109,7 @@ public class SchedulingController {
         });
     }
     
-    public void populateDestinations() { 
+    private void populateDestinations() { 
         ArrayList<String> destList = new ArrayList<>();
         
         // "Converts" Destination objects into String objects for later use
@@ -124,7 +124,7 @@ public class SchedulingController {
         });
     }
     
-    public void populateShipmentsTable() {
+    private void populateShipmentsTable() {
         ArrayList<Shipment> shipments = new ArrayList<>();
         for (Shipment s : dbConn.getShipments()) {
             if (s.getOriginatorID() == user.getEmployeeID()) {
@@ -148,7 +148,7 @@ public class SchedulingController {
         shipTable.getColumns().setAll(riginatorCol, originCol, destCol, priorityCol);
     }
     
-    public void populateShipmentChart() {
+    private void populateShipmentChart() {
         XYChart.Series<String, Integer> series = new XYChart.Series<>();
         ArrayList<Shipment> shipments = dbConn.getShipments();
         ArrayList<Location> locations = dbConn.getLocations();
@@ -174,7 +174,7 @@ public class SchedulingController {
         shipmentWindow.DESTINATIONS_CHART.getData().add(series);
     }
 
-    public void scheduleShipments() {
+    private void scheduleShipments() {
         // get an arraylist of the current shipments.
         ArrayList<Shipment> shipments = dbConn.getShipments();
         // create a priorityqueue. This PQ will be accessed to see 
@@ -192,29 +192,25 @@ public class SchedulingController {
     }
 
      //Comparator anonymous class implementation
-    public static Comparator<Shipment> scheduleComparator = new Comparator<Shipment>(){
-    
-        @Override
-        public int compare(Shipment s1, Shipment s2) {
-            int s1P = s1.getPriority();
-            int s2P = s2.getPriority();
-            
-            Date d1 = s1.getETA();
-            Date d2 = s2.getETA();
-            
-            //convert all dates to milliseconds
-            long current = System.currentTimeMillis( );
-            long d1Time = d1.getTime();
-            long d2Time = d2.getTime();
-            
-            //86,400,000 milliseconds in a day. Too many for long
-            int d1Current = (int)(d1Time - current)/1000;
-            int d2Current = (int)(d2Time - current)/1000;
-            
-            //uses priority values to weigh the times.
-            int ETAvalue = s1P * d1Current - s2P * d2Current;
-            return ETAvalue;
-        }
+    public static Comparator<Shipment> scheduleComparator = (Shipment s1, Shipment s2) -> {
+        int s1P = s1.getPriority();
+        int s2P = s2.getPriority();
+        
+        Date d1 = s1.getETA();
+        Date d2 = s2.getETA();
+        
+        //convert all dates to milliseconds
+        long current = System.currentTimeMillis( );
+        long d1Time = d1.getTime();
+        long d2Time = d2.getTime();
+        
+        //86,400,000 milliseconds in a day. Too many for long
+        int d1Current = (int)(d1Time - current)/1000;
+        int d2Current = (int)(d2Time - current)/1000;
+        
+        //uses priority values to weigh the times.
+        int ETAvalue = s1P * d1Current - s2P * d2Current;
+        return ETAvalue;
     };
     
 //    public void populateScheduleTable(){

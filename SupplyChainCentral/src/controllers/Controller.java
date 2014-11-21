@@ -197,7 +197,7 @@ public class Controller extends Application {
     private void aboutSCC() {
         DialogBox dialog = new DialogBox("Supply Chain Central (SCC) is a supply chain company\n" +
                                          "headquartered in Savannah, Georgia.\n" +
-                                         "\nApplication Software Developers:\n" + "\nBenjamin Chopson" +
+                                         "\nApplications Software Developers:\n" + "\nBenjamin Chopson" +
                                          "\nMichael Bernard" + "\nVasily Kushakov",
                                          "About SCC", "Close", 400, 200);
         dialog.show();
