@@ -181,14 +181,22 @@ public class SchedulingController {
         // what shipment is to be sent out next. By this I mean a 
         // starttime will be given to the shipment. Remember that you must 
         // sort the queue to get the proper queue values.
-        Queue<Shipment> schedulePriorityQueue = new PriorityQueue<>(10, scheduleComparator);
+        Queue<Shipment> schedulePriorityQueue = new PriorityQueue<>(20, scheduleComparator);
 
-        for (Shipment s : shipments) {
+        for(Shipment s : shipments) {
             //check ShipID, if the shipment has not been scheduled, then add it
-            if (s.getShipID() == 0){
+            if (s.getScheduleID() == 0){
                 schedulePriorityQueue.add(s);
             }
         }
+        
+        //now we create scheduleIDs.
+        while(true){
+            Shipment shpt = schedulePriorityQueue.poll();
+            if(shpt == null) break;
+            shpt.setScheduleID(1001);
+        }
+        
     }
 
      //Comparator anonymous class implementation
@@ -199,11 +207,16 @@ public class SchedulingController {
             int s1P = s1.getPriority();
             int s2P = s2.getPriority();
             
-            Date d1 = s1.getETA();
-            Date d2 = s2.getETA();
-            
-            //convert all dates to milliseconds
             long current = System.currentTimeMillis( );
+            Date d1 = null;
+            if(s1.getETA()!= null){
+                d1 = s1.getETA();
+            }
+            Date d2 = null;
+            if(s1.getETA()!= null){
+                d2 = s2.getETA();
+            }
+            //convert all dates to milliseconds
             long d1Time = d1.getTime();
             long d2Time = d2.getTime();
             
