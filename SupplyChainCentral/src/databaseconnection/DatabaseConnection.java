@@ -178,7 +178,7 @@ public class DatabaseConnection {
         StringBuilder command = new StringBuilder("UPDATE shipments SET ");
         command.append("originatorID = ?, origin = ?, destination = ?, ");
         command.append("priority = ?, scheduleID = ?, startTime = ?, ");
-        command.append("endTime = ?, currentLocation = ?");
+        command.append("endTime = ?, currentLocation = ?, ETA = ?");
         command.append("WHERE shipID = ?");
         try {
             pstmt = connection.prepareStatement(command.toString());
@@ -191,6 +191,7 @@ public class DatabaseConnection {
             pstmt.setDate(7, shipment.getEndTime());
             pstmt.setString(8, shipment.getCurrentLocation());
             pstmt.setInt(9, shipment.getShipID());
+            pstmt.setDate(10, shipment.getETA());
             return pstmt.execute();
         }
         catch (SQLException e) {
@@ -217,7 +218,8 @@ public class DatabaseConnection {
                         rs.getInt("scheduleID"),
                         rs.getDate("startTime"),
                         rs.getDate("endTime"),
-                        rs.getString("currentLocation")
+                        rs.getString("currentLocation"),
+                        rs.getDate("ETA")
                 );
                 shipments.add(s);
             }
@@ -249,7 +251,8 @@ public class DatabaseConnection {
                         rs.getInt("scheduleID"),
                         rs.getDate("startTime"),
                         rs.getDate("endTime"),
-                        rs.getString("currentLocation")
+                        rs.getString("currentLocation"),
+                        rs.getDate("ETA")
                 );
                 shipments.add(s);
             }

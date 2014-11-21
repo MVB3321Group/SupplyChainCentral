@@ -32,7 +32,7 @@ public class Shipment {
     
     public Shipment(int shipID, int originatorID, String origin,
             String destination, int priority,int scheduleID, Date startTime,
-            Date endTime, String currentLocatio) {
+            Date endTime, String currentLocation, Date ETA) {
         setShipID(shipID);
         setOriginatorID(originatorID);
         setOrigin(origin);
@@ -42,7 +42,7 @@ public class Shipment {
         setStartTime(startTime);
         setEndTime(endTime);
         setCurrentLocation(currentLocation);
-        //setETA(ETA);
+        setETA(ETA);
     }
     
     public Shipment() {} // No-arg constructor
