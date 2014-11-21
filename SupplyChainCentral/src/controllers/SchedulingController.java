@@ -75,8 +75,9 @@ public class SchedulingController {
         int prty = Integer.valueOf(shipmentWindow.PRTY_DROPDOWN.getValue());
         
         Shipment shpmt = new Shipment(originatorID, orig, dest, prty);
-        dbConn.insertShipment(shpmt);
-        //TODO: add products
+        ArrayList<ProductShipped> products = 
+                new ArrayList(shipmentWindow.productsTable.getItems());
+        dbConn.insertShipment(shpmt, products);//switch back to insertShipment
     }
     
     public void populateProducts() { 

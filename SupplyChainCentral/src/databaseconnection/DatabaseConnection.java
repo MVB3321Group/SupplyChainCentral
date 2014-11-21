@@ -84,24 +84,24 @@ public class DatabaseConnection {
      * @param shipment
      * @return 
      */
-    public boolean insertShipment(Shipment shipment) {
-        PreparedStatement pstmt;
-        try {
-            pstmt = connection.prepareStatement("INSERT INTO shipments" + 
-                    "(originatorID, origin, destination, priority)" +
-                    "VALUES (?, ?, ?, ?)");
-            pstmt.setInt(1, shipment.getOriginatorID());
-            pstmt.setString(2, shipment.getOrigin());
-            pstmt.setString(3, shipment.getDestination());
-            pstmt.setInt(4, shipment.getPriority());
-            return pstmt.execute();
-        }
-        catch (SQLException e) {
-            System.err.println("Unable to insert shipment.");
-            e.printStackTrace();
-            return false;
-        }
-    }
+//    public boolean insertShipment(Shipment shipment) {
+//        PreparedStatement pstmt;
+//        try {
+//            pstmt = connection.prepareStatement("INSERT INTO shipments" + 
+//                    "(originatorID, origin, destination, priority)" +
+//                    "VALUES (?, ?, ?, ?)");
+//            pstmt.setInt(1, shipment.getOriginatorID());
+//            pstmt.setString(2, shipment.getOrigin());
+//            pstmt.setString(3, shipment.getDestination());
+//            pstmt.setInt(4, shipment.getPriority());
+//            return pstmt.execute();
+//        }
+//        catch (SQLException e) {
+//            System.err.println("Unable to insert shipment.");
+//            e.printStackTrace();
+//            return false;
+//        }
+//    }
     
     public int getProductIDByName(String name) {
         PreparedStatement pstmt;
@@ -122,22 +122,21 @@ public class DatabaseConnection {
         }
     }
     
-    //Merge with insertShipment once functional
-    public boolean insertShipment2(Shipment shipment, ArrayList<ProductShipped> products) {
+    public boolean insertShipment(Shipment shipment, ArrayList<ProductShipped> products) {
         PreparedStatement pstmt;
         PreparedStatement pstmt2;
         try {
             pstmt = connection.prepareStatement("INSERT INTO shipments " + 
                     "(originatorID, origin, destination, priority)" +
-                    "VALUES (?, ?, ?, ?)");
+                    "VALUES (?, ?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
             pstmt.setInt(1, shipment.getOriginatorID());
             pstmt.setString(2, shipment.getOrigin());
             pstmt.setString(3, shipment.getDestination());
             pstmt.setInt(4, shipment.getPriority());
-            pstmt.execute();
-            Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT LAST_INSERT_ID()");
-            int shipID = rs.getInt("LAST_INSERT_ID()");
+            pstmt.executeUpdate();
+            ResultSet rs = pstmt.getGeneratedKeys();
+            rs.next();
+            int shipID = rs.getInt(1);
             pstmt2 = connection.prepareStatement("INSERT INTO productsshipped" +
                     " (shipID, productID, quantity) VALUES (?, ?, ?)");
             pstmt2.setInt(1, shipID);
