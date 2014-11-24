@@ -1,7 +1,7 @@
 /*  Supply Chain Central Application
     Michael Bernard, Benjamin Chopson, Vasily Kushakov
     CSCI 3321
-    Shipment Window
+    Toolbar
  */
 
 package tools;
@@ -142,5 +142,5 @@ public class Toolbar extends HBox {
 
         getStylesheets().add
                 (Toolbar.class.getResource("DialogBoxCSS.css").toExternalForm());
-    } // No-arg constructor
+    }
 }

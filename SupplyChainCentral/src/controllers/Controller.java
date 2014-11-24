@@ -26,6 +26,7 @@ public class Controller extends Application {
     private TrackingController tController;
     private SchedulingController sController;
     private User user; //user for this session
+    private User systemAdmin;
     public LoginWindow loginWindow;
     public MainWindow mainWindow;
     private DatabaseConnection dbConn;
@@ -52,7 +53,7 @@ public class Controller extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) throws SQLException {
         try {
             dbConn = new DatabaseConnection(0);
             tController = new TrackingController();
@@ -69,18 +70,13 @@ public class Controller extends Application {
                     user = dbConn.getUser(Integer.parseInt(loginWindow.employeeIDField.getText()),
                             loginWindow.pwField.getText());
                     sController.setUser(user);
-                    try {
-                        dbConn.switchUser(user.getRoleID());
-                    } catch (SQLException sqlE) {
-                        loginWindow.close();
-                        showFailedConnection();
-                    }
+
                     loginWindow.close();
+                    mainWindow.show();
                     mainWindow.welcomeLabel.setText("Logged in as " +
                             user.getfName() + " " + user.getlName());
                     sController.shipmentWindow.welcomeLabel.setText("Logged in as " +
                             user.getfName() + " " + user.getlName());
-                    mainWindow.show();
                 } else {
                     loginAttempts++;
                     
@@ -91,7 +87,6 @@ public class Controller extends Application {
 
                     loginWindow.lblInvalid.setVisible(true);
                     loginWindow.lblAttempts.setVisible(true);
-                    loginWindow.lblAttempts.setTextFill(Color.RED);
                     loginWindow.employeeIDField.clear();
                     loginWindow.pwField.clear();
                     loginWindow.employeeIDField.requestFocus();
@@ -99,6 +94,20 @@ public class Controller extends Application {
                     loginWindow.lblAttempts.setText((MAX_LOGIN_ATTEMPTS - loginAttempts)
                             + " attempt(s) remaining");
                 }
+            });
+            
+            // System admin login (as Fred Smith, by default)
+            loginWindow.btnLoginAdmin.setOnAction(e -> {
+                systemAdmin = new User("Fred", "Smith", 4444, 3333, 4, "LA", "fsmith");
+                sController.setUser(systemAdmin);
+
+                loginWindow.close();
+                mainWindow.show();
+                mainWindow.welcomeLabel.setText("Logged in as System Administrator");
+                mainWindow.welcomeLabel.setId("errormessage");
+                sController.shipmentWindow.welcomeLabel.setText("Logged in as "
+                                                              + "System Administrator");
+                sController.shipmentWindow.welcomeLabel.setId("errormessage");
             });
 
             mainWindow.toolbar.FILE_DROPDOWN.setOnAction(e -> {

@@ -1,7 +1,7 @@
 /*  Supply Chain Central Application
     Michael Bernard, Benjamin Chopson, Vasily Kushakov
     CSCI 3321
-    Shipment Window
+    Inventory Window
  */
 
 package windows;
@@ -23,7 +23,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-public class ShipmentWindow extends Stage {
+public class InventoryWindow extends Stage {
 
     public TextField QUANTITY_TF = new TextField();
     public Button CREATE_SHIPMENT_BUTTON = new Button("Create Shipment");
@@ -57,7 +57,7 @@ public class ShipmentWindow extends Stage {
     
     public Label success = new Label("Shipment added succesfully.");  
 
-    public ShipmentWindow() {
+    public InventoryWindow() {
         headerPane.getChildren().add(welcomeLabel);
         welcomeLabel.setPadding(new Insets(5, 20, 5, 5));
         headerPane.setAlignment(Pos.TOP_RIGHT);

@@ -5,12 +5,14 @@
 */
 package controllers;
 
+import windows.*;
+
 /**
  *
  * @author Benjamin
  */
 public class TrackingController {
-    public TrackingController() {
-        
-    }
+    public InventoryWindow shipmentWindow;
+    
+    public TrackingController() {}
 }
