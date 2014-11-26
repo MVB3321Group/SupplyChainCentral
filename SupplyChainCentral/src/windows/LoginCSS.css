@@ -1,5 +1,6 @@
 .root {
 /*    -fx-background-image: );*/
+    -fx-url-image: "CTLogo.png";
     -fx-background-color: #333333;
 }
 
@@ -13,22 +14,17 @@
    -fx-font-size: 32px;
    -fx-font-family: "Arial Black";
    -fx-fill: #e7541b;
-   -fx-alignment: center; 
+   -fx-alignment: center;
    -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );
 }
 
 #actiontarget {
   -fx-fill: FIREBRICK;
   -fx-font-weight: bold;
-  -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
 }
 
 #errormessage.label {
     -fx-text-fill: red;
-}
-
-#errormessage.textfield {
-    -fx-border: 1px solid red;
 }
 
 .textfield {
@@ -36,9 +32,25 @@
 }
 
 .button {
-    -fx-text-fill: white;
+    -fx-text-fill: #ffff33;
     -fx-font-family: "Arial Narrow";
     -fx-font-weight: bold;
     -fx-background-color: linear-gradient(#61a2b1, #2A5058);
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+}
+
+.combobox {
+    -fx-text-fill: white;
+    -fx-font-family: "Arial Narrow";
+    -fx-font-weight: bold;
+    -fx-background-color: linear-gradient(#ff6777, red);
+/*    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );*/
+}
+
+#systemAdmin.button {
+    -fx-text-fill: white;
+    -fx-font-family: "Arial Narrow";
+    -fx-font-weight: bold;
+    -fx-background-color: linear-gradient(#ff6777, red);
+/*    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );*/
 }
