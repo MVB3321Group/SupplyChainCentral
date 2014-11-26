@@ -1,27 +1,25 @@
 package windows;
 
-import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
-import javafx.stage.Stage;
 
-public class TrackingWindow extends Application {
+public class TrackingWindow {
 
-    @Override
-    public void start(Stage primaryStage) {
-        BorderPane pane = new BorderPane();
-
-        pane.setTop(getHBox());
-        pane.setLeft(getVBox());
-
-        Scene scene = new Scene(pane, 800, 600);
-        primaryStage.setTitle("SCC Tracking Module");
-        primaryStage.setScene(scene);
-        primaryStage.show();
-    }
+//    @Override
+//    public void start(Stage primaryStage) {
+//        BorderPane pane = new BorderPane();
+//
+//        pane.setTop(getHBox());
+//        pane.setLeft(getVBox());
+//
+//        Scene scene = new Scene(pane, 800, 600);
+//        primaryStage.setTitle("SCC Tracking Module");
+//        primaryStage.setScene(scene);
+//        primaryStage.show();
+//    }
 
     private HBox getHBox() {
         HBox hBox = new HBox(15);
@@ -48,9 +46,5 @@ public class TrackingWindow extends Application {
         }
 
         return vBox;
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }

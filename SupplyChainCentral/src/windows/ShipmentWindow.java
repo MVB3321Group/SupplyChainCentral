@@ -112,12 +112,13 @@ public class ShipmentWindow extends Stage {
         PRODUCTS_TABLE.setPlaceholder(empty);
         prodTablePane.add(SHIPMENTS_TABLE, 0, 1);
         prodTablePane.add(DESTINATIONS_CHART, 1, 1);
-        initializeProductsTable();
         prodTablePane.add(PRODUCTS_TABLE, 1, 0);
         GridPane.setValignment(PRODUCTS_TABLE, VPos.CENTER);
         prodTablePane.setAlignment(Pos.CENTER);
         gPane.setPadding(new Insets(20, 20, 20, 0));
         bPane.setCenter(prodTablePane);
+        
+        initializeProductsTable();
         
         X_AXIS.setLabel("Destination");
         X_AXIS.setTickLabelFill(Color.WHITE);
@@ -151,6 +152,5 @@ public class ShipmentWindow extends Stage {
                 = new TableColumn("Quantity");
         quantityCol.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         PRODUCTS_TABLE.getColumns().setAll(productCol, quantityCol);
-        ProductShipped ps = new ProductShipped(1, 5);
     }
 }

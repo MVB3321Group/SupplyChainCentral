@@ -56,7 +56,7 @@ public class Controller extends Application {
     public void start(Stage primaryStage) throws SQLException {
         try {
             dbConn = new DatabaseConnection(0);
-            tController = new TrackingController();
+            tController = new TrackingController(dbConn);
             sController = new SchedulingController(dbConn);
             mainWindow = new MainWindow();
             loginWindow = new LoginWindow();
@@ -76,6 +76,8 @@ public class Controller extends Application {
                     mainWindow.welcomeLabel.setText("Logged in as " +
                             user.getfName() + " " + user.getlName());
                     sController.shipmentWindow.welcomeLabel.setText("Logged in as " +
+                            user.getfName() + " " + user.getlName());
+                    tController.inventoryWindow.welcomeLabel.setText("Logged in as " +
                             user.getfName() + " " + user.getlName());
                 } else {
                     loginAttempts++;
@@ -108,6 +110,9 @@ public class Controller extends Application {
                 sController.shipmentWindow.welcomeLabel.setText("Logged in as "
                                                               + "System Administrator");
                 sController.shipmentWindow.welcomeLabel.setId("errormessage");
+                tController.inventoryWindow.welcomeLabel.setText("Logged in as "
+                                                              + "System Administrator");
+                tController.inventoryWindow.welcomeLabel.setId("errormessage");
             });
 
             mainWindow.toolbar.FILE_DROPDOWN.setOnAction(e -> {
@@ -123,8 +128,8 @@ public class Controller extends Application {
             
             mainWindow.toolbar.VIEW_DROPDOWN.setOnAction(e -> {
                 switch (mainWindow.toolbar.VIEW_DROPDOWN.getValue()) {
-                    case "":
-                        
+                    case "View Inventory":
+                        tController.inventoryWindow.show();
                         break;
                 }
                 
@@ -179,6 +184,9 @@ public class Controller extends Application {
             // Actions for navPane buttons
             mainWindow.buttons[0].setOnAction(e -> {
                 sController.shipmentWindow.show();
+            });
+            mainWindow.buttons[3].setOnAction(e -> {
+                tController.inventoryWindow.show();
             });
             mainWindow.buttons[8].setOnAction(e -> {
                 aboutSCC();

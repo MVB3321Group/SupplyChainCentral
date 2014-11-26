@@ -84,8 +84,7 @@ public class SchedulingController {
                     productsShippedList.clear();
                     shipmentWindow.PRODUCTS_TABLE.getItems().clear();
                 }
-            } catch (Exception ex) {
-            }
+            } catch (Exception ex) {}
         });
         
         shipmentWindow.PRODUCTS_TABLE.setOnMouseEntered(e -> {
@@ -138,11 +137,11 @@ public class SchedulingController {
         dbConn.insertShipment(shpmt, productsShippedList); // switch back to insertShipment
     }
     
-    private void populateProducts() { 
+    public void populateProducts() { 
         ArrayList<String> productList = new ArrayList<>();
         
-        for (int i = 0; i < dbConn.getProducts().size(); i++)
-            productList.add(dbConn.getProducts().get(i).getPName());
+        for (Product p : dbConn.getProducts())
+            productList.add(p.getPName());
   
         ObservableList<String> prodDropdownList
                 = FXCollections.observableArrayList(productList);
@@ -152,12 +151,11 @@ public class SchedulingController {
         });
     }
     
-    private void populateOrigins() {
+    public void populateOrigins() {
         ArrayList<String> origList = new ArrayList<>();
         
-        // "Converts" Location objects into String objects for later use
-        for (int i = 0; i < dbConn.getLocations().size(); i++)
-            origList.add(dbConn.getLocations().get(i).getLocationCode());
+       for (Location l : dbConn.getLocations())
+            origList.add(l.getLocationCode());
   
         ObservableList<String> origDropdownList
                 = FXCollections.observableArrayList(origList);
@@ -167,7 +165,7 @@ public class SchedulingController {
         });
     }
     
-    private void populateDestinations() { 
+    public void populateDestinations() { 
         ArrayList<String> destList = new ArrayList<>();
         
         for (Location l : dbConn.getLocations())
@@ -185,24 +183,26 @@ public class SchedulingController {
         DialogBox dialog = new DialogBox("Save shipment info?", "Save?", "Yes", "No", 300, 100);
         dialog.show();
         dialog.label.setId("generic");
-        dialog.btn.setOnAction(x -> dialog.close());
-        dialog.btn2.setOnAction(x -> {dialog.close(); shipmentWindow.close();});
+        dialog.btn.setOnAction(e -> dialog.close());
+        dialog.btn2.setOnAction(e -> {dialog.close(); shipmentWindow.close();});
     }
     
     private void promptAddProduct() {
-        DialogBox dialog = new DialogBox("Please add a product to the shipment.", "SCC", "Close", 300, 100);
+        DialogBox dialog = new DialogBox("Please add a product to the shipment.",
+                                         "SCC", "Close", 300, 100);
         dialog.show();
         dialog.label.setId("generic");
         dialog.btn.setDefaultButton(true);
-        dialog.btn.setOnAction(x -> dialog.close());
+        dialog.btn.setOnAction(e -> dialog.close());
     }
     
     private void noShipmentsCreated() {
-        DialogBox dialog = new DialogBox("Please create a shipment for the shipping queue.", "SCC", "Close", 300, 100);
+        DialogBox dialog = new DialogBox("Please create a shipment for the shipping"
+                                       + "queue.", "SCC", "Close", 300, 100);
         dialog.show();
         dialog.label.setId("generic");
         dialog.btn.setDefaultButton(true);
-        dialog.btn.setOnAction(x -> dialog.close());
+        dialog.btn.setOnAction(e -> dialog.close());
     }
     
     private void populateShipmentsTable() {
