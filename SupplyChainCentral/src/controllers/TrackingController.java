@@ -12,6 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import tableobjects.Inventory;
 import tableobjects.Location;
 import tableobjects.Product;
 import tableobjects.ProductShipped;
@@ -26,8 +27,6 @@ import windows.*;
 public class TrackingController {
     
     public InventoryWindow inventoryWindow;
-    SchedulingController sController;
-    TableView<ProductShipped> inventoryTable;
     DatabaseConnection dbConn;
     User user;
 
@@ -35,9 +34,26 @@ public class TrackingController {
         this.dbConn = dbConn;
         inventoryWindow = new InventoryWindow();
         populateLocations();
+        populateInventoryTable();
+        
+        //Event handler; Filter inventory by location from dropdown
+        inventoryWindow.LOCATION_DROPDOWN.setOnAction(e -> {
+            ArrayList<Inventory> inventoryFiltered = new ArrayList<>();
+            for (Inventory i : inventoryWindow.INVENTORY_TABLE.getItems()) {
+                if (i.getLocationCode().equals(inventoryWindow.LOCATION_DROPDOWN.getValue()))
+                    inventoryFiltered.add(i);
+            }
+            inventoryWindow.INVENTORY_TABLE.getItems().clear();
+            inventoryWindow.INVENTORY_TABLE.getItems().addAll(inventoryFiltered);
+        });
     }
     
-    private void populateLocations() {
+    public void populateInventoryTable() {
+        ArrayList<Inventory> inventory = dbConn.getInventory();
+        inventoryWindow.INVENTORY_TABLE.getItems().addAll(inventory);
+    }
+    
+    public void populateLocations() {
         ArrayList<String> locationList = new ArrayList<>();
         
        for (Location l : dbConn.getLocations())
@@ -49,5 +65,9 @@ public class TrackingController {
         inventoryWindow.LOCATION_DROPDOWN.setOnAction(e -> {
             locationDropdownList.indexOf(inventoryWindow.LOCATION_DROPDOWN.getValue());
         });
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

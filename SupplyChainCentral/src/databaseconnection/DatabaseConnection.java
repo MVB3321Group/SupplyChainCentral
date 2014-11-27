@@ -79,30 +79,6 @@ public class DatabaseConnection {
         return conn;
     }
     
-    /**
-     * 
-     * @param shipment
-     * @return 
-     */
-//    public boolean insertShipment(Shipment shipment) {
-//        PreparedStatement pstmt;
-//        try {
-//            pstmt = connection.prepareStatement("INSERT INTO shipments" + 
-//                    "(originatorID, origin, destination, priority)" +
-//                    "VALUES (?, ?, ?, ?)");
-//            pstmt.setInt(1, shipment.getOriginatorID());
-//            pstmt.setString(2, shipment.getOrigin());
-//            pstmt.setString(3, shipment.getDestination());
-//            pstmt.setInt(4, shipment.getPriority());
-//            return pstmt.execute();
-//        }
-//        catch (SQLException e) {
-//            System.err.println("Unable to insert shipment.");
-//            e.printStackTrace();
-//            return false;
-//        }
-//    }
-    
     public int getProductIDByName(String name) {
         PreparedStatement pstmt;
         try {
@@ -198,6 +174,28 @@ public class DatabaseConnection {
             e.printStackTrace();
             return false;
         }
+    }
+    
+    public ArrayList<Inventory> getInventory() {
+        Statement stmt;
+        ResultSet rs;
+        ArrayList<Inventory> inventory = new ArrayList<>();
+        try {
+            stmt = connection.createStatement();
+            rs = stmt.executeQuery("SELECT * FROM Inventory");
+            while (rs.next()) {
+                Inventory i = new Inventory(
+                    rs.getString("locationCode"),
+                    rs.getInt("productID"),
+                    rs.getInt("amount")
+                );
+                inventory.add(i);
+            }
+        }
+        catch (SQLException e) {
+            System.err.println("Unable to retrieve inventory.");
+        }
+        return inventory;
     }
     
     public ArrayList<Shipment> getShipments() {
@@ -418,5 +416,38 @@ public class DatabaseConnection {
             e.printStackTrace();
         }
         return user;
+    }
+    
+    public boolean upsertInventory(Inventory i) {
+        PreparedStatement pstmt;
+        ResultSet rs;
+        try {
+            pstmt = connection.prepareStatement("SELECT amount FROM inventory"
+                    + "WHERE productID = ? AND locationCode = ?");
+            pstmt.setInt(1, i.getProductID());
+            pstmt.setString(2, i.getLocationCode());
+            rs = pstmt.executeQuery();
+            if (! rs.next()) {
+                pstmt = connection.prepareStatement("INSERT INTO inventory"
+                        + " VALUES (?, ?, ?)");
+                pstmt.setString(1, i.getLocationCode());
+                pstmt.setInt(2, i.getProductID());
+                pstmt.setInt(3, i.getAmount());
+                pstmt.executeQuery();
+            }
+            else {
+                pstmt = connection.prepareStatement("UPDATE inventory SET" +
+                        " amount = ? WHERE productID = ? AND locationCode = ?");
+                pstmt.setInt(1, i.getAmount());
+                pstmt.setInt(2, i.getProductID());
+                pstmt.setString(3, i.getLocationCode());
+            }
+            return true;
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Unable to upsert inventory.");
+            return false;
+        }
     }
 }

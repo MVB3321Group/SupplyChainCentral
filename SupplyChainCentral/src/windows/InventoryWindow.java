@@ -23,8 +23,7 @@ public class InventoryWindow extends Stage {
 
     public Button VIEW_INVENTORY_BUTTON = new Button("View Inventory");
     public ComboBox<String> LOCATION_DROPDOWN = new ComboBox<>();
-    public final String[] PRTY_OPTIONS = {"1", "2", "3", "4", "5"};
-    public TableView<ProductShipped> INVENTORY_TABLE = new TableView<>();
+    public TableView<Inventory> INVENTORY_TABLE = new TableView<>();
 
     public Stage inventoryWindow = new Stage();
     public Label welcomeLabel = new Label();
@@ -74,16 +73,16 @@ public class InventoryWindow extends Stage {
         INVENTORY_TABLE.setMaxWidth(160);
         INVENTORY_TABLE.setMaxHeight(200);
         
-        ObservableList<ProductShipped> productList
-                = FXCollections.observableArrayList(new ArrayList<ProductShipped>());
-        INVENTORY_TABLE.setItems(productList);
+        ObservableList<Inventory> inventory
+                = FXCollections.observableArrayList(new ArrayList<Inventory>());
+        INVENTORY_TABLE.setItems(inventory);
         
-        TableColumn<ProductShipped, String> productCol
+        TableColumn<Inventory, String> productCol
                 = new TableColumn("Product");
-        productCol.setCellValueFactory(new PropertyValueFactory<>("productName"));
-        TableColumn<ProductShipped, String> quantityCol
-                = new TableColumn("Quantity");
-        quantityCol.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        productCol.setCellValueFactory(new PropertyValueFactory<>("productID"));
+        TableColumn<Inventory, String> quantityCol
+                = new TableColumn("Amount");
+        quantityCol.setCellValueFactory(new PropertyValueFactory<>("amount"));
         INVENTORY_TABLE.getColumns().setAll(productCol, quantityCol);
     }
 }

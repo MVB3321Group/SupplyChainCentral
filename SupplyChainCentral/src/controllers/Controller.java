@@ -70,6 +70,7 @@ public class Controller extends Application {
                     user = dbConn.getUser(Integer.parseInt(loginWindow.employeeIDField.getText()),
                             loginWindow.pwField.getText());
                     sController.setUser(user);
+                    tController.setUser(user);
 
                     loginWindow.close();
                     mainWindow.show();
