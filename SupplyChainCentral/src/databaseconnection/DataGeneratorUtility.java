@@ -26,19 +26,20 @@ public class DataGeneratorUtility {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-//        try {
-//            DatabaseConnection conn = new DatabaseConnection(1);
-//            ArrayList<Location> locations = conn.getLocations();
-//            ArrayList<Product> products = conn.getProducts();
-//            for (Location l : locations) {
-//                for (Product p : products) {
-//                    PreparedStatement pstmt = conn.prepareStatement(
-//                        "INSERT INTO inventory VALUES (?,?,?)");
-//                }
-//            }
-//        }
-//        catch (SQLException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            DatabaseConnection conn = new DatabaseConnection(1);
+            ArrayList<Location> locations = conn.getLocations();
+            ArrayList<Product> products = conn.getProducts();
+            for (Location l : locations) {
+                for (Product p : products) {
+                    Inventory i = new Inventory(l.getLocationCode(),
+                        p.getProductID(), (int)(Math.random() * 100.0));
+                    conn.upsertInventory(i);
+                }
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -38,6 +38,7 @@ public class TrackingController {
         
         //Event handler; Filter inventory by location from dropdown
         inventoryWindow.LOCATION_DROPDOWN.setOnAction(e -> {
+            populateInventoryTable();
             ArrayList<Inventory> inventoryFiltered = new ArrayList<>();
             for (Inventory i : inventoryWindow.INVENTORY_TABLE.getItems()) {
                 if (i.getLocationCode().equals(inventoryWindow.LOCATION_DROPDOWN.getValue()))
@@ -50,6 +51,7 @@ public class TrackingController {
     
     public void populateInventoryTable() {
         ArrayList<Inventory> inventory = dbConn.getInventory();
+        inventoryWindow.INVENTORY_TABLE.getItems().clear();
         inventoryWindow.INVENTORY_TABLE.getItems().addAll(inventory);
     }
     

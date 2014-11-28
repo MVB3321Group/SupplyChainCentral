@@ -423,7 +423,7 @@ public class DatabaseConnection {
         ResultSet rs;
         try {
             pstmt = connection.prepareStatement("SELECT amount FROM inventory"
-                    + "WHERE productID = ? AND locationCode = ?");
+                    + " WHERE productID = ? AND locationCode = ?");
             pstmt.setInt(1, i.getProductID());
             pstmt.setString(2, i.getLocationCode());
             rs = pstmt.executeQuery();
@@ -433,7 +433,7 @@ public class DatabaseConnection {
                 pstmt.setString(1, i.getLocationCode());
                 pstmt.setInt(2, i.getProductID());
                 pstmt.setInt(3, i.getAmount());
-                pstmt.executeQuery();
+                pstmt.execute();
             }
             else {
                 pstmt = connection.prepareStatement("UPDATE inventory SET" +
@@ -441,6 +441,7 @@ public class DatabaseConnection {
                 pstmt.setInt(1, i.getAmount());
                 pstmt.setInt(2, i.getProductID());
                 pstmt.setString(3, i.getLocationCode());
+                pstmt.execute();
             }
             return true;
         }
