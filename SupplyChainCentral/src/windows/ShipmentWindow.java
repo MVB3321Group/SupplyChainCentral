@@ -33,6 +33,7 @@ import javafx.stage.Stage;
 public class ShipmentWindow extends Stage {
 
     public TextField QUANTITY_TF = new TextField();
+    public TextField ETA_TF = new TextField();
     public Button CREATE_SHIPMENT_BUTTON = new Button("Create Shipment");
     public Button SCHEDULE_SHIPMENTS_BUTTON = new Button("Schedule Shipments");
     public Button addProductsButton = new Button("Add Product to Shipment");
@@ -82,8 +83,10 @@ public class ShipmentWindow extends Stage {
         gPane.add(ORIG_DROPDOWN, 1, 4);
         gPane.add(new Label("Destination: "), 0, 5);
         gPane.add(DEST_DROPDOWN, 1, 5);
-        gPane.add(CREATE_SHIPMENT_BUTTON, 1, 6);
-        gPane.add(SCHEDULE_SHIPMENTS_BUTTON, 3, 6);
+//        gPane.add(new Label("Desired ETA: "), 0, 6);
+//        gPane.add(ETA_TF, 1, 6);
+//        gPane.add(CREATE_SHIPMENT_BUTTON, 1, 7);
+//        gPane.add(SCHEDULE_SHIPMENTS_BUTTON, 3, 7);
         gPane.setHgap(10);
         gPane.setVgap(10);
         
