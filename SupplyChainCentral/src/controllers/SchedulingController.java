@@ -7,6 +7,7 @@
 package controllers;
 
 import databaseconnection.DatabaseConnection;
+import java.sql.Timestamp;
 import tableobjects.*;
 import windows.*;
 import java.util.ArrayList;
@@ -216,6 +217,7 @@ public class SchedulingController {
             
             long current = System.currentTimeMillis( );
             Date d1 = new Date();
+             //Timestamp d1 = new (114,11,25,0,0,0);
             if(s1.getETA()!= null){
                 d1 = s1.getETA();
             }
