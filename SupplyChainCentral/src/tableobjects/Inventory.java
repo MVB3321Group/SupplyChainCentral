@@ -12,12 +12,12 @@ package tableobjects;
 public class Inventory {
     private String locationCode;
     private int productID;
-    private int amount;
+    private int quantity;
     
-    public Inventory(String locationCode, int productID, int amount) {
+    public Inventory(String locationCode, int productID, int quantity) {
         setLocationCode(locationCode);
         setProductID(productID);
-        setAmount(amount);
+        setQuantity(quantity);
     }
 
     public String getLocationCode() {
@@ -36,11 +36,11 @@ public class Inventory {
         this.productID = productID;
     }
 
-    public int getAmount() {
-        return amount;
+    public int getQuantity() {
+        return quantity;
     }
 
-    public void setAmount(int amount) {
-        this.amount = amount;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }
