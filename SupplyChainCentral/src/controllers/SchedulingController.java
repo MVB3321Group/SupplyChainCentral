@@ -10,14 +10,17 @@ import databaseconnection.DatabaseConnection;
 import java.sql.Timestamp;
 import tableobjects.*;
 import windows.*;
-import java.util.ArrayList;
+import tools.DialogBox;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import java.util.*;
+import javafx.scene.input.MouseButton;
+
 /**
  *
  * @author Benjamin
@@ -27,9 +30,12 @@ public class SchedulingController {
     public ShipmentWindow shipmentWindow;
     TableView<Shipment> shipTable;
     TableView<Shipment> schdTable;
+    Tooltip noProducts = new Tooltip("No products added to shipment");
+    Tooltip removeProduct = new Tooltip("Right-click to remove product");
+    ArrayList<ProductShipped> productsShippedList = new ArrayList<>();
     DatabaseConnection dbConn;
     User user;
-
+ 
     public SchedulingController(DatabaseConnection dbConn) {
         this.dbConn = dbConn;
         shipmentWindow = new ShipmentWindow();
@@ -39,29 +45,82 @@ public class SchedulingController {
         populateOrigins();
         populateDestinations();
         populateShipmentChart();
-        
-        shipmentWindow.addProductsButton.setOnAction(e -> {
-            String productName = shipmentWindow.PROD_DROPDOWN.getValue();
-            int productID = dbConn.getProductIDByName(productName);
-            int quantity = Integer.valueOf(shipmentWindow.QUANTITY_TF.getText());
-            ProductShipped ps = new ProductShipped(productID, quantity);
-            ps.setProductName(productName);
-            shipmentWindow.productsTable.getItems().add(ps);
+
+        shipmentWindow.ADD_PRODUCT_BUTTON.setOnAction(e -> {
+            try {
+                String productName = shipmentWindow.PROD_DROPDOWN.getValue();
+                int quantity = Integer.valueOf(shipmentWindow.QUANTITY_TF.getText());
+                boolean duplicate = false;
+                
+                // Below code provides corrective action for duplicate products
+                for (ProductShipped existing : productsShippedList) {
+                    if (productName.equals(existing.getProductName())) {
+                        duplicate = true;
+                        existing.setQuantity(existing.getQuantity() + quantity);
+                        shipmentWindow.PRODUCTS_TABLE.getItems().clear(); // To "refresh" 
+                        shipmentWindow.PRODUCTS_TABLE.getItems().addAll(productsShippedList); // the table
+                        break;
+                    }
+                }
+
+                if (!duplicate) {
+                    int productID = dbConn.getProductIDByName(productName);
+                    ProductShipped newProduct = new ProductShipped(productID, quantity);
+                    newProduct.setProductName(productName);
+                    productsShippedList.add(newProduct);
+                    shipmentWindow.PRODUCTS_TABLE.getItems().add(newProduct);
+                }
+            } catch (Exception ex) {}
         });
         
         shipmentWindow.CREATE_SHIPMENT_BUTTON.setOnAction(e -> {
-            shipmentWindow.DESTINATIONS_CHART.getData().clear();
-            createShipment();
-            //TODO add products in createShipment method
-            populateShipmentsTable();
-            populateShipmentChart();
+            try {
+                if (productsShippedList.isEmpty())
+                    promptAddProduct();
+                else {
+                    createShipment();
+                    shipmentWindow.DESTINATIONS_CHART.getData().clear();
+                    populateShipmentsTable();
+                    populateShipmentChart();
+                    productsShippedList.clear();
+                    shipmentWindow.PRODUCTS_TABLE.getItems().clear();
+                }
+            } catch (Exception ex) {}
+        });
+        
+        shipmentWindow.PRODUCTS_TABLE.setOnMouseEntered(e -> {
+            if (productsShippedList.isEmpty())
+                shipmentWindow.PRODUCTS_TABLE.setTooltip(noProducts);
+            else
+                shipmentWindow.PRODUCTS_TABLE.setTooltip(removeProduct);
+        });
+
+        shipmentWindow.PRODUCTS_TABLE.setOnMouseClicked(e -> {
+            if (!productsShippedList.isEmpty()) {
+                if (e.getButton() == MouseButton.SECONDARY) {
+                    int selectedIndex = shipmentWindow.PRODUCTS_TABLE.getSelectionModel().getSelectedIndex();
+
+                    productsShippedList.remove(selectedIndex);
+                    shipmentWindow.PRODUCTS_TABLE.getItems().remove(selectedIndex);
+                }
+            }
         });
         
         shipmentWindow.SCHEDULE_SHIPMENTS_BUTTON.setOnAction(e -> {
-            scheduleShipments();
-            //getScheduledShipments();
-            
+            try {
+                if (productsShippedList.isEmpty())
+                    noShipmentsCreated();
+                else {
+                    scheduleShipments();
+                    //getScheduledShipments();
+                }
+            } catch (Exception ex) {}
         });
+        
+//        shipmentWindow.setOnCloseRequest(e -> {
+//            shipmentWindow.show();
+//            promptSaveShipment();
+//        });
     }
     
     public void setUser(User user) {
@@ -69,23 +128,21 @@ public class SchedulingController {
         populateShipmentsTable();
     }
     
-    public void createShipment() {
+    private void createShipment() {
         int originatorID = user.getEmployeeID();
         String orig = shipmentWindow.ORIG_DROPDOWN.getValue();
         String dest = shipmentWindow.DEST_DROPDOWN.getValue();
         int prty = Integer.valueOf(shipmentWindow.PRTY_DROPDOWN.getValue());
         
         Shipment shpmt = new Shipment(originatorID, orig, dest, prty);
-        dbConn.insertShipment(shpmt);
-        //TODO: add products
+        dbConn.insertShipment(shpmt, productsShippedList); // switch back to insertShipment
     }
     
     public void populateProducts() { 
         ArrayList<String> productList = new ArrayList<>();
         
-        // "Converts" Product objects into String objects for later use
-        for (int i = 0; i < dbConn.getProducts().size(); i++)
-            productList.add(dbConn.getProducts().get(i).getPName());
+        for (Product p : dbConn.getProducts())
+            productList.add(p.getPName());
   
         ObservableList<String> prodDropdownList
                 = FXCollections.observableArrayList(productList);
@@ -98,9 +155,8 @@ public class SchedulingController {
     public void populateOrigins() {
         ArrayList<String> origList = new ArrayList<>();
         
-        // "Converts" Location objects into String objects for later use
-        for (int i = 0; i < dbConn.getLocations().size(); i++)
-            origList.add(dbConn.getLocations().get(i).getLocationCode());
+       for (Location l : dbConn.getLocations())
+            origList.add(l.getLocationCode());
   
         ObservableList<String> origDropdownList
                 = FXCollections.observableArrayList(origList);
@@ -113,9 +169,8 @@ public class SchedulingController {
     public void populateDestinations() { 
         ArrayList<String> destList = new ArrayList<>();
         
-        // "Converts" Destination objects into String objects for later use
-        for (int i = 0; i < dbConn.getLocations().size(); i++)
-            destList.add(dbConn.getLocations().get(i).getLocationCode());
+        for (Location l : dbConn.getLocations())
+            destList.add(l.getLocationCode());
   
         ObservableList<String> destDropdownList
                 = FXCollections.observableArrayList(destList);
@@ -125,13 +180,41 @@ public class SchedulingController {
         });
     }
     
-    public void populateShipmentsTable() {
+    private void promptSaveShipment() {
+        DialogBox dialog = new DialogBox("Save shipment info?", "Save?", "Yes", "No", 300, 100);
+        dialog.show();
+        dialog.label.setId("generic");
+        dialog.btn.setOnAction(e -> dialog.close());
+        dialog.btn2.setOnAction(e -> {dialog.close(); shipmentWindow.close();});
+    }
+    
+    private void promptAddProduct() {
+        DialogBox dialog = new DialogBox("Please add a product to the shipment.",
+                                         "SCC", "Close", 300, 100);
+        dialog.show();
+        dialog.label.setId("generic");
+        dialog.btn.setDefaultButton(true);
+        dialog.btn.setOnAction(e -> dialog.close());
+    }
+    
+    private void noShipmentsCreated() {
+        DialogBox dialog = new DialogBox("Please create a shipment for the shipping"
+                                       + "queue.", "SCC", "Close", 300, 100);
+        dialog.show();
+        dialog.label.setId("generic");
+        dialog.btn.setDefaultButton(true);
+        dialog.btn.setOnAction(e -> dialog.close());
+    }
+    
+    private void populateShipmentsTable() {
         ArrayList<Shipment> shipments = new ArrayList<>();
+        
         for (Shipment s : dbConn.getShipments()) {
             if (s.getOriginatorID() == user.getEmployeeID()) {
                 shipments.add(s);
             }
         }
+        
         ObservableList<Shipment> shipmentList
                 = FXCollections.observableArrayList(shipments);
         shipTable = shipmentWindow.SHIPMENTS_TABLE;
@@ -149,7 +232,7 @@ public class SchedulingController {
         shipTable.getColumns().setAll(riginatorCol, originCol, destCol, priorityCol);
     }
     
-    public void populateShipmentChart() {
+    private void populateShipmentChart() {
         XYChart.Series<String, Integer> series = new XYChart.Series<>();
         ArrayList<Shipment> shipments = dbConn.getShipments();
         ArrayList<Location> locations = dbConn.getLocations();
@@ -167,6 +250,7 @@ public class SchedulingController {
                 }
             }
         }
+        
         shipmentWindow.Y_AXIS.setUpperBound(Math.ceil(max * 1.1));
         
         for (int i = 0; i < count.length; i++)
@@ -175,7 +259,7 @@ public class SchedulingController {
         shipmentWindow.DESTINATIONS_CHART.getData().add(series);
     }
 
-    public void scheduleShipments() {
+    private void scheduleShipments() {
         // get an arraylist of the currently pending shipments.
         ArrayList<Shipment> pendShipments = dbConn.getPendingShipments();
         // create a priorityqueue. This PQ will be accessed to see 
@@ -184,7 +268,7 @@ public class SchedulingController {
         // sort the queue to get the proper queue values.
         Queue<Shipment> schedulePriorityQueue = new PriorityQueue<>(20, scheduleComparator);
 
-        for(Shipment s : pendShipments) {
+        for (Shipment s : pendShipments) {
             schedulePriorityQueue.add(s);           
         }
         
@@ -236,8 +320,17 @@ public class SchedulingController {
             //uses priority values to weigh the times.
             int ETAvalue = s1P * d1Current - s2P * d2Current;
             return ETAvalue;
-        }
+         }
     };
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
 //    public void populateScheduleTable(){
 //        
