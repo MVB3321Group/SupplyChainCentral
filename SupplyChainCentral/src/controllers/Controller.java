@@ -25,7 +25,9 @@ public class Controller extends Application {
     private int loginAttempts;
     private TrackingController tController;
     private SchedulingController sController;
+    private SimulationController simController;
     private User user; //user for this session
+    private User systemAdmin;
     public LoginWindow loginWindow;
     public MainWindow mainWindow;
     private DatabaseConnection dbConn;
@@ -52,11 +54,12 @@ public class Controller extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) throws SQLException {
         try {
             dbConn = new DatabaseConnection(0);
-            tController = new TrackingController();
+            tController = new TrackingController(dbConn);
             sController = new SchedulingController(dbConn);
+            simController = new SimulationController(dbConn);
             mainWindow = new MainWindow();
             loginWindow = new LoginWindow();
             loginWindow.show();
@@ -69,18 +72,19 @@ public class Controller extends Application {
                     user = dbConn.getUser(Integer.parseInt(loginWindow.employeeIDField.getText()),
                             loginWindow.pwField.getText());
                     sController.setUser(user);
-                    try {
-                        dbConn.switchUser(user.getRoleID());
-                    } catch (SQLException sqlE) {
-                        loginWindow.close();
-                        showFailedConnection();
-                    }
+                    tController.setUser(user);
+                    simController.setUser(user);
+
                     loginWindow.close();
+                    mainWindow.show();
                     mainWindow.welcomeLabel.setText("Logged in as " +
                             user.getfName() + " " + user.getlName());
                     sController.shipmentWindow.welcomeLabel.setText("Logged in as " +
                             user.getfName() + " " + user.getlName());
-                    mainWindow.show();
+                    tController.inventoryWindow.welcomeLabel.setText("Logged in as " +
+                            user.getfName() + " " + user.getlName());
+                    simController.simWindow.welcomeLabel.setText("Logged in as " +
+                            user.getfName() + " " + user.getlName());
                 } else {
                     loginAttempts++;
                     
@@ -91,7 +95,6 @@ public class Controller extends Application {
 
                     loginWindow.lblInvalid.setVisible(true);
                     loginWindow.lblAttempts.setVisible(true);
-                    loginWindow.lblAttempts.setTextFill(Color.RED);
                     loginWindow.employeeIDField.clear();
                     loginWindow.pwField.clear();
                     loginWindow.employeeIDField.requestFocus();
@@ -99,6 +102,28 @@ public class Controller extends Application {
                     loginWindow.lblAttempts.setText((MAX_LOGIN_ATTEMPTS - loginAttempts)
                             + " attempt(s) remaining");
                 }
+            });
+            
+            // System admin login (as Fred Smith, by default)
+            loginWindow.btnLoginAdmin.setOnAction(e -> {
+                systemAdmin = new User("Fred", "Smith", 4444, 3333, 4, "LA", "fsmith");
+                sController.setUser(systemAdmin);
+                tController.setUser(systemAdmin);
+                simController.setUser(systemAdmin);
+
+                loginWindow.close();
+                mainWindow.show();
+                mainWindow.welcomeLabel.setText("Logged in as System Administrator");
+                mainWindow.welcomeLabel.setId("errormessage");
+                sController.shipmentWindow.welcomeLabel.setText("Logged in as "
+                                                              + "System Administrator");
+                sController.shipmentWindow.welcomeLabel.setId("errormessage");
+                tController.inventoryWindow.welcomeLabel.setText("Logged in as "
+                                                              + "System Administrator");
+                tController.inventoryWindow.welcomeLabel.setId("errormessage");
+                simController.simWindow.welcomeLabel.setText("Logged in as "
+                                                              + "System Administrator");
+                simController.simWindow.welcomeLabel.setId("errormessage");
             });
 
             mainWindow.toolbar.FILE_DROPDOWN.setOnAction(e -> {
@@ -114,8 +139,8 @@ public class Controller extends Application {
             
             mainWindow.toolbar.VIEW_DROPDOWN.setOnAction(e -> {
                 switch (mainWindow.toolbar.VIEW_DROPDOWN.getValue()) {
-                    case "":
-                        
+                    case "View Inventory":
+                        tController.inventoryWindow.show();
                         break;
                 }
                 
@@ -125,8 +150,8 @@ public class Controller extends Application {
             
             mainWindow.toolbar.RUN_DROPDOWN.setOnAction(e -> {
                 switch (mainWindow.toolbar.RUN_DROPDOWN.getValue()) {
-                    case "":
-                        
+                    case "Run Simulation":
+                        simController.simWindow.show();
                         break;
                 }
                 
@@ -171,6 +196,9 @@ public class Controller extends Application {
             mainWindow.buttons[0].setOnAction(e -> {
                 sController.shipmentWindow.show();
             });
+            mainWindow.buttons[3].setOnAction(e -> {
+                tController.inventoryWindow.show();
+            });
             mainWindow.buttons[8].setOnAction(e -> {
                 aboutSCC();
             });
@@ -197,7 +225,7 @@ public class Controller extends Application {
     private void aboutSCC() {
         DialogBox dialog = new DialogBox("Supply Chain Central (SCC) is a supply chain company\n" +
                                          "headquartered in Savannah, Georgia.\n" +
-                                         "\nApplication Software Developers:\n" + "\nBenjamin Chopson" +
+                                         "\nApplications Software Developers:\n" + "\nBenjamin Chopson" +
                                          "\nMichael Bernard" + "\nVasily Kushakov",
                                          "About SCC", "Close", 400, 200);
         dialog.show();
