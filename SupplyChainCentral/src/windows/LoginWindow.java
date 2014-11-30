@@ -15,12 +15,14 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class LoginWindow extends Stage {
     public Button btnLogin = new Button("Log in");
     public Button btnHelp = new Button("Help");
+    public Button btnLoginAdmin = new Button("System Admin");
     public Label lblInvalid = new Label("Invalid username or password");
     public Label lblAttempts = new Label();
     public TextField employeeIDField = new TextField();
@@ -28,8 +30,11 @@ public class LoginWindow extends Stage {
     public GridPane grid = new GridPane();
     
     public LoginWindow() {
-
         btnLogin.setDefaultButton(true);
+        btnLogin.setTextFill(Color.WHITE);
+        btnLoginAdmin.setId("systemAdmin");
+        btnHelp.setTextFill(Color.WHITE);
+        
         setTitle("Welcome to SCC!");
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
@@ -40,19 +45,19 @@ public class LoginWindow extends Stage {
         scenetitle.setId("log-in-text");
         grid.add(scenetitle, 0, 0, 2, 1);
 
-        Label userName = new Label("Employee ID:");
+        Label userName = new Label("Employee ID");
         grid.add(userName, 0, 1);
 
-        employeeIDField.setId("errormessage");
         grid.add(employeeIDField, 1, 1);
 
-        Label pw = new Label("Password:");
+        Label pw = new Label("Password");
         grid.add(pw, 0, 2);
         grid.add(pwField, 1, 2);
         
         lblInvalid.setId("errormessage");
         grid.add(lblInvalid, 1, 3);
         
+        lblAttempts.setId("errormessage");
         grid.add(lblAttempts, 1, 4);
         lblInvalid.setVisible(false); // By default
         lblAttempts.setVisible(false); // By default
@@ -60,13 +65,13 @@ public class LoginWindow extends Stage {
         HBox hbBtn = new HBox(10); //spacing is 10.
         hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
 
-        hbBtn.getChildren().addAll(btnLogin, btnHelp);
+        hbBtn.getChildren().addAll(btnLogin, btnHelp, btnLoginAdmin);
         grid.add(hbBtn, 1, 5);
 
-        Scene scene1 = new Scene(grid, 400, 280);
-        scene1.getStylesheets().add
+        Scene scene = new Scene(grid, 400, 280);
+        scene.getStylesheets().add
                 (LoginWindow.class.getResource("LoginCSS.css").toExternalForm());
-        setScene(scene1);
+        setScene(scene);
         setResizable(false);
     }
 }

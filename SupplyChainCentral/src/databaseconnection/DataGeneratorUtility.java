@@ -26,19 +26,20 @@ public class DataGeneratorUtility {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        //DatabaseConnection conn = new DatabaseConnection(1);
-        //ArrayList<Location> locations = conn.getLocations();
-//        for (int i = 0; i < 10; i++) {
-//            int origIndex = (int) (Math.random() * locations.size());
-//            int destIndex = (int) (Math.random() * locations.size());
-//            if (destIndex == origIndex) {
-//                origIndex = (destIndex < locations.size() - 1) ? ++origIndex : --origIndex;                    
-//            }
-//            Location origin = locations.get(origIndex);
-//            Location dest = locations.get(destIndex);
-//            int priority = (int) ((Math.random() * 5) + 1);
-//            Shipment s = new Shipment(2223, origin.getLocationCode(), dest.getLocationCode(), priority);
-//            conn.insertShipment(s);
-//        }
+        try {
+            DatabaseConnection conn = new DatabaseConnection(1);
+            ArrayList<Location> locations = conn.getLocations();
+            ArrayList<Product> products = conn.getProducts();
+            for (Location l : locations) {
+                for (Product p : products) {
+                    Inventory i = new Inventory(l.getLocationCode(),
+                        p.getProductID(), (int)(Math.random() * 100.0));
+                    conn.upsertInventory(i);
+                }
+            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
