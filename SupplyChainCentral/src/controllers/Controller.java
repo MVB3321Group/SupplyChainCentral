@@ -25,6 +25,7 @@ public class Controller extends Application {
     private int loginAttempts;
     private TrackingController tController;
     private SchedulingController sController;
+    private ReportingController rController;
     private User user; //user for this session
     private User systemAdmin;
     public LoginWindow loginWindow;
@@ -58,6 +59,7 @@ public class Controller extends Application {
             dbConn = new DatabaseConnection(0);
             tController = new TrackingController(dbConn);
             sController = new SchedulingController(dbConn);
+            rController = new ReportingController(dbConn);
             mainWindow = new MainWindow();
             loginWindow = new LoginWindow();
             loginWindow.show();
