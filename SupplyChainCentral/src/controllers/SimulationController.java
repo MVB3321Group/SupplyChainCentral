@@ -41,7 +41,7 @@ public class SimulationController {
         ArrayList<String> locationList = new ArrayList<>(); // create an arraylist for cities
 
         for (Location l : dbConn.getLocations()) {
-            locationList.add(l.getCity()); // put city in the arraylist
+            locationList.add(l.getCity().replaceAll("\\s+","")); // put city in the arraylist
         }
         simWindow.SHOW_MAP_BUTTON.setOnAction(e -> {
             for (int i = 0; i < locationList.size(); i++) {
@@ -56,7 +56,7 @@ public class SimulationController {
         JSONHelper jh2 = new JSONHelper();
 
         simWindow.CREATE_SIM_BUTTON.setOnAction(ex -> {
-            String newCity = simWindow.NewLocation.getText();
+            String newCity = simWindow.NewLocation.getText().replaceAll("\\s+","");
             newLat = jh2.getGPSlat(newCity);
             newLng = jh2.getGPSlon(newCity);
             simWindow.newMarker(newLat, newLng, newCity);
