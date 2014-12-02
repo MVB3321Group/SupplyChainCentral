@@ -56,7 +56,7 @@ public class JSONHelper {
     
     public double getGPSlat(String address){
         JSONObject rootObject = null;
-        try{
+        try {
             rootObject = readJsonFromUrl("https://maps.googleapis.com/maps/api/geocode/json?address=" + address);
             JSONArray results = null;
             results = rootObject.getJSONArray("results");

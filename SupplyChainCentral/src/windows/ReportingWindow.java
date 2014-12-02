@@ -31,14 +31,13 @@ public class ReportingWindow extends Stage {
     public ReportingWindow() {
         GridPane bPane = new GridPane();
         dataSetDropdown = new ComboBox();
-        dataSetDropdown.getItems().addAll(dataSetList);
+        dataSetDropdown.getItems().add(dataSetList);
         bPane.add(dataSetDropdown, 0, 0);
         
         Scene scene = new Scene(bPane, 1050, 585);
         scene.getStylesheets().add
                 (MainWindow.class.getResource("LoginCSS.css").toExternalForm());
         setScene(scene);
-        setResizable(false);
         setTitle("New Shipment");
     }
 }

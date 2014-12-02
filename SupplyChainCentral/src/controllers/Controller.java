@@ -83,7 +83,7 @@ public class Controller extends Application {
                             user.getfName() + " " + user.getlName());
                     tController.inventoryWindow.welcomeLabel.setText("Logged in as " +
                             user.getfName() + " " + user.getlName());
-                    simController.simWindow.welcomeLabel.setText("Logged in as " +
+                    simController.simulationWindow.welcomeLabel.setText("Logged in as " +
                             user.getfName() + " " + user.getlName());
                 } else {
                     loginAttempts++;
@@ -121,9 +121,9 @@ public class Controller extends Application {
                 tController.inventoryWindow.welcomeLabel.setText("Logged in as "
                                                               + "System Administrator");
                 tController.inventoryWindow.welcomeLabel.setId("errormessage");
-                simController.simWindow.welcomeLabel.setText("Logged in as "
+                simController.simulationWindow.welcomeLabel.setText("Logged in as "
                                                               + "System Administrator");
-                simController.simWindow.welcomeLabel.setId("errormessage");
+                simController.simulationWindow.welcomeLabel.setId("errormessage");
             });
 
             mainWindow.toolbar.FILE_DROPDOWN.setOnAction(e -> {
@@ -151,7 +151,7 @@ public class Controller extends Application {
             mainWindow.toolbar.RUN_DROPDOWN.setOnAction(e -> {
                 switch (mainWindow.toolbar.RUN_DROPDOWN.getValue()) {
                     case "Run Simulation":
-                        simController.simWindow.show();
+                        simController.simulationWindow.show();
                         break;
                 }
                 
@@ -198,6 +198,9 @@ public class Controller extends Application {
             });
             mainWindow.buttons[3].setOnAction(e -> {
                 tController.inventoryWindow.show();
+            });
+            mainWindow.buttons[4].setOnAction(e -> {
+               simController.simulationWindow.show();
             });
             mainWindow.buttons[8].setOnAction(e -> {
                 aboutSCC();

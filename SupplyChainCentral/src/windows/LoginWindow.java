@@ -34,8 +34,7 @@ public class LoginWindow extends Stage {
         btnLogin.setTextFill(Color.WHITE);
         btnLoginAdmin.setId("systemAdmin");
         btnHelp.setTextFill(Color.WHITE);
-        
-        setTitle("Welcome to SCC!");
+
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
         grid.setVgap(10);
@@ -72,6 +71,6 @@ public class LoginWindow extends Stage {
         scene.getStylesheets().add
                 (LoginWindow.class.getResource("LoginCSS.css").toExternalForm());
         setScene(scene);
-        setResizable(false);
+        setTitle("Welcome to SCC!");
     }
 }

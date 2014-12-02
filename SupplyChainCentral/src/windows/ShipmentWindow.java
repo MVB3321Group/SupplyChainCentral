@@ -133,8 +133,7 @@ public class ShipmentWindow extends Stage {
         Scene scene = new Scene(bPane, 1050, 585);
         scene.getStylesheets().add
                 (MainWindow.class.getResource("LoginCSS.css").toExternalForm());
-        setScene(scene);
-        setResizable(false);
+        setScene(scene);     
         setTitle("New Shipment");
     }
     

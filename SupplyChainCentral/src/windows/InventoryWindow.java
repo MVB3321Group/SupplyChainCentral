@@ -62,7 +62,6 @@ public class InventoryWindow extends Stage {
         scene.getStylesheets().add
                 (MainWindow.class.getResource("LoginCSS.css").toExternalForm());
         setScene(scene);
-        setResizable(false);
         setTitle("View Inventory");
     }
     
