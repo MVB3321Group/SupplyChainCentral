@@ -26,7 +26,6 @@ import com.lynden.gmapsfx.javascript.object.MapType;
 import com.lynden.gmapsfx.javascript.object.Marker;
 import com.lynden.gmapsfx.javascript.object.MarkerOptions;
 import javafx.scene.Scene;
-
 /**
  *
  * @author Vasily
@@ -61,11 +60,13 @@ public class SimulationWindow extends Stage implements MapComponentInitializedLi
         gPane.add(new Label("Enter New Location "), 0, 0);
         gPane.add(newLocation, 1, 0);
         gPane.add(CREATE_SIM_BUTTON, 2, 0);
-        gPane.add(SHOW_MAP_BUTTON, 6, 0);
+        gPane.add(SHOW_MAP_BUTTON, 3, 0);
         gPane.setHgap(10);
         gPane.setVgap(10);
+        gPane.setPadding(new Insets(10, 10, 10, 10));
 
         bPane.setCenter(gPane);
+        gPane.setAlignment(Pos.TOP_CENTER);
         
         BorderPane.setAlignment(bPane, Pos.CENTER);
         
@@ -77,7 +78,7 @@ public class SimulationWindow extends Stage implements MapComponentInitializedLi
         scene.getStylesheets().add
                 (MainWindow.class.getResource("LoginCSS.css").toExternalForm());
         setScene(scene);
-        setTitle("New Simulation");
+        setTitle("Run Simulation");
     }
 
     @Override

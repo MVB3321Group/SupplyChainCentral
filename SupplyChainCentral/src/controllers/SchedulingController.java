@@ -34,6 +34,7 @@ public class SchedulingController {
     ArrayList<ProductShipped> productsShippedList = new ArrayList<>();
     DatabaseConnection dbConn;
     User user;
+    boolean dialogIsShowing = false;
  
     public SchedulingController(DatabaseConnection dbConn) {
         this.dbConn = dbConn;
@@ -44,7 +45,7 @@ public class SchedulingController {
         populateOrigins();
         populateDestinations();
         populateShipmentChart();
-
+        
         shipmentWindow.ADD_PRODUCT_BUTTON.setOnAction(e -> {
             try {
                 String productName = shipmentWindow.PROD_DROPDOWN.getValue();
@@ -74,7 +75,7 @@ public class SchedulingController {
         
         shipmentWindow.CREATE_SHIPMENT_BUTTON.setOnAction(e -> {
             try {
-                if (productsShippedList.isEmpty())
+                if (productsShippedList.isEmpty() && !dialogIsShowing)
                     promptAddProduct();
                 else {
                     createShipment();
@@ -115,7 +116,7 @@ public class SchedulingController {
         
         shipmentWindow.SCHEDULE_SHIPMENTS_BUTTON.setOnAction(e -> {
             try {
-                if (productsShippedList.isEmpty())
+                if (productsShippedList.isEmpty() && !dialogIsShowing)
                     noShipmentsCreated();
                 else {
                     scheduleShipments();
@@ -199,28 +200,30 @@ public class SchedulingController {
     private void promptAddProduct() {
         DialogBox dialog = new DialogBox("Please add a product to the shipment.",
                                          "SCC", "Close", 300, 100);
+        dialogIsShowing = true;
+
         dialog.show();
         dialog.label.setId("generic");
         dialog.btn.setDefaultButton(true);
-        dialog.btn.setOnAction(e -> dialog.close());
+        dialog.btn.setOnAction(e -> {dialog.close(); dialogIsShowing = false;});
     }
     
     private void noShipmentsCreated() {
         DialogBox dialog = new DialogBox("Please create a shipment for the shipping"
                                        + "queue.", "SCC", "Close", 300, 100);
+        dialogIsShowing = true;
         dialog.show();
         dialog.label.setId("generic");
         dialog.btn.setDefaultButton(true);
-        dialog.btn.setOnAction(e -> dialog.close());
+        dialog.btn.setOnAction(e -> {dialog.close(); dialogIsShowing = false;});
     }
     
     private void populateShipmentsTable() {
         ArrayList<Shipment> shipments = new ArrayList<>();
         
         for (Shipment s : dbConn.getShipments()) {
-            if (s.getOriginatorID() == user.getEmployeeID()) {
+            if (s.getOriginatorID() == user.getEmployeeID())
                 shipments.add(s);
-            }
         }
         
         ObservableList<Shipment> shipmentList
@@ -276,27 +279,24 @@ public class SchedulingController {
         // sort the queue to get the proper queue values.
         Queue<Shipment> schedulePriorityQueue = new PriorityQueue<>(20, scheduleComparator);
 
-        for (Shipment s : pendShipments) {
+        for (Shipment s : pendShipments)
             schedulePriorityQueue.add(s);           
-        }
         
         // get an arraylist of the current shipments.
         ArrayList<Shipment> shipments = dbConn.getShipments();
         //get the biggest current ScheduleID 
         int bigID = 1000;
-        for(Shipment s : shipments) {
-            if(bigID < s.getScheduleID()){
+        for (Shipment s : shipments) {
+            if (bigID < s.getScheduleID())
                 bigID = s.getScheduleID();
-            }           
         }
         //now we create scheduleIDs
-        while(true){
+        while (true) {
             bigID++;
             Shipment shpt = schedulePriorityQueue.poll();
             if(shpt == null) break;
             shpt.setScheduleID(bigID);
         }
-        
     }
 
     //Comparator anonymous class implementation
