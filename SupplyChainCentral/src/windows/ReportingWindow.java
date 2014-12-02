@@ -21,6 +21,8 @@ import javafx.stage.Stage;
  * @author Benjamin
  */
 public class ReportingWindow extends Stage {
+    public Stage reportingWindow = new Stage();
+    
     public ComboBox<String> DATA_SET_DROPDOWN = new ComboBox<>();
     public ComboBox<String> filterDropdown = new ComboBox<>();
     public ComboBox<String> chartTypeDropdown = new ComboBox<>();
@@ -39,7 +41,6 @@ public class ReportingWindow extends Stage {
         gPane.add(DATA_SET_DROPDOWN, 0, 0);
         gPane.add(filterDropdown, 0, 1);
         gPane.add(chartTypeDropdown, 0, 2);
-        
         
         DATA_SET_DROPDOWN.setPromptText("Select a data set.");
         DATA_SET_DROPDOWN.getItems().addAll("Shipments", "Inventory List");
