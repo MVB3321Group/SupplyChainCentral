@@ -94,7 +94,7 @@ public class SimulationWindow extends Stage implements MapComponentInitializedLi
                 .scaleControl(false)
                 .streetViewControl(false)
                 .zoomControl(false)
-                .zoom(6);
+                .zoom(4);
 
         map = mapView.createMap(mapOptions);
     }

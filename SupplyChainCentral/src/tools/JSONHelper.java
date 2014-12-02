@@ -16,6 +16,7 @@ public class JSONHelper {
     Float dist;
     Double lat;
     Double lon;
+    int time;
 
     private static String readAll(Reader rd) throws IOException {
         StringBuilder sb = new StringBuilder();
@@ -38,7 +39,7 @@ public class JSONHelper {
         }
     }
 
-    public float calcDistance(StringBuffer beg, StringBuffer end) {
+    public float calcDistance(String beg, String end) {
         JSONObject rootObject = null;
         try {
             rootObject = readJsonFromUrl("https://maps.googleapis.com/maps/api/distancematrix/json?origins=" + beg + "&destinations=" + end + "&mode=driving&sensor=false");
@@ -54,9 +55,26 @@ public class JSONHelper {
         return dist;
     }
     
-    public double getGPSlat(String address){
+    public int calcTravelTime(String beg, String end) {
         JSONObject rootObject = null;
         try {
+            rootObject = readJsonFromUrl("https://maps.googleapis.com/maps/api/distancematrix/json?origins=" + beg + "&destinations=" + end + "&mode=driving&sensor=false");
+            JSONArray rows = null;
+            rows = rootObject.getJSONArray("rows");
+            tem = (Integer) rows.getJSONObject(0).getJSONArray("elements").getJSONObject(0).getJSONObject("duration").getInt("value");
+            time = tem;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return time;
+    }
+    
+    
+    public double getGPSlat(String address){
+        JSONObject rootObject = null;
+        try{
             rootObject = readJsonFromUrl("https://maps.googleapis.com/maps/api/geocode/json?address=" + address);
             JSONArray results = null;
             results = rootObject.getJSONArray("results");
