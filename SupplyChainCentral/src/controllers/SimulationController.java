@@ -55,7 +55,7 @@ public class SimulationController {
 
         JSONHelper jh2 = new JSONHelper();
 
-        simWindow.CREATE_SIM_BUTTON.setOnAction(ex -> {
+        simWindow.CREATE_SIM_BUTTON.setOnAction(e -> {
             String newCity = simWindow.newLocation.getText().replaceAll("\\s+","");
             newLat = jh2.getGPSlat(newCity);
             newLng = jh2.getGPSlon(newCity);
@@ -67,8 +67,8 @@ public class SimulationController {
                     String cityB = locationList.get(j);
                     distance = jh.calcDistance(cityA, cityB); // returns miles
                     time = jh.calcTravelTime(cityA, cityB); // returns seconds
-                    System.out.println("The distance between " + cityA + " and " + cityB + " is " + distance + "miles." +
-                            " and travel time will be " + secondsConversion(time));
+                    System.out.println("The distance between " + cityA + " and " + cityB + " is " + distance + " miles. " +
+                            "Travel time will be " + secondsConversion(time));
                 }
             }
             
@@ -80,7 +80,6 @@ public class SimulationController {
                 System.out.println("The distance between " + cityA + " and " + cityB + " is " + distance + "miles." +
                             " and travel time will be " + secondsConversion(time));
             }
-
         });
 
         simWindow.CLEAR_SIM_BUTTON.setOnAction(ey -> {

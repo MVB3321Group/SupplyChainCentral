@@ -24,8 +24,8 @@ public class ReportingWindow extends Stage {
     public Stage reportingWindow = new Stage();
     
     public ComboBox<String> DATA_SET_DROPDOWN = new ComboBox<>();
-    public ComboBox<String> filterDropdown = new ComboBox<>();
-    public ComboBox<String> chartTypeDropdown = new ComboBox<>();
+    public ComboBox<String> FILTER_DROPDOWN = new ComboBox<>();
+    public ComboBox<String> CHART_TYPE_DROPDOWN = new ComboBox<>();
     public BarChart barChart;
     public LineChart lineChart;
     public PieChart pieChart;
@@ -35,12 +35,12 @@ public class ReportingWindow extends Stage {
         bPane = new BorderPane();
         GridPane gPane = new GridPane();
         DATA_SET_DROPDOWN = new ComboBox();
-        filterDropdown = new ComboBox();
-        chartTypeDropdown = new ComboBox();
-        //DATA_SET_DROPDOWN.getItems().addAll(dataSetList);
+        FILTER_DROPDOWN = new ComboBox();
+        CHART_TYPE_DROPDOWN = new ComboBox();
+
         gPane.add(DATA_SET_DROPDOWN, 0, 0);
-        gPane.add(filterDropdown, 0, 1);
-        gPane.add(chartTypeDropdown, 0, 2);
+        gPane.add(FILTER_DROPDOWN, 0, 1);
+        gPane.add(CHART_TYPE_DROPDOWN, 0, 2);
         
         DATA_SET_DROPDOWN.setPromptText("Select a data set.");
         DATA_SET_DROPDOWN.getItems().addAll("Shipments", "Inventory List");

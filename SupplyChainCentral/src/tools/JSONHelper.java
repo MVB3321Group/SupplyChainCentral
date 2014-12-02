@@ -56,12 +56,12 @@ public class JSONHelper {
     }
     
     public int calcTravelTime(String beg, String end) {
-        JSONObject rootObject = null;
+        JSONObject rootObject;
         try {
             rootObject = readJsonFromUrl("https://maps.googleapis.com/maps/api/distancematrix/json?origins=" + beg + "&destinations=" + end + "&mode=driving&sensor=false");
-            JSONArray rows = null;
-            rows = rootObject.getJSONArray("rows");
-            tem = (Integer) rows.getJSONObject(0).getJSONArray("elements").getJSONObject(0).getJSONObject("duration").getInt("value");
+            JSONArray rows = rootObject.getJSONArray("rows");
+            
+            tem = rows.getJSONObject(0).getJSONArray("elements").getJSONObject(0).getJSONObject("duration").getInt("value");
             time = tem;
         } catch (JSONException e) {
             e.printStackTrace();
