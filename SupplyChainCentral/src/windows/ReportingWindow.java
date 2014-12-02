@@ -35,13 +35,18 @@ public class ReportingWindow extends Stage {
         bPane = new BorderPane();
         GridPane gPane = new GridPane();
         DATA_SET_DROPDOWN = new ComboBox();
+        filterDropdown = new ComboBox();
+        chartTypeDropdown = new ComboBox();
         //DATA_SET_DROPDOWN.getItems().addAll(dataSetList);
         gPane.add(DATA_SET_DROPDOWN, 0, 0);
+        gPane.add(filterDropdown, 0, 1);
+        gPane.add(chartTypeDropdown, 0, 2);
         
-        bPane.setCenter(gPane);
         DATA_SET_DROPDOWN.setPromptText("Select a data set.");
         DATA_SET_DROPDOWN.getItems().addAll("Shipments", "Inventory List");
         DATA_SET_DROPDOWN.setPrefWidth(150);
+        
+        bPane.setCenter(gPane);
 
         Scene scene = new Scene(bPane, 1050, 585);
         setResizable(false);

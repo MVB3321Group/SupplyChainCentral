@@ -59,7 +59,7 @@ public class SimulationController {
         
         simWindow.CREATE_SIM_BUTTON.setOnAction(e -> {   
             
-        }); 
+        });
     }
     
     public void setUser(User user) {
