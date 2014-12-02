@@ -42,7 +42,6 @@ public class ReportingWindow extends Stage {
         gPane.add(filterDropdown, 0, 1);
         gPane.add(chartTypeDropdown, 0, 2);
         
-        
         DATA_SET_DROPDOWN.setPromptText("Select a data set.");
         DATA_SET_DROPDOWN.getItems().addAll("Shipments", "Inventory List");
         DATA_SET_DROPDOWN.setPrefWidth(150);
