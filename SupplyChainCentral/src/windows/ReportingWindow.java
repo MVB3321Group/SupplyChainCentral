@@ -6,6 +6,7 @@
 
 package windows;
 
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.LineChart;
@@ -20,11 +21,9 @@ import javafx.stage.Stage;
  * @author Benjamin
  */
 public class ReportingWindow extends Stage {
-    public ComboBox dataSetDropdown;
-    public String[] dataSetList = {"Shipments", "Inventory List"};
-    
-    public ComboBox filterDropdown;
-    public ComboBox chartTypeDropdown;
+    public ComboBox<String> DATA_SET_DROPDOWN = new ComboBox<>();
+    public ComboBox<String> filterDropdown = new ComboBox<>();
+    public ComboBox<String> chartTypeDropdown = new ComboBox<>();
     public BarChart barChart;
     public LineChart lineChart;
     public PieChart pieChart;
@@ -39,10 +38,16 @@ public class ReportingWindow extends Stage {
         
         bPane.setCenter(gPane);
         Scene scene = new Scene(bPane, 1050, 585);
+        DATA_SET_DROPDOWN.setPromptText("Select a data set.");
+        DATA_SET_DROPDOWN.getItems().addAll("Shipments", "Inventory List");
+        DATA_SET_DROPDOWN.setPrefWidth(150);
+        gPane.add(DATA_SET_DROPDOWN, 0, 0);
+
+        Scene scene = new Scene(gPane, 1050, 585);
+        setResizable(false);
         scene.getStylesheets().add
                 (MainWindow.class.getResource("LoginCSS.css").toExternalForm());
         setScene(scene);
-        setResizable(false);
-        setTitle("New Shipment");
+        setTitle("Reports");
     }
 }

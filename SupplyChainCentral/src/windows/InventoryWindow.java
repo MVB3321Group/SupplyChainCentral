@@ -30,7 +30,7 @@ public class InventoryWindow extends Stage {
 
     public BorderPane bPane = new BorderPane();
     public GridPane gPane = new GridPane();
-    public GridPane prodTablePane = new GridPane();
+    public GridPane masterPane = new GridPane();
     public HBox headerPane = new HBox();
 
     public InventoryWindow() {
@@ -41,31 +41,28 @@ public class InventoryWindow extends Stage {
 
         gPane.add(new Label("Location"), 0, 0);
         gPane.add(LOCATION_DROPDOWN, 1, 0);
+        gPane.setAlignment(Pos.CENTER);
         gPane.setHgap(10);
         gPane.setVgap(10);
 
         LOCATION_DROPDOWN.setPrefWidth(150);
         LOCATION_DROPDOWN.setPromptText("Select a location.");
-        
-        VIEW_INVENTORY_BUTTON.setPrefWidth(150);
-        GridPane.setHalignment(VIEW_INVENTORY_BUTTON, HPos.RIGHT);
-        
-        gPane.setAlignment(Pos.CENTER);
-        prodTablePane.add(gPane, 0, 0);
-        prodTablePane.add(INVENTORY_TABLE, 0, 1);
+
+        masterPane.add(gPane, 0, 0);
+        masterPane.add(INVENTORY_TABLE, 0, 1);
         GridPane.setValignment(INVENTORY_TABLE, VPos.CENTER);
         
-        prodTablePane.setAlignment(Pos.CENTER);
+        masterPane.setAlignment(Pos.CENTER);
         gPane.setPadding(new Insets(20, 20, 20, 0));
-        bPane.setCenter(prodTablePane);
+        bPane.setCenter(masterPane);
         
         initializeInventoryTable();
         
         Scene scene = new Scene(bPane, 700, 450);
+        setResizable(false);
         scene.getStylesheets().add
                 (MainWindow.class.getResource("LoginCSS.css").toExternalForm());
         setScene(scene);
-        setResizable(false);
         setTitle("View Inventory");
     }
     

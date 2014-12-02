@@ -40,7 +40,7 @@ public class SimulationWindow extends Stage implements MapComponentInitializedLi
     public Button CREATE_SIM_BUTTON = new Button("Run Simulation");
     public Button SHOW_MAP_BUTTON = new Button("Show Map");
 
-    public TextField NewLocation = new TextField();
+    public TextField newLocation = new TextField();
 
     public Stage shipmentWindow = new Stage();
     public Label welcomeLabel = new Label();
@@ -59,22 +59,24 @@ public class SimulationWindow extends Stage implements MapComponentInitializedLi
         bPane.setTop(headerPane);
 
         gPane.add(new Label("Enter New Location "), 0, 0);
-        gPane.add(NewLocation, 1, 0);
+        gPane.add(newLocation, 1, 0);
         gPane.add(CREATE_SIM_BUTTON, 2, 0);
         gPane.add(SHOW_MAP_BUTTON, 6, 0);
         gPane.setHgap(10);
         gPane.setVgap(10);
 
-        bPane.setCenter(gPane);        
+        bPane.setCenter(gPane);
+        
+        BorderPane.setAlignment(bPane, Pos.CENTER);
         
         CREATE_SIM_BUTTON.setPrefWidth(150);
         SHOW_MAP_BUTTON.setPrefWidth(150);
         
         Scene scene = new Scene(bPane, 1050, 585);
+        setResizable(false);
         scene.getStylesheets().add
                 (MainWindow.class.getResource("LoginCSS.css").toExternalForm());
         setScene(scene);
-        setResizable(false);
         setTitle("New Simulation");
     }
 
@@ -96,11 +98,11 @@ public class SimulationWindow extends Stage implements MapComponentInitializedLi
         map = mapView.createMap(mapOptions);
     }
     
-    public void showMap(){
+    public void showMap() {
         bPane.setBottom(mapView);
     }
     
-    public void newMarker(double x, double y, String City){
+    public void newMarker(double x, double y, String City) {
         //Add a marker to the map
         MarkerOptions markerOptions = new MarkerOptions();
 

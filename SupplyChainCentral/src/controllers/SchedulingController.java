@@ -98,11 +98,19 @@ public class SchedulingController {
             if (!productsShippedList.isEmpty()) {
                 if (e.getButton() == MouseButton.SECONDARY) {
                     int selectedIndex = shipmentWindow.PRODUCTS_TABLE.getSelectionModel().getSelectedIndex();
-
                     productsShippedList.remove(selectedIndex);
                     shipmentWindow.PRODUCTS_TABLE.getItems().remove(selectedIndex);
                 }
             }
+        });
+        
+        // Prevents selection of same origin and destination
+        shipmentWindow.ORIG_DROPDOWN.setOnAction(e -> {
+            shipmentWindow.DEST_DROPDOWN.getItems().clear(); // To "refresh" destination
+            populateDestinations(); // dropdown list upon an origin selection
+            String selectedOrigin = shipmentWindow.ORIG_DROPDOWN.
+                                    getSelectionModel().getSelectedItem();
+            shipmentWindow.DEST_DROPDOWN.getItems().remove(selectedOrigin);
         });
         
         shipmentWindow.SCHEDULE_SHIPMENTS_BUTTON.setOnAction(e -> {
@@ -137,7 +145,7 @@ public class SchedulingController {
         dbConn.insertShipment(shpmt, productsShippedList); // switch back to insertShipment
     }
     
-    public void populateProducts() { 
+    private void populateProducts() { 
         ArrayList<String> productList = new ArrayList<>();
         
         for (Product p : dbConn.getProducts())
@@ -151,7 +159,7 @@ public class SchedulingController {
         });
     }
     
-    public void populateOrigins() {
+    private void populateOrigins() {
         ArrayList<String> origList = new ArrayList<>();
         
        for (Location l : dbConn.getLocations())
@@ -165,7 +173,7 @@ public class SchedulingController {
         });
     }
     
-    public void populateDestinations() { 
+    private void populateDestinations() { 
         ArrayList<String> destList = new ArrayList<>();
         
         for (Location l : dbConn.getLocations())
@@ -179,13 +187,14 @@ public class SchedulingController {
         });
     }
     
-    private void promptSaveShipment() {
-        DialogBox dialog = new DialogBox("Save shipment info?", "Save?", "Yes", "No", 300, 100);
-        dialog.show();
-        dialog.label.setId("generic");
-        dialog.btn.setOnAction(e -> dialog.close());
-        dialog.btn2.setOnAction(e -> {dialog.close(); shipmentWindow.close();});
-    }
+//    private void promptSaveShipment() {
+//        DialogBox dialog = new DialogBox("Save shipment info?", "Save?",
+//                                         "Yes", "No", 300, 100);
+//        dialog.show();
+//        dialog.label.setId("generic");
+//        dialog.btn.setOnAction(e -> dialog.close());
+//        dialog.btn2.setOnAction(e -> {dialog.close(); shipmentWindow.close();});
+//    }
     
     private void promptAddProduct() {
         DialogBox dialog = new DialogBox("Please add a product to the shipment.",

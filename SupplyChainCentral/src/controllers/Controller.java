@@ -32,6 +32,7 @@ public class Controller extends Application {
     public LoginWindow loginWindow;
     public MainWindow mainWindow;
     private DatabaseConnection dbConn;
+    boolean dialogIsShowing = false;
 
     private boolean isValidUser(String employeeID, String password) {
         User vUser = null;
@@ -86,7 +87,7 @@ public class Controller extends Application {
                             user.getfName() + " " + user.getlName());
                     tController.inventoryWindow.welcomeLabel.setText("Logged in as " +
                             user.getfName() + " " + user.getlName());
-                    simController.simWindow.welcomeLabel.setText("Logged in as " +
+                    simController.simulationWindow.welcomeLabel.setText("Logged in as " +
                             user.getfName() + " " + user.getlName());
                     //TODO: rController.reportingWindow.welcomeLabel.setText("Logged in as " +
                             //user.getfName() + " " + user.getlName());
@@ -127,9 +128,9 @@ public class Controller extends Application {
                 tController.inventoryWindow.welcomeLabel.setText("Logged in as "
                                                               + "System Administrator");
                 tController.inventoryWindow.welcomeLabel.setId("errormessage");
-                simController.simWindow.welcomeLabel.setText("Logged in as "
+                simController.simulationWindow.welcomeLabel.setText("Logged in as "
                                                               + "System Administrator");
-                simController.simWindow.welcomeLabel.setId("errormessage");
+                simController.simulationWindow.welcomeLabel.setId("errormessage");
             });
 
             mainWindow.toolbar.FILE_DROPDOWN.setOnAction(e -> {
@@ -157,7 +158,7 @@ public class Controller extends Application {
             mainWindow.toolbar.RUN_DROPDOWN.setOnAction(e -> {
                 switch (mainWindow.toolbar.RUN_DROPDOWN.getValue()) {
                     case "Run Simulation":
-                        simController.simWindow.show();
+                        simController.simulationWindow.show();
                         break;
                 }
                 
@@ -190,7 +191,7 @@ public class Controller extends Application {
             mainWindow.toolbar.HELP_DROPDOWN.setOnAction(e -> {
                 switch (mainWindow.toolbar.HELP_DROPDOWN.getValue()) {
                     case "About SCC":
-                        aboutSCC();
+                        if (!dialogIsShowing) aboutSCC();
                         break;
                 }
                 
@@ -200,16 +201,26 @@ public class Controller extends Application {
             
             // Actions for navPane buttons
             mainWindow.buttons[0].setOnAction(e -> {
-                sController.shipmentWindow.show();
+                if (!sController.shipmentWindow.isShowing())
+                    sController.shipmentWindow.show();
             });
             mainWindow.buttons[3].setOnAction(e -> {
-                tController.inventoryWindow.show();
+                if (!tController.inventoryWindow.isShowing())
+                    tController.inventoryWindow.show();
+            });
+            mainWindow.buttons[4].setOnAction(e -> {
+                if (!simController.simulationWindow.isShowing())
+                    simController.simulationWindow.show();
+            });
+            mainWindow.buttons[5].setOnAction(e -> {
+                if (!rController.reportingWindow.isShowing())
+                    rController.reportingWindow.show();
             });
             mainWindow.buttons[4].setOnAction(e -> {
                 simController.simWindow.show();
             });
             mainWindow.buttons[8].setOnAction(e -> {
-                aboutSCC();
+                if (!dialogIsShowing) aboutSCC();
             });
             
         } catch (SQLException sqlE) {
@@ -237,9 +248,10 @@ public class Controller extends Application {
                                          "\nApplications Software Developers:\n" + "\nBenjamin Chopson" +
                                          "\nMichael Bernard" + "\nVasily Kushakov",
                                          "About SCC", "Close", 400, 200);
+        dialogIsShowing = true;
         dialog.show();
         dialog.label.setTextFill(Color.WHITE);
-        dialog.btn.setOnAction(e -> dialog.close());
+        dialog.btn.setOnAction(e -> {dialog.close(); dialogIsShowing = false;});
     }
 
     public static void main(String[] args) {

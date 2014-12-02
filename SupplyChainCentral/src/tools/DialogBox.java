@@ -45,7 +45,7 @@ public class DialogBox extends Stage {
         
         setTitle(title);
         setScene(scene);
-        setResizable(false);
+        setResizable(false); 
     }
     
     public DialogBox(String message, String title, String buttonText,
@@ -74,7 +74,7 @@ public class DialogBox extends Stage {
         
         setTitle(title);
         setScene(scene);
-        setResizable(false);
+         
     }
     
     private void setMessage(String message) {

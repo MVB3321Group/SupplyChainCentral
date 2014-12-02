@@ -20,40 +20,45 @@ import tools.JSONHelper;
  */
 
 public class SimulationController {
-    public SimulationWindow simWindow;
+    public SimulationWindow simulationWindow;
     
     DatabaseConnection dbConn;
     User user;
     
-    static Double locLat;
-    static Double locLng;
+    double locLat;
+    double locLng;
+    
+    boolean mapIsShowing = false;        
     
     public SimulationController(DatabaseConnection dbConn) {
         this.dbConn = dbConn;
-        simWindow = new SimulationWindow();
+        simulationWindow = new SimulationWindow();
         
         JSONHelper jh = new JSONHelper();   
 
-        simWindow.SHOW_MAP_BUTTON.setOnAction(e -> {
-            ArrayList<String> locationList = new ArrayList<>(); // create an arraylist for cities
-        
-            for (Location l : dbConn.getLocations())
-                locationList.add(l.getCity()); // put city in the arraylist 
-            
-            for (int i = 0; i< locationList.size(); i++){
-                locLat = jh.getGPSlat(locationList.get(i));
-                locLng = jh.getGPSlon(locationList.get(i));
-                simWindow.newMarker(locLat,locLng,locationList.get(i));
+        simulationWindow.SHOW_MAP_BUTTON.setOnAction(e -> {
+            if (!mapIsShowing) {
+                try {
+                    ArrayList<String> locationList = new ArrayList<>(); // create an arraylist for cities
+
+                    for (Location l : dbConn.getLocations())
+                        locationList.add(l.getCity()); // put city in the arraylist 
+                        
+                    for (String location : locationList) {
+                        locLat = jh.getGPSlat(location);
+                        locLng = jh.getGPSlon(location);
+                        simulationWindow.newMarker(locLat, locLng, location);
+                    }
+
+                    simulationWindow.showMap();
+                    mapIsShowing = true;
+                } catch (Exception ex) {}
             }
-            
-            simWindow.showMap();
         });
         
-        simWindow.CREATE_SIM_BUTTON.setOnAction(e -> {   
+        simulationWindow.CREATE_SIM_BUTTON.setOnAction(e -> {   
             
-        });
-        
-                
+        }); 
     }
     
     public void setUser(User user) {
