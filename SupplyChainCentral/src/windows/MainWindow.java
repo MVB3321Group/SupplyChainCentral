@@ -19,7 +19,7 @@ import javafx.stage.Stage;
 import tools.Toolbar;
 
 public class MainWindow extends Stage {
-    public BorderPane mainPane = new BorderPane(); // TODO: BorderPane
+    public BorderPane mainPane = new BorderPane();
     public HBox toolbarHBox = new HBox();
     public GridPane navPane = new GridPane();
     public Toolbar toolbar;
@@ -55,19 +55,19 @@ public class MainWindow extends Stage {
         buttons[2].setText("Track Shipment");
         buttons[3].setText("View Inventory");
         buttons[4].setText("Run Simulation");
-        buttons[5].setText("Account Options");
-        buttons[6].setText("Help");
-        buttons[7].setText("Contacts");
+        buttons[5].setText("Reports");
+        buttons[6].setText("User Options");
+        buttons[7].setText("Help");
         buttons[8].setText("About SCC");
 
         navPane.setAlignment(Pos.CENTER); // Remember this alignment step!
         mainPane.setCenter(navPane);
                 
         Scene scene = new Scene(mainPane, 1342, 686);
+        setResizable(false);
         scene.getStylesheets().add
                 (MainWindow.class.getResource("LoginCSS.css").toExternalForm());
         setScene(scene);
-        setResizable(false);
         setTitle("Supply Chain Central");
     }
 }

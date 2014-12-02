@@ -22,4 +22,8 @@ public class ReportingController {
         this.dbConn = dbConn;
         reportingWindow = new ReportingWindow();
     }
+    
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

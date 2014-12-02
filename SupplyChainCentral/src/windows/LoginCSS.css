@@ -32,7 +32,7 @@
 }
 
 .button {
-    -fx-text-fill: #ffff33;
+    -fx-text-fill: #ffffff;
     -fx-font-family: "Arial Narrow";
     -fx-font-weight: bold;
     -fx-background-color: linear-gradient(#61a2b1, #2A5058);

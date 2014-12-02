@@ -35,6 +35,7 @@ public class SchedulingController {
     ArrayList<ProductShipped> productsShippedList = new ArrayList<>();
     DatabaseConnection dbConn;
     User user;
+    boolean dialogIsShowing = false;
  
     public SchedulingController(DatabaseConnection dbConn) {
         this.dbConn = dbConn;
@@ -45,7 +46,7 @@ public class SchedulingController {
         populateOrigins();
         populateDestinations();
         populateShipmentChart();
-
+        
         shipmentWindow.ADD_PRODUCT_BUTTON.setOnAction(e -> {
             try {
                 String productName = shipmentWindow.PROD_DROPDOWN.getValue();
@@ -75,7 +76,7 @@ public class SchedulingController {
         
         shipmentWindow.CREATE_SHIPMENT_BUTTON.setOnAction(e -> {
             try {
-                if (productsShippedList.isEmpty())
+                if (productsShippedList.isEmpty() && !dialogIsShowing)
                     promptAddProduct();
                 else {
                     createShipment();
@@ -99,16 +100,24 @@ public class SchedulingController {
             if (!productsShippedList.isEmpty()) {
                 if (e.getButton() == MouseButton.SECONDARY) {
                     int selectedIndex = shipmentWindow.PRODUCTS_TABLE.getSelectionModel().getSelectedIndex();
-
                     productsShippedList.remove(selectedIndex);
                     shipmentWindow.PRODUCTS_TABLE.getItems().remove(selectedIndex);
                 }
             }
         });
         
+        // Prevents selection of same origin and destination
+        shipmentWindow.ORIG_DROPDOWN.setOnAction(e -> {
+            shipmentWindow.DEST_DROPDOWN.getItems().clear(); // To "refresh" destination
+            populateDestinations(); // dropdown list upon an origin selection
+            String selectedOrigin = shipmentWindow.ORIG_DROPDOWN.
+                                    getSelectionModel().getSelectedItem();
+            shipmentWindow.DEST_DROPDOWN.getItems().remove(selectedOrigin);
+        });
+        
         shipmentWindow.SCHEDULE_SHIPMENTS_BUTTON.setOnAction(e -> {
             try {
-                if (productsShippedList.isEmpty())
+                if (productsShippedList.isEmpty() && !dialogIsShowing)
                     noShipmentsCreated();
                 else {
                     scheduleShipments();
@@ -138,7 +147,7 @@ public class SchedulingController {
         dbConn.insertShipment(shpmt, productsShippedList); // switch back to insertShipment
     }
     
-    public void populateProducts() { 
+    private void populateProducts() { 
         ArrayList<String> productList = new ArrayList<>();
         
         for (Product p : dbConn.getProducts())
@@ -152,7 +161,7 @@ public class SchedulingController {
         });
     }
     
-    public void populateOrigins() {
+    private void populateOrigins() {
         ArrayList<String> origList = new ArrayList<>();
         
        for (Location l : dbConn.getLocations())
@@ -166,7 +175,7 @@ public class SchedulingController {
         });
     }
     
-    public void populateDestinations() { 
+    private void populateDestinations() { 
         ArrayList<String> destList = new ArrayList<>();
         
         for (Location l : dbConn.getLocations())
@@ -180,39 +189,42 @@ public class SchedulingController {
         });
     }
     
-    private void promptSaveShipment() {
-        DialogBox dialog = new DialogBox("Save shipment info?", "Save?", "Yes", "No", 300, 100);
-        dialog.show();
-        dialog.label.setId("generic");
-        dialog.btn.setOnAction(e -> dialog.close());
-        dialog.btn2.setOnAction(e -> {dialog.close(); shipmentWindow.close();});
-    }
+//    private void promptSaveShipment() {
+//        DialogBox dialog = new DialogBox("Save shipment info?", "Save?",
+//                                         "Yes", "No", 300, 100);
+//        dialog.show();
+//        dialog.label.setId("generic");
+//        dialog.btn.setOnAction(e -> dialog.close());
+//        dialog.btn2.setOnAction(e -> {dialog.close(); shipmentWindow.close();});
+//    }
     
     private void promptAddProduct() {
         DialogBox dialog = new DialogBox("Please add a product to the shipment.",
                                          "SCC", "Close", 300, 100);
+        dialogIsShowing = true;
+
         dialog.show();
         dialog.label.setId("generic");
         dialog.btn.setDefaultButton(true);
-        dialog.btn.setOnAction(e -> dialog.close());
+        dialog.btn.setOnAction(e -> {dialog.close(); dialogIsShowing = false;});
     }
     
     private void noShipmentsCreated() {
         DialogBox dialog = new DialogBox("Please create a shipment for the shipping"
                                        + "queue.", "SCC", "Close", 300, 100);
+        dialogIsShowing = true;
         dialog.show();
         dialog.label.setId("generic");
         dialog.btn.setDefaultButton(true);
-        dialog.btn.setOnAction(e -> dialog.close());
+        dialog.btn.setOnAction(e -> {dialog.close(); dialogIsShowing = false;});
     }
     
     private void populateShipmentsTable() {
         ArrayList<Shipment> shipments = new ArrayList<>();
         
         for (Shipment s : dbConn.getShipments()) {
-            if (s.getOriginatorID() == user.getEmployeeID()) {
+            if (s.getOriginatorID() == user.getEmployeeID())
                 shipments.add(s);
-            }
         }
         
         ObservableList<Shipment> shipmentList
@@ -268,59 +280,51 @@ public class SchedulingController {
         // sort the queue to get the proper queue values.
         Queue<Shipment> schedulePriorityQueue = new PriorityQueue<>(20, scheduleComparator);
 
-        for (Shipment s : pendShipments) {
+        for (Shipment s : pendShipments)
             schedulePriorityQueue.add(s);           
-        }
         
         // get an arraylist of the current shipments.
         ArrayList<Shipment> shipments = dbConn.getShipments();
         //get the biggest current ScheduleID 
         int bigID = 1000;
-        for(Shipment s : shipments) {
-            if(bigID < s.getScheduleID()){
+        for (Shipment s : shipments) {
+            if (bigID < s.getScheduleID())
                 bigID = s.getScheduleID();
-            }           
         }
         //now we create scheduleIDs
-        while(true){
+        while (true) {
             bigID++;
             Shipment shpt = schedulePriorityQueue.poll();
             if(shpt == null) break;
             shpt.setScheduleID(bigID);
         }
-        
     }
 
-     //Comparator anonymous class implementation
-    public static Comparator<Shipment> scheduleComparator = new Comparator<Shipment>(){
-    
-        @Override
-        public int compare(Shipment s1, Shipment s2) {
-            int s1P = s1.getPriority();
-            int s2P = s2.getPriority();
-            
-            long current = System.currentTimeMillis( );
-            Date d1 = new Date();
-             //Timestamp d1 = new (114,11,25,0,0,0);
-            if(s1.getETA()!= null){
-                d1 = s1.getETA();
-            }
-            Date d2 = new Date();
-            if(s1.getETA()!= null){
-                d2 = s2.getETA();
-            }
-            //convert all dates to milliseconds
-            long d1Time = d1.getTime();
-            long d2Time = d2.getTime();
-            
-            //86,400,000 milliseconds in a day. Too many for long
-            int d1Current = (int)(d1Time - current)/1000;
-            int d2Current = (int)(d2Time - current)/1000;
-            
-            //uses priority values to weigh the times.
-            int ETAvalue = s1P * d1Current - s2P * d2Current;
-            return ETAvalue;
-         }
+    //Comparator anonymous class implementation
+    public static Comparator<Shipment> scheduleComparator = (Shipment s1, Shipment s2) -> {
+        int s1P = s1.getPriority();
+        int s2P = s2.getPriority();
+        
+        long current = System.currentTimeMillis( );
+        Date d1 = new Date();
+        if(s1.getETA()!= null){
+            d1 = s1.getETA();
+        }
+        Date d2 = new Date();
+        if(s1.getETA()!= null){
+            d2 = s2.getETA();
+        }
+        //convert all dates to milliseconds
+        long d1Time = d1.getTime();
+        long d2Time = d2.getTime();
+        
+        //86,400,000 milliseconds in a day. Too many for long
+        int d1Current = (int)(d1Time - current)/1000;
+        int d2Current = (int)(d2Time - current)/1000;
+        
+        //uses priority values to weigh the times.
+        int ETAvalue = s1P * d1Current - s2P * d2Current;
+        return ETAvalue;
     };
     
     
