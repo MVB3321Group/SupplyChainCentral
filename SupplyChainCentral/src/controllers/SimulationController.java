@@ -41,7 +41,7 @@ public class SimulationController {
         ArrayList<String> locationList = new ArrayList<>(); // create an arraylist for cities
 
         for (Location l : dbConn.getLocations()) {
-            locationList.add(l.getCity()); // put city in the arraylist
+            locationList.add(l.getCity().replaceAll("\\s+","")); // put city in the arraylist
         }
         simWindow.SHOW_MAP_BUTTON.setOnAction(e -> {
             for (int i = 0; i < locationList.size(); i++) {
@@ -84,7 +84,7 @@ public class SimulationController {
 
         });
 
-        simWindow.DELETE_SIM_BUTTON.setOnAction(ey -> {
+        simWindow.CLEAR_SIM_BUTTON.setOnAction(ey -> {
             simWindow.removeMarker();
         });
     }
