@@ -28,13 +28,14 @@ public class SimulationController {
     double locLat;
     double locLng;
     
-    boolean mapIsShowing = false;        
+    boolean mapIsShowing = false;
+    String loadingMap = "Loading map...";
     
     public SimulationController(DatabaseConnection dbConn) {
         this.dbConn = dbConn;
         simWindow = new SimulationWindow();
         
-        JSONHelper jh = new JSONHelper();   
+        JSONHelper jh = new JSONHelper();
 
         simWindow.SHOW_MAP_BUTTON.setOnAction(e -> {
             if (!mapIsShowing) {
