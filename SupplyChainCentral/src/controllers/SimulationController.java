@@ -56,7 +56,7 @@ public class SimulationController {
         JSONHelper jh2 = new JSONHelper();
 
         simWindow.CREATE_SIM_BUTTON.setOnAction(ex -> {
-            String newCity = simWindow.NewLocation.getText();
+            String newCity = simWindow.newLocation.getText();
             newCity = newCity.replaceAll("\\s+","");
             newLat = jh2.getGPSlat(newCity);
             newLng = jh2.getGPSlon(newCity);
