@@ -26,11 +26,13 @@ public class Controller extends Application {
     private TrackingController tController;
     private SchedulingController sController;
     private SimulationController simController;
+    private ReportingController rController;
     private User user; //user for this session
     private User systemAdmin;
     public LoginWindow loginWindow;
     public MainWindow mainWindow;
     private DatabaseConnection dbConn;
+    boolean dialogIsShowing = false;
 
     private boolean isValidUser(String employeeID, String password) {
         User vUser = null;
@@ -60,6 +62,7 @@ public class Controller extends Application {
             tController = new TrackingController(dbConn);
             sController = new SchedulingController(dbConn);
             simController = new SimulationController(dbConn);
+            rController = new ReportingController(dbConn);
             mainWindow = new MainWindow();
             loginWindow = new LoginWindow();
             loginWindow.show();
@@ -184,7 +187,7 @@ public class Controller extends Application {
             mainWindow.toolbar.HELP_DROPDOWN.setOnAction(e -> {
                 switch (mainWindow.toolbar.HELP_DROPDOWN.getValue()) {
                     case "About SCC":
-                        aboutSCC();
+                        if (!dialogIsShowing) aboutSCC();
                         break;
                 }
                 
@@ -194,16 +197,23 @@ public class Controller extends Application {
             
             // Actions for navPane buttons
             mainWindow.buttons[0].setOnAction(e -> {
-                sController.shipmentWindow.show();
+                if (!sController.shipmentWindow.isShowing())
+                    sController.shipmentWindow.show();
             });
             mainWindow.buttons[3].setOnAction(e -> {
-                tController.inventoryWindow.show();
+                if (!tController.inventoryWindow.isShowing())
+                    tController.inventoryWindow.show();
             });
             mainWindow.buttons[4].setOnAction(e -> {
-               simController.simulationWindow.show();
+                if (!simController.simulationWindow.isShowing())
+                    simController.simulationWindow.show();
+            });
+            mainWindow.buttons[5].setOnAction(e -> {
+                if (!rController.reportingWindow.isShowing())
+                    rController.reportingWindow.show();
             });
             mainWindow.buttons[8].setOnAction(e -> {
-                aboutSCC();
+                if (!dialogIsShowing) aboutSCC();
             });
             
         } catch (SQLException sqlE) {
@@ -231,9 +241,10 @@ public class Controller extends Application {
                                          "\nApplications Software Developers:\n" + "\nBenjamin Chopson" +
                                          "\nMichael Bernard" + "\nVasily Kushakov",
                                          "About SCC", "Close", 400, 200);
+        dialogIsShowing = true;
         dialog.show();
         dialog.label.setTextFill(Color.WHITE);
-        dialog.btn.setOnAction(e -> dialog.close());
+        dialog.btn.setOnAction(e -> {dialog.close(); dialogIsShowing = false;});
     }
 
     public static void main(String[] args) {

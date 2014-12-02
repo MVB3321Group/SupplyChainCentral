@@ -59,6 +59,7 @@ public class InventoryWindow extends Stage {
         initializeInventoryTable();
         
         Scene scene = new Scene(bPane, 700, 450);
+        setResizable(false);
         scene.getStylesheets().add
                 (MainWindow.class.getResource("LoginCSS.css").toExternalForm());
         setScene(scene);

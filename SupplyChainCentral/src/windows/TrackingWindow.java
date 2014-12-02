@@ -5,21 +5,21 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
+import javafx.stage.Stage;
 
-public class TrackingWindow {
+public class TrackingWindow extends Stage {
+    
+    public TrackingWindow() {
 
-//    @Override
-//    public void start(Stage primaryStage) {
-//        BorderPane pane = new BorderPane();
-//
-//        pane.setTop(getHBox());
-//        pane.setLeft(getVBox());
-//
-//        Scene scene = new Scene(pane, 800, 600);
-//        primaryStage.setTitle("SCC Tracking Module");
-//        primaryStage.setScene(scene);
-//        primaryStage.show();
-//    }
+        BorderPane pane = new BorderPane();
+
+        pane.setTop(getHBox());
+        pane.setLeft(getVBox());
+
+        Scene scene = new Scene(pane, 800, 600);
+        setTitle("SCC Tracking Module");
+        setScene(scene);
+    }
 
     private HBox getHBox() {
         HBox hBox = new HBox(15);

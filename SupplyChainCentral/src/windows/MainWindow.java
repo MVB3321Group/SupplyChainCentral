@@ -64,6 +64,7 @@ public class MainWindow extends Stage {
         mainPane.setCenter(navPane);
                 
         Scene scene = new Scene(mainPane, 1342, 686);
+        setResizable(false);
         scene.getStylesheets().add
                 (MainWindow.class.getResource("LoginCSS.css").toExternalForm());
         setScene(scene);

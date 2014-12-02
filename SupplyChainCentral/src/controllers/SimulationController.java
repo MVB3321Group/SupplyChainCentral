@@ -28,7 +28,7 @@ public class SimulationController {
     double locLat;
     double locLng;
     
-    boolean mapIsShowing;        
+    boolean mapIsShowing = false;        
     
     public SimulationController(DatabaseConnection dbConn) {
         this.dbConn = dbConn;

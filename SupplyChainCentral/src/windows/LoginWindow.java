@@ -68,6 +68,7 @@ public class LoginWindow extends Stage {
         grid.add(hbBtn, 1, 5);
 
         Scene scene = new Scene(grid, 400, 280);
+        setResizable(false);
         scene.getStylesheets().add
                 (LoginWindow.class.getResource("LoginCSS.css").toExternalForm());
         setScene(scene);

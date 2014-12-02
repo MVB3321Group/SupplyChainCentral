@@ -73,6 +73,7 @@ public class SimulationWindow extends Stage implements MapComponentInitializedLi
         SHOW_MAP_BUTTON.setPrefWidth(150);
         
         Scene scene = new Scene(bPane, 1050, 585);
+        setResizable(false);
         scene.getStylesheets().add
                 (MainWindow.class.getResource("LoginCSS.css").toExternalForm());
         setScene(scene);
