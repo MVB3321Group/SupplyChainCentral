@@ -216,9 +216,6 @@ public class Controller extends Application {
                 if (!rController.reportingWindow.isShowing())
                     rController.reportingWindow.show();
             });
-            mainWindow.buttons[4].setOnAction(e -> {
-                simController.simWindow.show();
-            });
             mainWindow.buttons[8].setOnAction(e -> {
                 if (!dialogIsShowing) aboutSCC();
             });

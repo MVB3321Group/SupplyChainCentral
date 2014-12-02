@@ -42,7 +42,6 @@ public class ReportingWindow extends Stage {
         DATA_SET_DROPDOWN.setPromptText("Select a data set.");
         DATA_SET_DROPDOWN.getItems().addAll("Shipments", "Inventory List");
         DATA_SET_DROPDOWN.setPrefWidth(150);
-        gPane.add(DATA_SET_DROPDOWN, 0, 0);
 
         Scene scene = new Scene(bPane, 1050, 585);
         setResizable(false);
