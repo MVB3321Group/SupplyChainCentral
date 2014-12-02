@@ -38,10 +38,10 @@ public class SimulationWindow extends Stage implements MapComponentInitializedLi
     GoogleMap map;
 
     public Button CREATE_SIM_BUTTON = new Button("Run Simulation");
+    public Button CLEAR_SIM_BUTTON = new Button("Clear Simulation");
     public Button SHOW_MAP_BUTTON = new Button("Show Map");
-    public Button DELETE_SIM_BUTTON = new Button("Clear Simulation");
 
-    public TextField NewLocation = new TextField();
+    public TextField newLocation = new TextField();
 
     public Stage shipmentWindow = new Stage();
     public Label welcomeLabel = new Label();
@@ -49,6 +49,8 @@ public class SimulationWindow extends Stage implements MapComponentInitializedLi
     public BorderPane bPane = new BorderPane();
     public GridPane gPane = new GridPane();
     public HBox headerPane = new HBox();
+        
+    public Marker marker;
 
     public SimulationWindow() {
         mapView = new GoogleMapView();
@@ -59,26 +61,29 @@ public class SimulationWindow extends Stage implements MapComponentInitializedLi
         headerPane.setAlignment(Pos.TOP_RIGHT);
         bPane.setTop(headerPane);
 
-        gPane.add(new Label("Enter New Location "), 0, 0);
-        gPane.add(NewLocation, 1, 0);
+        gPane.add(new Label("Enter Location "), 0, 0);
+        gPane.add(newLocation, 1, 0);
         gPane.add(CREATE_SIM_BUTTON, 2, 0);
-        gPane.add(DELETE_SIM_BUTTON, 4, 0);
-        gPane.add(SHOW_MAP_BUTTON, 6, 0);
+        gPane.add(CLEAR_SIM_BUTTON, 3, 0);
+        gPane.add(SHOW_MAP_BUTTON, 4, 0);
+        
         gPane.setHgap(10);
         gPane.setVgap(10);
-
+        gPane.setPadding(new Insets(10, 10, 10, 10));
+        gPane.setAlignment(Pos.TOP_CENTER);
+        
         bPane.setCenter(gPane);        
         
         CREATE_SIM_BUTTON.setPrefWidth(150);
-        DELETE_SIM_BUTTON.setPrefWidth(150);       
-        SHOW_MAP_BUTTON.setPrefWidth(200);
+        CLEAR_SIM_BUTTON.setPrefWidth(150);       
+        SHOW_MAP_BUTTON.setPrefWidth(150);
         
         Scene scene = new Scene(bPane, 1050, 585);
         scene.getStylesheets().add
                 (MainWindow.class.getResource("LoginCSS.css").toExternalForm());
         setScene(scene);
         setResizable(false);
-        setTitle("New Simulation");
+        setTitle("Run Simulation");
     }
 
     @Override
@@ -102,9 +107,7 @@ public class SimulationWindow extends Stage implements MapComponentInitializedLi
     public void showMap(){
         bPane.setBottom(mapView);
     }
-    
-    public Marker marker2;
-    
+
     public void newMarker(double x, double y, String City){
         //Add a marker to the map
         MarkerOptions markerOptions = new MarkerOptions();
@@ -113,13 +116,12 @@ public class SimulationWindow extends Stage implements MapComponentInitializedLi
                 .visible(Boolean.TRUE)
                 .title(City);
 
-        marker2 = new Marker(markerOptions);
-
-        map.addMarker(marker2);
+        marker = new Marker(markerOptions);
+        map.addMarker(marker);
     }
     
     //Be careful with this method. It deletes the previous marker added, but cannot delete those placed earlier.
     public void removeMarker(){
-        map.removeMarker(marker2);
+        map.removeMarker(marker);
     }
 }

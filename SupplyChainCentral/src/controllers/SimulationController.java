@@ -83,7 +83,7 @@ public class SimulationController {
 
         });
 
-        simWindow.DELETE_SIM_BUTTON.setOnAction(ey -> {
+        simWindow.CLEAR_SIM_BUTTON.setOnAction(ey -> {
             simWindow.removeMarker();
         });
     }
