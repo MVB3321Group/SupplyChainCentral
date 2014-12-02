@@ -87,7 +87,7 @@ public class Controller extends Application {
                             user.getfName() + " " + user.getlName());
                     tController.inventoryWindow.welcomeLabel.setText("Logged in as " +
                             user.getfName() + " " + user.getlName());
-                    simController.simulationWindow.welcomeLabel.setText("Logged in as " +
+                    simController.simWindow.welcomeLabel.setText("Logged in as " +
                             user.getfName() + " " + user.getlName());
                     //TODO: rController.reportingWindow.welcomeLabel.setText("Logged in as " +
                             //user.getfName() + " " + user.getlName());
@@ -128,9 +128,9 @@ public class Controller extends Application {
                 tController.inventoryWindow.welcomeLabel.setText("Logged in as "
                                                               + "System Administrator");
                 tController.inventoryWindow.welcomeLabel.setId("errormessage");
-                simController.simulationWindow.welcomeLabel.setText("Logged in as "
+                simController.simWindow.welcomeLabel.setText("Logged in as "
                                                               + "System Administrator");
-                simController.simulationWindow.welcomeLabel.setId("errormessage");
+                simController.simWindow.welcomeLabel.setId("errormessage");
             });
 
             mainWindow.toolbar.FILE_DROPDOWN.setOnAction(e -> {
@@ -158,7 +158,7 @@ public class Controller extends Application {
             mainWindow.toolbar.RUN_DROPDOWN.setOnAction(e -> {
                 switch (mainWindow.toolbar.RUN_DROPDOWN.getValue()) {
                     case "Run Simulation":
-                        simController.simulationWindow.show();
+                        simController.simWindow.show();
                         break;
                 }
                 
@@ -209,8 +209,8 @@ public class Controller extends Application {
                     tController.inventoryWindow.show();
             });
             mainWindow.buttons[4].setOnAction(e -> {
-                if (!simController.simulationWindow.isShowing())
-                    simController.simulationWindow.show();
+                if (!simController.simWindow.isShowing())
+                    simController.simWindow.show();
             });
             mainWindow.buttons[5].setOnAction(e -> {
                 if (!rController.reportingWindow.isShowing())

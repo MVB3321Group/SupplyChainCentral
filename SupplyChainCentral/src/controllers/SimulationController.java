@@ -20,7 +20,7 @@ import tools.JSONHelper;
  */
 
 public class SimulationController {
-    public SimulationWindow simulationWindow;
+    public SimulationWindow simWindow;
     
     DatabaseConnection dbConn;
     User user;
@@ -32,11 +32,11 @@ public class SimulationController {
     
     public SimulationController(DatabaseConnection dbConn) {
         this.dbConn = dbConn;
-        simulationWindow = new SimulationWindow();
+        simWindow = new SimulationWindow();
         
         JSONHelper jh = new JSONHelper();   
 
-        simulationWindow.SHOW_MAP_BUTTON.setOnAction(e -> {
+        simWindow.SHOW_MAP_BUTTON.setOnAction(e -> {
             if (!mapIsShowing) {
                 try {
                     ArrayList<String> locationList = new ArrayList<>(); // create an arraylist for cities
@@ -47,16 +47,16 @@ public class SimulationController {
                     for (String location : locationList) {
                         locLat = jh.getGPSlat(location);
                         locLng = jh.getGPSlon(location);
-                        simulationWindow.newMarker(locLat, locLng, location);
+                        simWindow.newMarker(locLat, locLng, location);
                     }
 
-                    simulationWindow.showMap();
+                    simWindow.showMap();
                     mapIsShowing = true;
                 } catch (Exception ex) {}
             }
         });
         
-        simulationWindow.CREATE_SIM_BUTTON.setOnAction(e -> {   
+        simWindow.CREATE_SIM_BUTTON.setOnAction(e -> {   
             
         }); 
     }

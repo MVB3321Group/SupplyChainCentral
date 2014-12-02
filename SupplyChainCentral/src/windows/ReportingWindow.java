@@ -32,18 +32,17 @@ public class ReportingWindow extends Stage {
     public ReportingWindow() {
         bPane = new BorderPane();
         GridPane gPane = new GridPane();
-        dataSetDropdown = new ComboBox();
-        dataSetDropdown.getItems().addAll(dataSetList);
-        gPane.add(dataSetDropdown, 0, 0);
+        DATA_SET_DROPDOWN = new ComboBox();
+        //DATA_SET_DROPDOWN.getItems().addAll(dataSetList);
+        gPane.add(DATA_SET_DROPDOWN, 0, 0);
         
         bPane.setCenter(gPane);
-        Scene scene = new Scene(bPane, 1050, 585);
         DATA_SET_DROPDOWN.setPromptText("Select a data set.");
         DATA_SET_DROPDOWN.getItems().addAll("Shipments", "Inventory List");
         DATA_SET_DROPDOWN.setPrefWidth(150);
         gPane.add(DATA_SET_DROPDOWN, 0, 0);
 
-        Scene scene = new Scene(gPane, 1050, 585);
+        Scene scene = new Scene(bPane, 1050, 585);
         setResizable(false);
         scene.getStylesheets().add
                 (MainWindow.class.getResource("LoginCSS.css").toExternalForm());
