@@ -26,6 +26,7 @@ public class Controller extends Application {
     private TrackingController tController;
     private SchedulingController sController;
     private SimulationController simController;
+    private ReportingController rController;
     private User user; //user for this session
     private User systemAdmin;
     public LoginWindow loginWindow;
@@ -197,7 +198,16 @@ public class Controller extends Application {
                 sController.shipmentWindow.show();
             });
             mainWindow.buttons[3].setOnAction(e -> {
-                tController.inventoryWindow.show();
+                if (!tController.inventoryWindow.isShowing())
+                    tController.inventoryWindow.show();
+            });
+            mainWindow.buttons[4].setOnAction(e -> {
+                if (!simController.simWindow.isShowing())
+                    simController.simWindow.show();
+            });
+            mainWindow.buttons[5].setOnAction(e -> {
+                if (!rController.reportingWindow.isShowing())
+                    rController.reportingWindow.show();
             });
             mainWindow.buttons[8].setOnAction(e -> {
                 aboutSCC();
