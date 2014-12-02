@@ -26,6 +26,7 @@ import com.lynden.gmapsfx.javascript.object.MapType;
 import com.lynden.gmapsfx.javascript.object.Marker;
 import com.lynden.gmapsfx.javascript.object.MarkerOptions;
 import javafx.scene.Scene;
+
 /**
  *
  * @author Vasily
@@ -38,8 +39,9 @@ public class SimulationWindow extends Stage implements MapComponentInitializedLi
 
     public Button CREATE_SIM_BUTTON = new Button("Run Simulation");
     public Button SHOW_MAP_BUTTON = new Button("Show Map");
+    public Button DELETE_SIM_BUTTON = new Button("Clear Simulation");
 
-    public TextField newLocation = new TextField();
+    public TextField NewLocation = new TextField();
 
     public Stage shipmentWindow = new Stage();
     public Label welcomeLabel = new Label();
@@ -58,27 +60,25 @@ public class SimulationWindow extends Stage implements MapComponentInitializedLi
         bPane.setTop(headerPane);
 
         gPane.add(new Label("Enter New Location "), 0, 0);
-        gPane.add(newLocation, 1, 0);
+        gPane.add(NewLocation, 1, 0);
         gPane.add(CREATE_SIM_BUTTON, 2, 0);
-        gPane.add(SHOW_MAP_BUTTON, 3, 0);
+        gPane.add(DELETE_SIM_BUTTON, 4, 0);
+        gPane.add(SHOW_MAP_BUTTON, 6, 0);
         gPane.setHgap(10);
         gPane.setVgap(10);
-        gPane.setPadding(new Insets(10, 10, 10, 10));
 
-        bPane.setCenter(gPane);
-        gPane.setAlignment(Pos.TOP_CENTER);
-        
-        BorderPane.setAlignment(bPane, Pos.CENTER);
+        bPane.setCenter(gPane);        
         
         CREATE_SIM_BUTTON.setPrefWidth(150);
-        SHOW_MAP_BUTTON.setPrefWidth(150);
+        DELETE_SIM_BUTTON.setPrefWidth(150);       
+        SHOW_MAP_BUTTON.setPrefWidth(200);
         
         Scene scene = new Scene(bPane, 1050, 585);
-        setResizable(false);
         scene.getStylesheets().add
                 (MainWindow.class.getResource("LoginCSS.css").toExternalForm());
         setScene(scene);
-        setTitle("Run Simulation");
+        setResizable(false);
+        setTitle("New Simulation");
     }
 
     @Override
@@ -99,11 +99,13 @@ public class SimulationWindow extends Stage implements MapComponentInitializedLi
         map = mapView.createMap(mapOptions);
     }
     
-    public void showMap() {
+    public void showMap(){
         bPane.setBottom(mapView);
     }
     
-    public void newMarker(double x, double y, String City) {
+    public Marker marker2;
+    
+    public void newMarker(double x, double y, String City){
         //Add a marker to the map
         MarkerOptions markerOptions = new MarkerOptions();
 
@@ -111,8 +113,13 @@ public class SimulationWindow extends Stage implements MapComponentInitializedLi
                 .visible(Boolean.TRUE)
                 .title(City);
 
-        Marker marker = new Marker(markerOptions);
+        marker2 = new Marker(markerOptions);
 
-        map.addMarker(marker);
+        map.addMarker(marker2);
+    }
+    
+    //Be careful with this method. It deletes the previous marker added, but cannot delete those placed earlier.
+    public void removeMarker(){
+        map.removeMarker(marker2);
     }
 }
