@@ -57,6 +57,7 @@ public class SimulationController {
 
         simWindow.CREATE_SIM_BUTTON.setOnAction(ex -> {
             String newCity = simWindow.NewLocation.getText();
+            newCity = newCity.replaceAll("\\s+","");
             newLat = jh2.getGPSlat(newCity);
             newLng = jh2.getGPSlon(newCity);
             simWindow.newMarker(newLat, newLng, newCity);
