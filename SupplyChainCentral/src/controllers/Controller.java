@@ -26,6 +26,7 @@ public class Controller extends Application {
     private TrackingController tController;
     private SchedulingController sController;
     private SimulationController simController;
+    private ReportingController rController;
     private User user; //user for this session
     private User systemAdmin;
     public LoginWindow loginWindow;
@@ -60,6 +61,7 @@ public class Controller extends Application {
             tController = new TrackingController(dbConn);
             sController = new SchedulingController(dbConn);
             simController = new SimulationController(dbConn);
+            rController = new ReportingController(dbConn);
             mainWindow = new MainWindow();
             loginWindow = new LoginWindow();
             loginWindow.show();
@@ -74,6 +76,7 @@ public class Controller extends Application {
                     sController.setUser(user);
                     tController.setUser(user);
                     simController.setUser(user);
+                    rController.setUser(user);
 
                     loginWindow.close();
                     mainWindow.show();
@@ -85,6 +88,8 @@ public class Controller extends Application {
                             user.getfName() + " " + user.getlName());
                     simController.simWindow.welcomeLabel.setText("Logged in as " +
                             user.getfName() + " " + user.getlName());
+                    //TODO: rController.reportingWindow.welcomeLabel.setText("Logged in as " +
+                            //user.getfName() + " " + user.getlName());
                 } else {
                     loginAttempts++;
                     
@@ -110,6 +115,7 @@ public class Controller extends Application {
                 sController.setUser(systemAdmin);
                 tController.setUser(systemAdmin);
                 simController.setUser(systemAdmin);
+                rController.setUser(systemAdmin);
 
                 loginWindow.close();
                 mainWindow.show();
@@ -198,6 +204,9 @@ public class Controller extends Application {
             });
             mainWindow.buttons[3].setOnAction(e -> {
                 tController.inventoryWindow.show();
+            });
+            mainWindow.buttons[4].setOnAction(e -> {
+                simController.simWindow.show();
             });
             mainWindow.buttons[8].setOnAction(e -> {
                 aboutSCC();
