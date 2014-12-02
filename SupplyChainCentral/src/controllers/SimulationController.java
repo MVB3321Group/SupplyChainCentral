@@ -56,7 +56,7 @@ public class SimulationController {
         JSONHelper jh2 = new JSONHelper();
 
         simWindow.CREATE_SIM_BUTTON.setOnAction(ex -> {
-            String newCity = simWindow.NewLocation.getText();
+            String newCity = simWindow.newLocation.getText();
             newLat = jh2.getGPSlat(newCity);
             newLng = jh2.getGPSlon(newCity);
             simWindow.newMarker(newLat, newLng, newCity);
@@ -83,7 +83,7 @@ public class SimulationController {
 
         });
 
-        simWindow.DELETE_SIM_BUTTON.setOnAction(ey -> {
+        simWindow.CLEAR_SIM_BUTTON.setOnAction(ey -> {
             simWindow.removeMarker();
         });
     }
