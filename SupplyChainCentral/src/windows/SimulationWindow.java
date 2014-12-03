@@ -43,7 +43,7 @@ public class SimulationWindow extends Stage implements MapComponentInitializedLi
     GoogleMapView mapView;
     GoogleMap map;
 
-    public Button CREATE_SIM_BUTTON = new Button("Run Simulation");
+    public Button RUN_SIM_BUTTON = new Button("Run Simulation");
     public Button CLEAR_SIM_BUTTON = new Button("Clear Simulation");
     public Button SHOW_MAP_BUTTON = new Button("Show Map");
 
@@ -56,8 +56,8 @@ public class SimulationWindow extends Stage implements MapComponentInitializedLi
         
     public Marker marker;
     
-    public NumberAxis Y_AXIS = new NumberAxis();
     public CategoryAxis X_AXIS = new CategoryAxis();
+    public NumberAxis Y_AXIS = new NumberAxis();
     public BarChart DISTANCES_CHART = new BarChart(X_AXIS, Y_AXIS);
     
     public NumberAxis YT_AXIS = new NumberAxis();
@@ -66,11 +66,9 @@ public class SimulationWindow extends Stage implements MapComponentInitializedLi
     
     public ProgressBar progressBar = new ProgressBar();
     
-
     public SimulationWindow() {
         mapView = new GoogleMapView();
-        mapView.addMapInializedListener(this);
-        
+        mapView.addMapInializedListener(this);   
     
         headerPane.getChildren().add(loggedInLabel);
         loggedInLabel.setPadding(new Insets(5, 20, 5, 5));
@@ -79,7 +77,7 @@ public class SimulationWindow extends Stage implements MapComponentInitializedLi
 
         gPane.add(new Label("Enter Location "), 0, 0);
         gPane.add(newLocation, 1, 0);
-        gPane.add(CREATE_SIM_BUTTON, 2, 0);
+        gPane.add(RUN_SIM_BUTTON, 2, 0);
         gPane.add(CLEAR_SIM_BUTTON, 1, 2);
         gPane.add(SHOW_MAP_BUTTON, 2, 2);
         
@@ -92,7 +90,7 @@ public class SimulationWindow extends Stage implements MapComponentInitializedLi
         bPane.setCenter(DISTANCES_CHART);
         bPane.setRight(TIME_CHART);
         
-        CREATE_SIM_BUTTON.setPrefWidth(150);
+        RUN_SIM_BUTTON.setPrefWidth(150);
         CLEAR_SIM_BUTTON.setPrefWidth(150);       
         SHOW_MAP_BUTTON.setPrefWidth(150);
                
@@ -117,8 +115,7 @@ public class SimulationWindow extends Stage implements MapComponentInitializedLi
         YT_AXIS.setLowerBound(0);
         YT_AXIS.setTickUnit(6);
         YT_AXIS.setMinorTickVisible(false);
-               
-        Scene scene = new Scene(bPane, 1250, 700);
+        
         Scene scene = new Scene(bPane, 1050, 615);
         scene.getStylesheets().add
                 (MainWindow.class.getResource("LoginCSS.css").toExternalForm());
@@ -145,19 +142,19 @@ public class SimulationWindow extends Stage implements MapComponentInitializedLi
         map = mapView.createMap(mapOptions);
     }
     
-    public void showMap(){
+    public void showMap() {
         bPane.setBottom(mapView);
     }
     
-    public void showProgress(){
+    public void showProgress() {
         gPane.add(progressBar,2,4);
     }
     
-    public void endProgress(){
+    public void endProgress() {
         gPane.getChildren().remove(progressBar);
     }
 
-    public void newMarker(double x, double y, String City){
+    public void newMarker(double x, double y, String City) {
         //Add a marker to the map
         MarkerOptions markerOptions = new MarkerOptions();
 
@@ -170,7 +167,7 @@ public class SimulationWindow extends Stage implements MapComponentInitializedLi
     }
     
     //Be careful with this method. It deletes the previous marker added, but cannot delete those placed earlier.
-    public void removeMarker(){
+    public void removeMarker() {
         map.removeMarker(marker);
     }
 }

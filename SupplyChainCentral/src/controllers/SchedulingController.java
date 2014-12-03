@@ -74,7 +74,7 @@ public class SchedulingController {
             } catch (Exception ex) {}
         });
         
-        shipmentWindow.CREATE_SHIPMENT_BUTTON.setOnAction(e -> {
+        shipmentWindow.RUN_SHIPMENT_BUTTON.setOnAction(e -> {
             try {
                 if (productsShippedList.isEmpty() && !dialogIsShowing)
                     promptAddProduct();

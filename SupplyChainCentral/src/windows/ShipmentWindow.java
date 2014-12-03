@@ -27,7 +27,7 @@ public class ShipmentWindow extends Stage {
 
     public TextField QUANTITY_TF = new TextField();
     public TextField ETA_TF = new TextField();
-    public Button CREATE_SHIPMENT_BUTTON = new Button("Create Shipment");
+    public Button RUN_SHIPMENT_BUTTON = new Button("Create Shipment");
     public Button SCHEDULE_SHIPMENTS_BUTTON = new Button("Schedule Shipments");
     public Button ADD_PRODUCT_BUTTON = new Button("Add Product to Shipment");
         
@@ -73,7 +73,7 @@ public class ShipmentWindow extends Stage {
         gPane.add(ORIG_DROPDOWN, 1, 7);
         gPane.add(new Label("Destination"), 0, 8);
         gPane.add(DEST_DROPDOWN, 1, 8);
-        gPane.add(CREATE_SHIPMENT_BUTTON, 1, 12);
+        gPane.add(RUN_SHIPMENT_BUTTON, 1, 12);
         gPane.setHgap(10);
         gPane.setVgap(10);
         
@@ -82,7 +82,7 @@ public class ShipmentWindow extends Stage {
         PROD_DROPDOWN.setPrefWidth(150);
         QUANTITY_TF.setPrefWidth(150);  // TODO: Find alternative to TextField
         ADD_PRODUCT_BUTTON.setPrefWidth(150);
-        CREATE_SHIPMENT_BUTTON.setPrefWidth(150);
+        RUN_SHIPMENT_BUTTON.setPrefWidth(150);
         SCHEDULE_SHIPMENTS_BUTTON.setPrefWidth(150);
         PRTY_DROPDOWN.setPrefWidth(150);
         ORIG_DROPDOWN.setPrefWidth(150);
@@ -99,7 +99,7 @@ public class ShipmentWindow extends Stage {
 
         ADD_PRODUCT_BUTTON.setAlignment(Pos.CENTER);
 
-        GridPane.setHalignment(CREATE_SHIPMENT_BUTTON, HPos.RIGHT);
+        GridPane.setHalignment(RUN_SHIPMENT_BUTTON, HPos.RIGHT);
         gPane.setAlignment(Pos.CENTER);
         prodTablePane.add(gPane, 0, 0);
         SHIPMENTS_TABLE.setMaxHeight(350);
