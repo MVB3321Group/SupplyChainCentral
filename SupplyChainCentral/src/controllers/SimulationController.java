@@ -36,6 +36,7 @@ public class SimulationController {
     static int totalDistance;
     static int totalTime;
 
+
     public SimulationController(DatabaseConnection dbConn) {
         this.dbConn = dbConn;
         simWindow = new SimulationWindow();
@@ -45,7 +46,10 @@ public class SimulationController {
         ArrayList<String> locationList = new ArrayList<>(); // create an arraylist for cities
         ArrayList<Integer> distanceList = new ArrayList<>(); // create an arraylist for distances
         ArrayList<Integer> timeList = new ArrayList<>(); // create an arraylist for time
-
+    
+        XYChart.Series<String, Integer> series = new XYChart.Series<>();
+        XYChart.Series<String, Integer> seriesT = new XYChart.Series<>();
+        
         for (Location l : dbConn.getLocations()) {
             locationList.add(l.getCity().replaceAll("\\s+", "")); // put city in the arraylist
         }
@@ -63,6 +67,8 @@ public class SimulationController {
         JSONHelper jh2 = new JSONHelper();
 
         simWindow.CREATE_SIM_BUTTON.setOnAction(ex -> {
+            simWindow.showProgress();
+            
             String newCity = simWindow.newLocation.getText();
             newCity = newCity.replaceAll("\\s+", "");
             newLat = jh2.getGPSlat(newCity);
@@ -103,8 +109,7 @@ public class SimulationController {
 
             
             
-            //Below is the code for the distances chart in simwindow
-            XYChart.Series<String, Integer> series = new XYChart.Series<>();
+            //Below is the code for the distances chart in simwindow           
 
             simWindow.Y_AXIS.setUpperBound(Math.ceil(25000));
 
@@ -120,7 +125,6 @@ public class SimulationController {
             
             
             //Below is the code for the time chart in simwindow
-            XYChart.Series<String, Integer> seriesT = new XYChart.Series<>();
 
             simWindow.YT_AXIS.setUpperBound(Math.ceil(220));
 
@@ -132,11 +136,16 @@ public class SimulationController {
             seriesT.getData().add(new XYChart.Data(newCity, timeList.get(size++)));
 
             simWindow.TIME_CHART.getData().add(seriesT); //end time chart
-
+            
+            simWindow.endProgress();
         });
 
         simWindow.CLEAR_SIM_BUTTON.setOnAction(ey -> {
             simWindow.removeMarker();
+            timeList.clear();
+            distanceList.clear();
+            simWindow.DISTANCES_CHART.getData().remove(series);
+            simWindow.TIME_CHART.getData().remove(seriesT);
         });
     }
 
