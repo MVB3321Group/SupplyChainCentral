@@ -42,7 +42,7 @@ public class SimulationWindow extends Stage implements MapComponentInitializedLi
     public Button SHOW_MAP_BUTTON = new Button("Show Map");
 
     public TextField newLocation = new TextField();
-    public Label welcomeLabel = new Label();
+    public Label loggedInLabel = new Label();
 
     public BorderPane bPane = new BorderPane();
     public GridPane gPane = new GridPane();
@@ -54,8 +54,8 @@ public class SimulationWindow extends Stage implements MapComponentInitializedLi
         mapView = new GoogleMapView();
         mapView.addMapInializedListener(this);
     
-        headerPane.getChildren().add(welcomeLabel);
-        welcomeLabel.setPadding(new Insets(5, 20, 5, 5));
+        headerPane.getChildren().add(loggedInLabel);
+        loggedInLabel.setPadding(new Insets(5, 20, 5, 5));
         headerPane.setAlignment(Pos.TOP_RIGHT);
         bPane.setTop(headerPane);
 
@@ -76,7 +76,7 @@ public class SimulationWindow extends Stage implements MapComponentInitializedLi
         CLEAR_SIM_BUTTON.setPrefWidth(150);       
         SHOW_MAP_BUTTON.setPrefWidth(150);
         
-        Scene scene = new Scene(bPane, 1050, 585);
+        Scene scene = new Scene(bPane, 1050, 615);
         scene.getStylesheets().add
                 (MainWindow.class.getResource("LoginCSS.css").toExternalForm());
         setScene(scene);

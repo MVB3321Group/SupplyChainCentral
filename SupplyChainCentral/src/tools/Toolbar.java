@@ -9,7 +9,6 @@ package tools;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
-import javafx.scene.effect.BlendMode;
 import javafx.scene.layout.HBox;
 
 public class Toolbar extends HBox {
@@ -67,13 +66,11 @@ public class Toolbar extends HBox {
 
         // "File" dropdown list
         FILE_DROPDOWN.setPrefWidth(60);
-        FILE_DROPDOWN.setBlendMode(BlendMode.OVERLAY);
         FILE_DROPDOWN.setValue("File");
         FILE_DROPDOWN.getItems().addAll(FILE_DROPDOWN_OPTIONS);
         
         // "View" dropdown list
         VIEW_DROPDOWN.setPrefWidth(68);
-        VIEW_DROPDOWN.setBlendMode(BlendMode.OVERLAY);
         VIEW_DROPDOWN.setValue("View");
         ObservableList<String> viewDropdownList
                 = FXCollections.observableArrayList(VIEW_DROPDOWN_OPTIONS);
@@ -87,7 +84,6 @@ public class Toolbar extends HBox {
 
         // "Run" dropdown list
         RUN_DROPDOWN.setPrefWidth(63);
-        RUN_DROPDOWN.setBlendMode(BlendMode.OVERLAY);
         RUN_DROPDOWN.setValue("Run");
         ObservableList<String> runDropdownList
                 = FXCollections.observableArrayList(RUN_DROPDOWN_OPTIONS);
@@ -100,7 +96,6 @@ public class Toolbar extends HBox {
 
         // "Track" dropdown list
         TRACK_DROPDOWN.setPrefWidth(71);
-        TRACK_DROPDOWN.setBlendMode(BlendMode.OVERLAY);
         TRACK_DROPDOWN.setValue("Track");
         ObservableList<String> trackDropdownList
                 = FXCollections.observableArrayList(TRACK_DROPDOWN_OPTIONS);
@@ -113,7 +108,6 @@ public class Toolbar extends HBox {
 
         // "Tools" dropdown list
         TOOLS_DROPDOWN.setPrefWidth(71);
-        TOOLS_DROPDOWN.setBlendMode(BlendMode.OVERLAY);
         TOOLS_DROPDOWN.setValue("Tools");
         ObservableList<String> toolsDropdownList
                 = FXCollections.observableArrayList(TOOLS_DROPDOWN_OPTIONS);
@@ -126,7 +120,6 @@ public class Toolbar extends HBox {
 
         // "Help" dropdown list
         HELP_DROPDOWN.setPrefWidth(67);
-        HELP_DROPDOWN.setBlendMode(BlendMode.OVERLAY);
         HELP_DROPDOWN.setValue("Help");
         ObservableList<String> helpDropdownList
                 = FXCollections.observableArrayList(HELP_DROPDOWN_OPTIONS);

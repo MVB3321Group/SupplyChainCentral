@@ -77,13 +77,13 @@ public class Controller extends Application {
 
                     loginWindow.close();
                     mainWindow.show();
-                    mainWindow.welcomeLabel.setText("Logged in as " +
+                    mainWindow.loggedInLabel.setText("Logged in as " +
                             user.getfName() + " " + user.getlName());
-                    schedController.shipmentWindow.welcomeLabel.setText("Logged in as " +
+                    schedController.shipmentWindow.loggedInLabel.setText("Logged in as " +
                             user.getfName() + " " + user.getlName());
-                    tController.inventoryWindow.welcomeLabel.setText("Logged in as " +
+                    tController.inventoryWindow.loggedInLabel.setText("Logged in as " +
                             user.getfName() + " " + user.getlName());
-                    simController.simWindow.welcomeLabel.setText("Logged in as " +
+                    simController.simWindow.loggedInLabel.setText("Logged in as " +
                             user.getfName() + " " + user.getlName());
                 } else {
                     loginAttempts++;
@@ -113,17 +113,17 @@ public class Controller extends Application {
 
                 loginWindow.close();
                 mainWindow.show();
-                mainWindow.welcomeLabel.setText("Logged in as System Administrator");
-                mainWindow.welcomeLabel.setId("errormessage");
-                schedController.shipmentWindow.welcomeLabel.setText("Logged in as "
+                mainWindow.loggedInLabel.setText("Logged in as System Administrator");
+                mainWindow.loggedInLabel.setId("errormessage");
+                schedController.shipmentWindow.loggedInLabel.setText("Logged in as "
                                                               + "System Administrator");
-                schedController.shipmentWindow.welcomeLabel.setId("errormessage");
-                tController.inventoryWindow.welcomeLabel.setText("Logged in as "
+                schedController.shipmentWindow.loggedInLabel.setId("errormessage");
+                tController.inventoryWindow.loggedInLabel.setText("Logged in as "
                                                               + "System Administrator");
-                tController.inventoryWindow.welcomeLabel.setId("errormessage");
-                simController.simWindow.welcomeLabel.setText("Logged in as "
+                tController.inventoryWindow.loggedInLabel.setId("errormessage");
+                simController.simWindow.loggedInLabel.setText("Logged in as "
                                                               + "System Administrator");
-                simController.simWindow.welcomeLabel.setId("errormessage");
+                simController.simWindow.loggedInLabel.setId("errormessage");
             });
 
             mainWindow.toolbar.FILE_DROPDOWN.setOnAction(e -> {

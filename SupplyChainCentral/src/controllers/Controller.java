@@ -32,6 +32,7 @@ public class Controller extends Application {
     public LoginWindow loginWindow;
     public MainWindow mainWindow;
     private DatabaseConnection dbConn;
+    private boolean dialogIsShowing = false;
 
     private boolean isValidUser(String employeeID, String password) {
         User vUser = null;
@@ -79,13 +80,15 @@ public class Controller extends Application {
 
                     loginWindow.close();
                     mainWindow.show();
-                    mainWindow.welcomeLabel.setText("Logged in as " +
+                    mainWindow.loggedInLabel.setText("Logged in as " +
                             user.getfName() + " " + user.getlName());
-                    schedController.shipmentWindow.welcomeLabel.setText("Logged in as " +
+                    schedController.shipmentWindow.loggedInLabel.setText("Logged in as " +
                             user.getfName() + " " + user.getlName());
-                    tController.inventoryWindow.welcomeLabel.setText("Logged in as " +
+                    tController.inventoryWindow.loggedInLabel.setText("Logged in as " +
                             user.getfName() + " " + user.getlName());
-                    simController.simulationWindow.welcomeLabel.setText("Logged in as " +
+                    simController.simulationWindow.loggedInLabel.setText("Logged in as " +
+                            user.getfName() + " " + user.getlName());
+                    rController.reportingWindow.loggedInLabel.setText("Logged in as " +
                             user.getfName() + " " + user.getlName());
                 } else {
                     loginAttempts++;
@@ -115,17 +118,20 @@ public class Controller extends Application {
 
                 loginWindow.close();
                 mainWindow.show();
-                mainWindow.welcomeLabel.setText("Logged in as System Administrator");
-                mainWindow.welcomeLabel.setId("errormessage");
-                schedController.shipmentWindow.welcomeLabel.setText("Logged in as "
+                mainWindow.loggedInLabel.setText("Logged in as System Administrator");
+                mainWindow.loggedInLabel.setId("errormessage");
+                schedController.shipmentWindow.loggedInLabel.setText("Logged in as "
                                                               + "System Administrator");
-                schedController.shipmentWindow.welcomeLabel.setId("errormessage");
-                tController.inventoryWindow.welcomeLabel.setText("Logged in as "
+                schedController.shipmentWindow.loggedInLabel.setId("errormessage");
+                tController.inventoryWindow.loggedInLabel.setText("Logged in as "
                                                               + "System Administrator");
-                tController.inventoryWindow.welcomeLabel.setId("errormessage");
-                simController.simulationWindow.welcomeLabel.setText("Logged in as "
+                tController.inventoryWindow.loggedInLabel.setId("errormessage");
+                simController.simulationWindow.loggedInLabel.setText("Logged in as "
                                                               + "System Administrator");
-                simController.simulationWindow.welcomeLabel.setId("errormessage");
+                simController.simulationWindow.loggedInLabel.setId("errormessage");
+                rController.reportingWindow.loggedInLabel.setText("Logged in as "
+                                                              + "System Administrator");
+                rController.reportingWindow.loggedInLabel.setId("errormessage");
             });
 
             mainWindow.toolbar.FILE_DROPDOWN.setOnAction(e -> {
@@ -211,7 +217,7 @@ public class Controller extends Application {
                     rController.reportingWindow.show();
             });
             mainWindow.buttons[8].setOnAction(e -> {
-                aboutSCC();
+                if (!dialogIsShowing) aboutSCC();
             });
             
         } catch (SQLException sqlE) {
@@ -236,12 +242,13 @@ public class Controller extends Application {
     private void aboutSCC() {
         DialogBox dialog = new DialogBox("Supply Chain Central (SCC) is a supply chain company\n" +
                                          "headquartered in Savannah, Georgia.\n" +
-                                         "\nApplications Software Developers:\n" + "\nBenjamin Chopson" +
+                                         "\nContracted Software Developers:\n" + "\nBenjamin Chopson" +
                                          "\nMichael Bernard" + "\nVasily Kushakov",
                                          "About SCC", "Close", 400, 200);
         dialog.show();
+        dialogIsShowing = true;
         dialog.label.setTextFill(Color.WHITE);
-        dialog.btn.setOnAction(e -> dialog.close());
+        dialog.btn.setOnAction(e -> {dialog.close(); dialogIsShowing = false;});
     }
 
     public static void main(String[] args) {

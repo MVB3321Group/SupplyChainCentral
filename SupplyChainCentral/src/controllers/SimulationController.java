@@ -39,9 +39,9 @@ public class SimulationController {
 
         ArrayList<String> locationList = new ArrayList<>(); // create an arraylist for cities
 
-        for (Location l : dbConn.getLocations()) {
+        for (Location l : dbConn.getLocations())
             locationList.add(l.getCity().replaceAll("\\s+","")); // put city in the arraylist
-        }
+
         simulationWindow.SHOW_MAP_BUTTON.setOnAction(e -> {
             for (String location : locationList) {
                 locLat = jh.getGPSlat(location);
@@ -75,8 +75,9 @@ public class SimulationController {
                 String cityB = city;
                 distance = jh.calcDistance(location, cityB); // returns miles
                 time = jh.calcTravelTime(location, cityB); // returns seconds
-                System.out.println("The distance between " + location + " and " + cityB + " is " + distance + "miles." +
-                        "Travel time will be " + secondsConversion(time));
+                System.out.println("The distance between " + location + " and " +
+                                   cityB + " is " + distance + "miles." +
+                            "Travel time will be " + secondsConversion(time));
             }
         });
 

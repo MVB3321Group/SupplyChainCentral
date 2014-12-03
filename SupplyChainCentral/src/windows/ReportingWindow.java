@@ -6,14 +6,20 @@
 
 package windows;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 /**
@@ -21,33 +27,71 @@ import javafx.stage.Stage;
  * @author Benjamin
  */
 public class ReportingWindow extends Stage {
+        
+    public Label loggedInLabel = new Label();
     
     public ComboBox<String> DATA_SET_DROPDOWN = new ComboBox<>();
     public ComboBox<String> FILTER_DROPDOWN = new ComboBox<>();
     public ComboBox<String> CHART_TYPE_DROPDOWN = new ComboBox<>();
-    public BarChart barChart;
+    public Button GENERATE_REPORT_BUTTON = new Button("Generate Report");
+  
+    public CategoryAxis X_AXIS = new CategoryAxis(); 
+    public NumberAxis Y_AXIS = new NumberAxis();
+    public BarChart barChart = new BarChart(X_AXIS, Y_AXIS);
+
     public LineChart lineChart;
     public PieChart pieChart;
-    public BorderPane bPane;
+    
+    public BorderPane bPane = new BorderPane();
+    public GridPane gPane = new GridPane();
+    public GridPane chartPane = new GridPane();
+    public HBox headerPane = new HBox();
     
     public ReportingWindow() {
-        bPane = new BorderPane();
-        GridPane gPane = new GridPane();
+        headerPane.getChildren().add(loggedInLabel);
+        loggedInLabel.setPadding(new Insets(5, 20, 5, 5));
+        headerPane.setAlignment(Pos.TOP_RIGHT);
+        bPane.setTop(headerPane);
+
         DATA_SET_DROPDOWN = new ComboBox();
         FILTER_DROPDOWN = new ComboBox();
         CHART_TYPE_DROPDOWN = new ComboBox();
-
-        gPane.add(DATA_SET_DROPDOWN, 0, 0);
-        gPane.add(FILTER_DROPDOWN, 0, 1);
-        gPane.add(CHART_TYPE_DROPDOWN, 0, 2);
+        
+        DATA_SET_DROPDOWN.getItems().addAll("Shipments", "Inventory List");
+        FILTER_DROPDOWN.getItems().addAll("Location", "Product");
+        CHART_TYPE_DROPDOWN.getItems().addAll("Bar", "Pie", "Line");
+        
+        DATA_SET_DROPDOWN.setPrefWidth(150);
+        FILTER_DROPDOWN.setPrefWidth(150);
+        CHART_TYPE_DROPDOWN.setPrefWidth(150);
+        GENERATE_REPORT_BUTTON.setPrefWidth(150);
         
         DATA_SET_DROPDOWN.setPromptText("Select a data set.");
-        DATA_SET_DROPDOWN.getItems().addAll("Shipments", "Inventory List");
-        DATA_SET_DROPDOWN.setPrefWidth(150);
-        
-        bPane.setCenter(gPane);
+        FILTER_DROPDOWN.setPromptText("Filter by...");
+        CHART_TYPE_DROPDOWN.setPromptText("Select a chart type.");
 
-        Scene scene = new Scene(bPane, 1050, 585);
+        gPane.add(new Label("Data Set"), 0, 0);
+        gPane.add(DATA_SET_DROPDOWN, 1, 0);
+        gPane.add(new Label("Filter"), 0, 1);
+        gPane.add(FILTER_DROPDOWN, 1, 1);
+        gPane.add(new Label("Chart Type"), 0, 2);
+        gPane.add(CHART_TYPE_DROPDOWN, 1, 2);
+        gPane.add(GENERATE_REPORT_BUTTON, 1, 6);
+        
+        gPane.setHgap(10);
+        gPane.setVgap(10);
+        gPane.setPadding(new Insets(10, 10, 10, 10));
+
+        chartPane.add(barChart, 0, 0);
+        chartPane.setPadding(new Insets(20, 20, 20, 20));
+        
+        gPane.setAlignment(Pos.CENTER);
+        chartPane.setAlignment(Pos.CENTER_RIGHT);
+        bPane.setCenter(gPane);
+        bPane.setRight(chartPane);
+        chartPane.setVisible(false);
+        
+        Scene scene = new Scene(bPane, 775, 500);
         setResizable(false);
         scene.getStylesheets().add
                 (MainWindow.class.getResource("LoginCSS.css").toExternalForm());

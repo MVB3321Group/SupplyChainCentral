@@ -26,44 +26,44 @@ public class InventoryWindow extends Stage {
     public TableView<Inventory> INVENTORY_TABLE = new TableView<>();
 
     public Stage inventoryWindow = new Stage();
-    public Label welcomeLabel = new Label();
+    public Label loggedInLabel = new Label();
 
     public BorderPane bPane = new BorderPane();
     public GridPane gPane = new GridPane();
-    public GridPane masterPane = new GridPane();
+    public GridPane iPane = new GridPane();
     public HBox headerPane = new HBox();
 
     public InventoryWindow() {
-        headerPane.getChildren().add(welcomeLabel);
-        welcomeLabel.setPadding(new Insets(5, 20, 5, 5));
+        headerPane.getChildren().add(loggedInLabel);
+        loggedInLabel.setPadding(new Insets(5, 20, 5, 5));
         headerPane.setAlignment(Pos.TOP_RIGHT);
         bPane.setTop(headerPane);
 
         gPane.add(new Label("Location"), 0, 0);
         gPane.add(LOCATION_DROPDOWN, 1, 0);
-        gPane.setAlignment(Pos.CENTER);
         gPane.setHgap(10);
         gPane.setVgap(10);
 
         LOCATION_DROPDOWN.setPrefWidth(150);
         LOCATION_DROPDOWN.setPromptText("Select a location.");
 
-        masterPane.add(gPane, 0, 0);
-        masterPane.add(INVENTORY_TABLE, 0, 1);
-        GridPane.setValignment(INVENTORY_TABLE, VPos.CENTER);
+        gPane.setAlignment(Pos.CENTER);
+
+        iPane.add(INVENTORY_TABLE, 0, 0);
+        iPane.setAlignment(Pos.CENTER);
+        iPane.setPadding(new Insets(0, 20, 30, 20));
         
-        masterPane.setAlignment(Pos.CENTER);
-        gPane.setPadding(new Insets(20, 20, 20, 0));
-        bPane.setCenter(masterPane);
-        
+        bPane.setCenter(gPane);
+        bPane.setBottom(iPane);
+
         initializeInventoryTable();
         
-        Scene scene = new Scene(bPane, 700, 450);
+        Scene scene = new Scene(bPane, 350, 350);
         setResizable(false);
         scene.getStylesheets().add
                 (MainWindow.class.getResource("LoginCSS.css").toExternalForm());
         setScene(scene);
-        setTitle("View Inventory");
+        setTitle("Inventory");
     }
     
     private void initializeInventoryTable() {

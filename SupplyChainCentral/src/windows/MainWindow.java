@@ -24,15 +24,15 @@ public class MainWindow extends Stage {
     public GridPane navPane = new GridPane();
     public Toolbar toolbar;
     public Button buttons[] = new Button[9];
-    public Label welcomeLabel;
+    public Label loggedInLabel;
     
     public MainWindow() {
         toolbar = new Toolbar();
         HBox.setHgrow(toolbar, Priority.ALWAYS);
         toolbarHBox.getChildren().add(toolbar);
-        welcomeLabel = new Label();
-        welcomeLabel.setPadding(new Insets(5, 20, 5, 5));
-        toolbarHBox.getChildren().add(welcomeLabel);
+        loggedInLabel = new Label();
+        loggedInLabel.setPadding(new Insets(5, 20, 5, 5));
+        toolbarHBox.getChildren().add(loggedInLabel);
         toolbarHBox.setAlignment(Pos.CENTER);
         mainPane.setTop(toolbarHBox);
 

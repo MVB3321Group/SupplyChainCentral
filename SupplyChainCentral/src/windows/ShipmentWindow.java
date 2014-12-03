@@ -41,14 +41,11 @@ public class ShipmentWindow extends Stage {
     public TableView<Shipment> SCHEDULE_TABLE = new TableView<>();
     public TableView<Shipment> SHIPMENTS_TABLE = new TableView<>();
     public TableView<ProductShipped> PRODUCTS_TABLE = new TableView();
-    public NumberAxis Y_AXIS = new NumberAxis();
     public CategoryAxis X_AXIS = new CategoryAxis();
+    public NumberAxis Y_AXIS = new NumberAxis();
     public BarChart DESTINATIONS_CHART = new BarChart(X_AXIS, Y_AXIS);
-    public NumberAxis Y_AXIS2 = new NumberAxis();
-    public CategoryAxis X_AXIS2 = new CategoryAxis();
-    public BarChart ORIGINS_CHART = new BarChart(X_AXIS2, Y_AXIS2);
 
-    public Label welcomeLabel = new Label();
+    public Label loggedInLabel = new Label();
 
     public BorderPane bPane = new BorderPane();
     public GridPane gPane = new GridPane();
@@ -58,8 +55,8 @@ public class ShipmentWindow extends Stage {
     public Label success = new Label("Shipment added succesfully.");  
 
     public ShipmentWindow() {
-        headerPane.getChildren().add(welcomeLabel);
-        welcomeLabel.setPadding(new Insets(5, 20, 5, 5));
+        headerPane.getChildren().add(loggedInLabel);
+        loggedInLabel.setPadding(new Insets(5, 20, 5, 5));
         headerPane.setAlignment(Pos.TOP_RIGHT);
         bPane.setTop(headerPane);
 
@@ -77,7 +74,6 @@ public class ShipmentWindow extends Stage {
         gPane.add(new Label("Destination"), 0, 8);
         gPane.add(DEST_DROPDOWN, 1, 8);
         gPane.add(CREATE_SHIPMENT_BUTTON, 1, 12);
-//        gPane.add(SCHEDULE_SHIPMENTS_BUTTON, 2, 12);
         gPane.setHgap(10);
         gPane.setVgap(10);
         
@@ -103,7 +99,6 @@ public class ShipmentWindow extends Stage {
 
         ADD_PRODUCT_BUTTON.setAlignment(Pos.CENTER);
 
-        // FLAG
         GridPane.setHalignment(CREATE_SHIPMENT_BUTTON, HPos.RIGHT);
         gPane.setAlignment(Pos.CENTER);
         prodTablePane.add(gPane, 0, 0);
@@ -115,6 +110,7 @@ public class ShipmentWindow extends Stage {
         prodTablePane.add(PRODUCTS_TABLE, 1, 0);
         GridPane.setValignment(PRODUCTS_TABLE, VPos.CENTER);
         prodTablePane.setAlignment(Pos.CENTER);
+        prodTablePane.setPadding(new Insets(20, 20, 20, 20));
         gPane.setPadding(new Insets(20, 20, 20, 0));
         bPane.setCenter(prodTablePane);
         
@@ -129,11 +125,11 @@ public class ShipmentWindow extends Stage {
         Y_AXIS.setTickUnit(1);
         Y_AXIS.setMinorTickVisible(false);
         
-        Scene scene = new Scene(bPane, 1050, 585);
+        Scene scene = new Scene(bPane, 1025, 625);
         setResizable(false);
         scene.getStylesheets().add
                 (MainWindow.class.getResource("LoginCSS.css").toExternalForm());
-        setScene(scene);     
+        setScene(scene);
         setTitle("New Shipment");
     }
     
