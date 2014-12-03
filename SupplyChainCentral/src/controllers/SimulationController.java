@@ -51,9 +51,10 @@ public class SimulationController {
         }
         simWindow.SHOW_MAP_BUTTON.setOnAction(e -> {
             for (int i = 0; i < locationList.size(); i++) {
-                locLat = jh.getGPSlat(locationList.get(i));
-                locLng = jh.getGPSlon(locationList.get(i));
-                simWindow.newMarker(locLat, locLng, locationList.get(i));
+                String xyz = locationList.get(i);
+                locLat = jh.getGPSlat(xyz);
+                locLng = jh.getGPSlon(xyz);
+                simWindow.newMarker(locLat, locLng, xyz);
             }
 
             simWindow.showMap();
@@ -82,7 +83,7 @@ public class SimulationController {
                     totalTime += time;
                 }
                 distanceList.add(totalDistance);
-                timeList.add((totalTime / 60));
+                timeList.add((totalTime / 3600));
             }
 
             totalDistance = 0;
@@ -98,8 +99,10 @@ public class SimulationController {
                 totalTime += time;
             }
             distanceList.add(totalDistance);
-            timeList.add((totalTime / 60));
+            timeList.add((totalTime / 3600));
 
+            
+            
             //Below is the code for the distances chart in simwindow
             XYChart.Series<String, Integer> series = new XYChart.Series<>();
 
@@ -113,17 +116,20 @@ public class SimulationController {
             series.getData().add(new XYChart.Data(newCity, distanceList.get(size++)));
 
             simWindow.DISTANCES_CHART.getData().add(series); //end distances chart
-
+     
+            
+            
             //Below is the code for the time chart in simwindow
             XYChart.Series<String, Integer> seriesT = new XYChart.Series<>();
 
-            simWindow.YT_AXIS.setUpperBound(Math.ceil(5000));
+            simWindow.YT_AXIS.setUpperBound(Math.ceil(220));
 
             int z;
-            for (z = 0; z < 6; z++) {
+            size = locationList.size();
+            for (z = 0; z < size; z++) {
                 seriesT.getData().add(new XYChart.Data(locationList.get(z), timeList.get(z)));
             }
-            seriesT.getData().add(new XYChart.Data(newCity, timeList.get(7)));
+            seriesT.getData().add(new XYChart.Data(newCity, timeList.get(size++)));
 
             simWindow.TIME_CHART.getData().add(seriesT); //end time chart
 

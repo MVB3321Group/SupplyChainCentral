@@ -109,11 +109,11 @@ public class SimulationWindow extends Stage implements MapComponentInitializedLi
         TIME_CHART.setMinWidth(200);
         XT_AXIS.setLabel("Origin City");
         XT_AXIS.setTickLabelFill(Color.WHITE);
-        YT_AXIS.setLabel("Minutes for Travel");
+        YT_AXIS.setLabel("Hours for Travel");
         YT_AXIS.setTickLabelFill(Color.WHITE);
         YT_AXIS.setAutoRanging(false);
         YT_AXIS.setLowerBound(0);
-        YT_AXIS.setTickUnit(120);
+        YT_AXIS.setTickUnit(6);
         YT_AXIS.setMinorTickVisible(false);
                
         Scene scene = new Scene(bPane, 1250, 700);
