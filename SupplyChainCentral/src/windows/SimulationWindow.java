@@ -31,6 +31,8 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.paint.Color;
 
+import javafx.scene.control.ProgressBar;
+
 /**
  *
  * @author Vasily
@@ -63,6 +65,8 @@ public class SimulationWindow extends Stage implements MapComponentInitializedLi
     public NumberAxis YT_AXIS = new NumberAxis();
     public CategoryAxis XT_AXIS = new CategoryAxis();
     public BarChart TIME_CHART = new BarChart(XT_AXIS, YT_AXIS);
+    
+    public ProgressBar progressBar = new ProgressBar();
     
 
     public SimulationWindow() {
@@ -144,6 +148,14 @@ public class SimulationWindow extends Stage implements MapComponentInitializedLi
     
     public void showMap(){
         bPane.setBottom(mapView);
+    }
+    
+    public void showProgress(){
+        bPane.setCenter(progressBar);
+    }
+    
+    public void endProgress(){
+        bPane.setCenter(DISTANCES_CHART);
     }
 
     public void newMarker(double x, double y, String City){
