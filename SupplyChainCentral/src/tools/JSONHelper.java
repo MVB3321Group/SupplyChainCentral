@@ -12,13 +12,13 @@ import org.json.*;
 
 public class JSONHelper {
 
-    Integer tem;
-    Float dist;
-    Double lat;
-    Double lon;
+    int tem;
+    float dist;
+    double lat;
+    double lon;
     int time;
 
-    private static String readAll(Reader rd) throws IOException {
+    private String readAll(Reader rd) throws IOException {
         StringBuilder sb = new StringBuilder();
         int cp;
         while ((cp = rd.read()) != -1) {
@@ -27,7 +27,7 @@ public class JSONHelper {
         return sb.toString();
     }
 
-    public static JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
+    public JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
         InputStream is = new URL(url).openStream();
         try {
             BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
@@ -78,7 +78,7 @@ public class JSONHelper {
             rootObject = readJsonFromUrl("https://maps.googleapis.com/maps/api/geocode/json?address=" + address);
             JSONArray results = null;
             results = rootObject.getJSONArray("results");
-            lat = (Double) results.getJSONObject(0).getJSONObject("geometry").getJSONObject("location").getDouble("lat");
+            lat = (double) results.getJSONObject(0).getJSONObject("geometry").getJSONObject("location").getDouble("lat");
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -93,7 +93,7 @@ public class JSONHelper {
             rootObject = readJsonFromUrl("https://maps.googleapis.com/maps/api/geocode/json?address=" + address);
             JSONArray results = null;
             results = rootObject.getJSONArray("results");
-            lon = (Double) results.getJSONObject(0).getJSONObject("geometry").getJSONObject("location").getDouble("lng");
+            lon = (double) results.getJSONObject(0).getJSONObject("geometry").getJSONObject("location").getDouble("lng");
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (IOException e) {
