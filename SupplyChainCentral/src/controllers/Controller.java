@@ -24,7 +24,7 @@ public class Controller extends Application {
     private final int MAX_LOGIN_ATTEMPTS = 5;
     private int loginAttempts;
     private TrackingController tController;
-    private SchedulingController sController;
+    private SchedulingController schedController;
     private SimulationController simController;
     private ReportingController rController;
     private User user; //user for this session
@@ -59,8 +59,9 @@ public class Controller extends Application {
         try {
             dbConn = new DatabaseConnection(0);
             tController = new TrackingController(dbConn);
-            sController = new SchedulingController(dbConn);
+            schedController = new SchedulingController(dbConn);
             simController = new SimulationController(dbConn);
+            rController = new ReportingController(dbConn);
             mainWindow = new MainWindow();
             loginWindow = new LoginWindow();
             loginWindow.show();
@@ -72,7 +73,7 @@ public class Controller extends Application {
                     loginAttempts = 0;
                     user = dbConn.getUser(Integer.parseInt(loginWindow.employeeIDField.getText()),
                             loginWindow.pwField.getText());
-                    sController.setUser(user);
+                    schedController.setUser(user);
                     tController.setUser(user);
                     simController.setUser(user);
 
@@ -80,11 +81,11 @@ public class Controller extends Application {
                     mainWindow.show();
                     mainWindow.welcomeLabel.setText("Logged in as " +
                             user.getfName() + " " + user.getlName());
-                    sController.shipmentWindow.welcomeLabel.setText("Logged in as " +
+                    schedController.shipmentWindow.welcomeLabel.setText("Logged in as " +
                             user.getfName() + " " + user.getlName());
                     tController.inventoryWindow.welcomeLabel.setText("Logged in as " +
                             user.getfName() + " " + user.getlName());
-                    simController.simWindow.welcomeLabel.setText("Logged in as " +
+                    simController.simulationWindow.welcomeLabel.setText("Logged in as " +
                             user.getfName() + " " + user.getlName());
                 } else {
                     loginAttempts++;
@@ -108,7 +109,7 @@ public class Controller extends Application {
             // System admin login (as Fred Smith, by default)
             loginWindow.btnLoginAdmin.setOnAction(e -> {
                 systemAdmin = new User("Fred", "Smith", 4444, 3333, 4, "LA", "fsmith");
-                sController.setUser(systemAdmin);
+                schedController.setUser(systemAdmin);
                 tController.setUser(systemAdmin);
                 simController.setUser(systemAdmin);
 
@@ -116,21 +117,21 @@ public class Controller extends Application {
                 mainWindow.show();
                 mainWindow.welcomeLabel.setText("Logged in as System Administrator");
                 mainWindow.welcomeLabel.setId("errormessage");
-                sController.shipmentWindow.welcomeLabel.setText("Logged in as "
+                schedController.shipmentWindow.welcomeLabel.setText("Logged in as "
                                                               + "System Administrator");
-                sController.shipmentWindow.welcomeLabel.setId("errormessage");
+                schedController.shipmentWindow.welcomeLabel.setId("errormessage");
                 tController.inventoryWindow.welcomeLabel.setText("Logged in as "
                                                               + "System Administrator");
                 tController.inventoryWindow.welcomeLabel.setId("errormessage");
-                simController.simWindow.welcomeLabel.setText("Logged in as "
+                simController.simulationWindow.welcomeLabel.setText("Logged in as "
                                                               + "System Administrator");
-                simController.simWindow.welcomeLabel.setId("errormessage");
+                simController.simulationWindow.welcomeLabel.setId("errormessage");
             });
 
             mainWindow.toolbar.FILE_DROPDOWN.setOnAction(e -> {
                 switch (mainWindow.toolbar.FILE_DROPDOWN.getValue()) {
                     case "New Shipment":
-                        sController.shipmentWindow.show();
+                        schedController.shipmentWindow.show();
                         break;
                 }
                 
@@ -152,7 +153,7 @@ public class Controller extends Application {
             mainWindow.toolbar.RUN_DROPDOWN.setOnAction(e -> {
                 switch (mainWindow.toolbar.RUN_DROPDOWN.getValue()) {
                     case "Run Simulation":
-                        simController.simWindow.show();
+                        simController.simulationWindow.show();
                         break;
                 }
                 
@@ -195,15 +196,15 @@ public class Controller extends Application {
             
             // Actions for navPane buttons
             mainWindow.buttons[0].setOnAction(e -> {
-                sController.shipmentWindow.show();
+                schedController.shipmentWindow.show();
             });
             mainWindow.buttons[3].setOnAction(e -> {
                 if (!tController.inventoryWindow.isShowing())
                     tController.inventoryWindow.show();
             });
             mainWindow.buttons[4].setOnAction(e -> {
-                if (!simController.simWindow.isShowing())
-                    simController.simWindow.show();
+                if (!simController.simulationWindow.isShowing())
+                    simController.simulationWindow.show();
             });
             mainWindow.buttons[5].setOnAction(e -> {
                 if (!rController.reportingWindow.isShowing())

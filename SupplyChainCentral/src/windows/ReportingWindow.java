@@ -21,7 +21,6 @@ import javafx.stage.Stage;
  * @author Benjamin
  */
 public class ReportingWindow extends Stage {
-    public Stage reportingWindow = new Stage();
     
     public ComboBox<String> DATA_SET_DROPDOWN = new ComboBox<>();
     public ComboBox<String> FILTER_DROPDOWN = new ComboBox<>();

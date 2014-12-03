@@ -18,23 +18,22 @@ import tools.JSONHelper;
  */
 public class SimulationController {
 
-    public SimulationWindow simWindow;
+    public SimulationWindow simulationWindow;
 
     DatabaseConnection dbConn;
     User user;
 
-    static Double locLat;
-    static Double locLng;
-    static String newCity;
-    static Double newLat;
-    static Double newLng;
-
-    static Float distance;
-    static int time;
+    double locLat;
+    double locLng;
+    double newLat;
+    double newLng;
+    String newCity;
+    float distance;
+    int time;
 
     public SimulationController(DatabaseConnection dbConn) {
         this.dbConn = dbConn;
-        simWindow = new SimulationWindow();
+        simulationWindow = new SimulationWindow();
 
         JSONHelper jh = new JSONHelper();
 
@@ -43,23 +42,23 @@ public class SimulationController {
         for (Location l : dbConn.getLocations()) {
             locationList.add(l.getCity().replaceAll("\\s+","")); // put city in the arraylist
         }
-        simWindow.SHOW_MAP_BUTTON.setOnAction(e -> {
-            for (int i = 0; i < locationList.size(); i++) {
-                locLat = jh.getGPSlat(locationList.get(i));
-                locLng = jh.getGPSlon(locationList.get(i));
-                simWindow.newMarker(locLat, locLng, locationList.get(i));
+        simulationWindow.SHOW_MAP_BUTTON.setOnAction(e -> {
+            for (String location : locationList) {
+                locLat = jh.getGPSlat(location);
+                locLng = jh.getGPSlon(location);
+                simulationWindow.newMarker(locLat, locLng, location);
             }
 
-            simWindow.showMap();
+            simulationWindow.showMap();
         });
 
         JSONHelper jh2 = new JSONHelper();
 
-        simWindow.CREATE_SIM_BUTTON.setOnAction(e -> {
-            String newCity = simWindow.newLocation.getText().replaceAll("\\s+","");
-            newLat = jh2.getGPSlat(newCity);
-            newLng = jh2.getGPSlon(newCity);
-            simWindow.newMarker(newLat, newLng, newCity);
+        simulationWindow.CREATE_SIM_BUTTON.setOnAction(e -> {
+            String city = simulationWindow.newLocation.getText().replaceAll("\\s+","");
+            newLat = jh2.getGPSlat(city);
+            newLng = jh2.getGPSlon(city);
+            simulationWindow.newMarker(newLat, newLng, city);
 
             for (int i = 0; i < locationList.size(); i++) {
                 for (int j = 0; j < locationList.size(); j++) {
@@ -72,18 +71,17 @@ public class SimulationController {
                 }
             }
             
-            for (int i = 0; i < locationList.size(); i++) {
-                String cityA = locationList.get(i);
-                String cityB = newCity;
-                distance = jh.calcDistance(cityA, cityB); // returns miles
-                time = jh.calcTravelTime(cityA, cityB); // returns seconds
-                System.out.println("The distance between " + cityA + " and " + cityB + " is " + distance + "miles." +
-                            " and travel time will be " + secondsConversion(time));
+            for (String location : locationList) {
+                String cityB = city;
+                distance = jh.calcDistance(location, cityB); // returns miles
+                time = jh.calcTravelTime(location, cityB); // returns seconds
+                System.out.println("The distance between " + location + " and " + cityB + " is " + distance + "miles." +
+                        "Travel time will be " + secondsConversion(time));
             }
         });
 
-        simWindow.CLEAR_SIM_BUTTON.setOnAction(ey -> {
-            simWindow.removeMarker();
+        simulationWindow.CLEAR_SIM_BUTTON.setOnAction(e -> {
+            simulationWindow.removeMarker();
         });
     }
 
@@ -92,15 +90,14 @@ public class SimulationController {
     }
     
     private static String secondsConversion(int totalSeconds) {
+        final int MINUTES_IN_AN_HOUR = 60;
+        final int SECONDS_IN_A_MINUTE = 60;
 
-    final int MINUTES_IN_AN_HOUR = 60;
-    final int SECONDS_IN_A_MINUTE = 60;
+        int seconds = totalSeconds % SECONDS_IN_A_MINUTE;
+        int totalMinutes = totalSeconds / SECONDS_IN_A_MINUTE;
+        int minutes = totalMinutes % MINUTES_IN_AN_HOUR;
+        int hours = totalMinutes / MINUTES_IN_AN_HOUR;
 
-    int seconds = totalSeconds % SECONDS_IN_A_MINUTE;
-    int totalMinutes = totalSeconds / SECONDS_IN_A_MINUTE;
-    int minutes = totalMinutes % MINUTES_IN_AN_HOUR;
-    int hours = totalMinutes / MINUTES_IN_AN_HOUR;
-
-    return hours + " hours " + minutes + " minutes " + seconds + " seconds";
-}
+        return hours + " hours " + minutes + " minutes " + seconds + " seconds";
+    }
 }

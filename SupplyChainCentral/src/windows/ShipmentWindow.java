@@ -48,7 +48,6 @@ public class ShipmentWindow extends Stage {
     public CategoryAxis X_AXIS2 = new CategoryAxis();
     public BarChart ORIGINS_CHART = new BarChart(X_AXIS2, Y_AXIS2);
 
-    public Stage shipmentWindow = new Stage();
     public Label welcomeLabel = new Label();
 
     public BorderPane bPane = new BorderPane();

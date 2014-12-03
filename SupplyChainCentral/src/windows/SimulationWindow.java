@@ -42,8 +42,6 @@ public class SimulationWindow extends Stage implements MapComponentInitializedLi
     public Button SHOW_MAP_BUTTON = new Button("Show Map");
 
     public TextField newLocation = new TextField();
-
-    public Stage shipmentWindow = new Stage();
     public Label welcomeLabel = new Label();
 
     public BorderPane bPane = new BorderPane();
