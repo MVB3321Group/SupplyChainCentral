@@ -26,6 +26,12 @@ import com.lynden.gmapsfx.javascript.object.MapType;
 import com.lynden.gmapsfx.javascript.object.Marker;
 import com.lynden.gmapsfx.javascript.object.MarkerOptions;
 import javafx.scene.Scene;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.paint.Color;
+
+import javafx.scene.control.ProgressBar;
 
 /**
  *
@@ -49,10 +55,22 @@ public class SimulationWindow extends Stage implements MapComponentInitializedLi
     public HBox headerPane = new HBox();
         
     public Marker marker;
+    
+    public NumberAxis Y_AXIS = new NumberAxis();
+    public CategoryAxis X_AXIS = new CategoryAxis();
+    public BarChart DISTANCES_CHART = new BarChart(X_AXIS, Y_AXIS);
+    
+    public NumberAxis YT_AXIS = new NumberAxis();
+    public CategoryAxis XT_AXIS = new CategoryAxis();
+    public BarChart TIME_CHART = new BarChart(XT_AXIS, YT_AXIS);
+    
+    public ProgressBar progressBar = new ProgressBar();
+    
 
     public SimulationWindow() {
         mapView = new GoogleMapView();
         mapView.addMapInializedListener(this);
+        
     
         headerPane.getChildren().add(loggedInLabel);
         loggedInLabel.setPadding(new Insets(5, 20, 5, 5));
@@ -62,20 +80,45 @@ public class SimulationWindow extends Stage implements MapComponentInitializedLi
         gPane.add(new Label("Enter Location "), 0, 0);
         gPane.add(newLocation, 1, 0);
         gPane.add(CREATE_SIM_BUTTON, 2, 0);
-        gPane.add(CLEAR_SIM_BUTTON, 3, 0);
-        gPane.add(SHOW_MAP_BUTTON, 4, 0);
+        gPane.add(CLEAR_SIM_BUTTON, 1, 2);
+        gPane.add(SHOW_MAP_BUTTON, 2, 2);
         
         gPane.setHgap(10);
         gPane.setVgap(10);
         gPane.setPadding(new Insets(10, 10, 10, 10));
         gPane.setAlignment(Pos.TOP_CENTER);
         
-        bPane.setCenter(gPane);        
+        bPane.setLeft(gPane);
+        bPane.setCenter(DISTANCES_CHART);
+        bPane.setRight(TIME_CHART);
         
         CREATE_SIM_BUTTON.setPrefWidth(150);
         CLEAR_SIM_BUTTON.setPrefWidth(150);       
         SHOW_MAP_BUTTON.setPrefWidth(150);
+               
+        DISTANCES_CHART.setMinHeight(300);
+        DISTANCES_CHART.setMinWidth(200);
+        X_AXIS.setLabel("Origin City");
+        X_AXIS.setTickLabelFill(Color.WHITE);
+        Y_AXIS.setLabel("Miles Travelled");
+        Y_AXIS.setTickLabelFill(Color.WHITE);
+        Y_AXIS.setAutoRanging(false);
+        Y_AXIS.setLowerBound(0);
+        Y_AXIS.setTickUnit(1000);
+        Y_AXIS.setMinorTickVisible(false);
         
+        TIME_CHART.setMinHeight(300);
+        TIME_CHART.setMinWidth(200);
+        XT_AXIS.setLabel("Origin City");
+        XT_AXIS.setTickLabelFill(Color.WHITE);
+        YT_AXIS.setLabel("Hours for Travel");
+        YT_AXIS.setTickLabelFill(Color.WHITE);
+        YT_AXIS.setAutoRanging(false);
+        YT_AXIS.setLowerBound(0);
+        YT_AXIS.setTickUnit(6);
+        YT_AXIS.setMinorTickVisible(false);
+               
+        Scene scene = new Scene(bPane, 1250, 700);
         Scene scene = new Scene(bPane, 1050, 615);
         scene.getStylesheets().add
                 (MainWindow.class.getResource("LoginCSS.css").toExternalForm());
@@ -104,6 +147,14 @@ public class SimulationWindow extends Stage implements MapComponentInitializedLi
     
     public void showMap(){
         bPane.setBottom(mapView);
+    }
+    
+    public void showProgress(){
+        gPane.add(progressBar,2,4);
+    }
+    
+    public void endProgress(){
+        gPane.getChildren().remove(progressBar);
     }
 
     public void newMarker(double x, double y, String City){
