@@ -151,11 +151,11 @@ public class SimulationWindow extends Stage implements MapComponentInitializedLi
     }
     
     public void showProgress(){
-        bPane.setCenter(progressBar);
+        gPane.add(progressBar,2,4);
     }
     
     public void endProgress(){
-        bPane.setCenter(DISTANCES_CHART);
+        gPane.getChildren().remove(progressBar);
     }
 
     public void newMarker(double x, double y, String City){
