@@ -11,6 +11,7 @@ package tableobjects;
  */
 public class Inventory {
     private String locationCode;
+    private String pName;
     private int productID;
     private int quantity;
     
@@ -26,6 +27,14 @@ public class Inventory {
 
     public void setLocationCode(String locationCode) {
         this.locationCode = locationCode;
+    }
+
+    public String getPName() {
+        return pName;
+    }
+
+    public void setPName(String pName) {
+        this.pName = pName;
     }
 
     public int getProductID() {

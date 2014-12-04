@@ -7,6 +7,7 @@ package controllers;
 
 import databaseconnection.DatabaseConnection;
 import java.util.ArrayList;
+import java.util.HashSet;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import tableobjects.Inventory;
@@ -45,6 +46,9 @@ public class TrackingController {
     
     private void populateInventoryTable() {
         ArrayList<Inventory> inventory = dbConn.getInventory();
+        for (Inventory i : inventory) {
+            i.setPName(dbConn.getProductNameByID(i.getProductID()));
+        }
         inventoryWindow.INVENTORY_TABLE.getItems().clear();
         inventoryWindow.INVENTORY_TABLE.getItems().addAll(inventory);
     }
