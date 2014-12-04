@@ -76,7 +76,7 @@ public class InventoryWindow extends Stage {
         
         TableColumn<Inventory, String> productCol
                 = new TableColumn("Product");
-        productCol.setCellValueFactory(new PropertyValueFactory<>("productID"));
+        productCol.setCellValueFactory(new PropertyValueFactory<>("pName"));
         TableColumn<Inventory, String> quantityCol
                 = new TableColumn("Quantity");
         quantityCol.setCellValueFactory(new PropertyValueFactory<>("quantity"));

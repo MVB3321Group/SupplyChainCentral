@@ -65,6 +65,7 @@ public class LoginWindow extends Stage {
         hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
 
         hbBtn.getChildren().addAll(btnLogin, btnHelp, btnLoginAdmin);
+        btnLoginAdmin.setVisible(false);
         grid.add(hbBtn, 1, 5);
 
         Scene scene = new Scene(grid, 400, 280);

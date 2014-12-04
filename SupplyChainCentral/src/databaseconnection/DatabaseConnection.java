@@ -15,7 +15,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
 import javafx.geometry.Point2D;
 import tableobjects.*;
@@ -95,6 +94,25 @@ public class DatabaseConnection {
             System.err.println("Unable to find product.");
             e.printStackTrace();
             return -1;
+        }
+    }
+    
+    public String getProductNameByID(int PID) {
+        PreparedStatement pstmt;
+        try {
+            pstmt = connection.prepareStatement("SELECT pName FROM products WHERE productID=?");
+            pstmt.setInt(1, PID);
+            ResultSet rs = pstmt.executeQuery();
+            String name = "";
+            while (rs.next()) {
+                name = rs.getString("pName");
+            }
+            return name;
+        }
+        catch (SQLException e) {
+            System.err.println("Unable to find product.");
+            e.printStackTrace();
+            return "";
         }
     }
     
