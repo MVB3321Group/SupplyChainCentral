@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import tableobjects.*;
 import windows.*;
 import javafx.application.Application;
+import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import tools.DialogBox;
@@ -134,66 +135,80 @@ public class Controller extends Application {
                 rController.reportingWindow.loggedInLabel.setId("errormessage");
             });
 
-            mainWindow.toolbar.FILE_DROPDOWN.setOnAction(e -> {
-                switch (mainWindow.toolbar.FILE_DROPDOWN.getValue()) {
-                    case "New Shipment":
-                        schedController.shipmentWindow.show();
-                        break;
+            mainWindow.toolbar.FILE_DROPDOWN.setOnMouseClicked(e -> {
+                if (e.getButton() == MouseButton.PRIMARY) {
+                    switch (mainWindow.toolbar.FILE_DROPDOWN.getValue()) {
+                        case "New Shipment":
+                            schedController.shipmentWindow.show();
+                            break;
+                    }
+                                    
+                    // Simple fix to not allow selected option to change dropdown title
+                    mainWindow.toolbar.FILE_DROPDOWN.setValue("File");
                 }
-                
-            // Simple fix to not allow selected option to change dropdown title
-                mainWindow.toolbar.FILE_DROPDOWN.setValue("File");
+
+                else {/*Do nothing*/}
             });
             
-            mainWindow.toolbar.VIEW_DROPDOWN.setOnAction(e -> {
-                switch (mainWindow.toolbar.VIEW_DROPDOWN.getValue()) {
-                    case "View Inventory":
-                        tController.inventoryWindow.show();
-                        break;
+            mainWindow.toolbar.VIEW_DROPDOWN.setOnMouseClicked(e -> {
+                if (e.getButton() == MouseButton.PRIMARY) {
+                    switch (mainWindow.toolbar.VIEW_DROPDOWN.getValue()) {
+                        case "View Inventory":
+                            tController.inventoryWindow.show();
+                            break;
+                    }
                 }
                 
             // Simple fix to not allow selected option to change dropdown title
                 mainWindow.toolbar.VIEW_DROPDOWN.setValue("View");
             });
             
-            mainWindow.toolbar.RUN_DROPDOWN.setOnAction(e -> {
-                switch (mainWindow.toolbar.RUN_DROPDOWN.getValue()) {
-                    case "Run Simulation":
-                        simController.simulationWindow.show();
-                        break;
+            mainWindow.toolbar.RUN_DROPDOWN.setOnMouseClicked(e -> {
+                if (e.getButton() == MouseButton.PRIMARY) {
+                    switch (mainWindow.toolbar.RUN_DROPDOWN.getValue()) {
+                        case "Run Simulation":
+                            simController.simulationWindow.show();
+                            break;
+                    }
                 }
                 
             // Simple fix to not allow selected option to change dropdown title
                 mainWindow.toolbar.RUN_DROPDOWN.setValue("Run");
             });
             
-            mainWindow.toolbar.TRACK_DROPDOWN.setOnAction(e -> {
-                switch (mainWindow.toolbar.TRACK_DROPDOWN.getValue()) {
-                    case "":
-                        
-                        break;
+            mainWindow.toolbar.TRACK_DROPDOWN.setOnMouseClicked(e -> {
+                if (e.getButton() == MouseButton.PRIMARY) {
+                    switch (mainWindow.toolbar.TRACK_DROPDOWN.getValue()) {
+                        case "":
+
+                            break;
+                    }
                 }
                 
             // Simple fix to not allow selected option to change dropdown title
                 mainWindow.toolbar.TRACK_DROPDOWN.setValue("Track");
             });
             
-            mainWindow.toolbar.TOOLS_DROPDOWN.setOnAction(e -> {
-                switch (mainWindow.toolbar.TOOLS_DROPDOWN.getValue()) {
-                    case "":
-                        
-                        break;
+            mainWindow.toolbar.TOOLS_DROPDOWN.setOnMouseClicked(e -> {
+                if (e.getButton() == MouseButton.PRIMARY) {
+                    switch (mainWindow.toolbar.TOOLS_DROPDOWN.getValue()) {
+                        case "":
+
+                            break;
+                    }
                 }
                 
             // Simple fix to not allow selected option to change dropdown title
                 mainWindow.toolbar.TOOLS_DROPDOWN.setValue("Tools");
             });
             
-            mainWindow.toolbar.HELP_DROPDOWN.setOnAction(e -> {
-                switch (mainWindow.toolbar.HELP_DROPDOWN.getValue()) {
-                    case "About SCC":
-                        aboutSCC();
-                        break;
+            mainWindow.toolbar.HELP_DROPDOWN.setOnMouseClicked(e -> {
+                if (e.getButton() == MouseButton.PRIMARY) {
+                    switch (mainWindow.toolbar.HELP_DROPDOWN.getValue()) {
+                        case "About SCC":
+                            aboutSCC();
+                            break;
+                    }
                 }
                 
             // Simple fix to not allow selected option to change dropdown title

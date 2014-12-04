@@ -30,10 +30,13 @@ public class ReportingWindow extends Stage {
         
     public Label loggedInLabel = new Label();
     
+    public ComboBox<String> ORIG_DROPDOWN = new ComboBox<>();
     public ComboBox<String> DATA_SET_DROPDOWN = new ComboBox<>();
     public ComboBox<String> FILTER_DROPDOWN = new ComboBox<>();
     public ComboBox<String> CHART_TYPE_DROPDOWN = new ComboBox<>();
+    
     public Button GENERATE_REPORT_BUTTON = new Button("Generate Report");
+    public Button CLEAR_REPORT_BUTTON = new Button("Clear Report");
   
     public CategoryAxis X_AXIS = new CategoryAxis(); 
     public NumberAxis Y_AXIS = new NumberAxis();
@@ -53,18 +56,17 @@ public class ReportingWindow extends Stage {
         headerPane.setAlignment(Pos.TOP_RIGHT);
         bPane.setTop(headerPane);
 
-        DATA_SET_DROPDOWN = new ComboBox();
-        FILTER_DROPDOWN = new ComboBox();
-        CHART_TYPE_DROPDOWN = new ComboBox();
-        
-        DATA_SET_DROPDOWN.getItems().addAll("Shipments", "Inventory List");
-        FILTER_DROPDOWN.getItems().addAll("Location", "Product");
-        CHART_TYPE_DROPDOWN.getItems().addAll("Bar", "Pie", "Line");
+        DATA_SET_DROPDOWN.getItems().addAll("Inventory", "Shipments");
+        FILTER_DROPDOWN.getItems().addAll("Product");
+        CHART_TYPE_DROPDOWN.getItems().addAll("Bar Chart", "Pie Chart", "Line Graph");
         
         DATA_SET_DROPDOWN.setPrefWidth(150);
         FILTER_DROPDOWN.setPrefWidth(150);
         CHART_TYPE_DROPDOWN.setPrefWidth(150);
         GENERATE_REPORT_BUTTON.setPrefWidth(150);
+        CLEAR_REPORT_BUTTON.setPrefWidth(150);
+        
+        CLEAR_REPORT_BUTTON.setId("systemAdmin");
         
         DATA_SET_DROPDOWN.setPromptText("Select a data set.");
         FILTER_DROPDOWN.setPromptText("Filter by...");
@@ -76,7 +78,8 @@ public class ReportingWindow extends Stage {
         gPane.add(FILTER_DROPDOWN, 1, 1);
         gPane.add(new Label("Chart Type"), 0, 2);
         gPane.add(CHART_TYPE_DROPDOWN, 1, 2);
-        gPane.add(GENERATE_REPORT_BUTTON, 1, 6);
+        gPane.add(GENERATE_REPORT_BUTTON, 1, 3);
+        gPane.add(CLEAR_REPORT_BUTTON, 1, 7);
         
         gPane.setHgap(10);
         gPane.setVgap(10);
