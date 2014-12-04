@@ -50,8 +50,10 @@ public class SimulationWindow extends Stage implements MapComponentInitializedLi
     public TextField newLocation = new TextField();
     public Label loggedInLabel = new Label();
 
-    public BorderPane bPane = new BorderPane();
-    public GridPane gPane = new GridPane();
+    public BorderPane largePane = new BorderPane();
+    public BorderPane midPane = new BorderPane();
+    public GridPane actionPane = new GridPane();
+    public GridPane chartPane = new GridPane();
     public HBox headerPane = new HBox();
         
     public Marker marker;
@@ -73,50 +75,56 @@ public class SimulationWindow extends Stage implements MapComponentInitializedLi
         headerPane.getChildren().add(loggedInLabel);
         loggedInLabel.setPadding(new Insets(5, 20, 5, 5));
         headerPane.setAlignment(Pos.TOP_RIGHT);
-        bPane.setTop(headerPane);
+        midPane.setTop(headerPane);
 
-        gPane.add(new Label("Enter Location "), 0, 0);
-        gPane.add(newLocation, 1, 0);
-        gPane.add(RUN_SIM_BUTTON, 2, 0);
-        gPane.add(CLEAR_SIM_BUTTON, 1, 2);
-        gPane.add(SHOW_MAP_BUTTON, 2, 2);
+        actionPane.add(new Label("Enter Location "), 0, 0);
+        actionPane.add(newLocation, 1, 0);
+        actionPane.add(RUN_SIM_BUTTON, 1, 1);
+        actionPane.add(CLEAR_SIM_BUTTON, 1, 5);
         
-        gPane.setHgap(10);
-        gPane.setVgap(10);
-        gPane.setPadding(new Insets(10, 10, 10, 10));
-        gPane.setAlignment(Pos.TOP_CENTER);
-        
-        bPane.setLeft(gPane);
-        bPane.setCenter(DISTANCES_CHART);
-        bPane.setRight(TIME_CHART);
-        
-        RUN_SIM_BUTTON.setPrefWidth(150);
-        CLEAR_SIM_BUTTON.setPrefWidth(150);       
-        SHOW_MAP_BUTTON.setPrefWidth(150);
+        actionPane.setHgap(10);
+        actionPane.setVgap(10);
+        actionPane.setPadding(new Insets(10, 10, 10, 10));
+        actionPane.setAlignment(Pos.TOP_CENTER);
                
-        DISTANCES_CHART.setMinHeight(300);
-        DISTANCES_CHART.setMinWidth(200);
+        CLEAR_SIM_BUTTON.setId("systemAdmin");
+
+        RUN_SIM_BUTTON.setPrefWidth(150);
+        CLEAR_SIM_BUTTON.setPrefWidth(150);
+        SHOW_MAP_BUTTON.setPrefSize(80, 50);      
+        DISTANCES_CHART.setPrefSize(250, 400);
+        TIME_CHART.setPrefSize(250, 400);
+ 
         X_AXIS.setLabel("Origin City");
         X_AXIS.setTickLabelFill(Color.WHITE);
-        Y_AXIS.setLabel("Miles Travelled");
+        Y_AXIS.setLabel("Distance Traveled (Miles)");
         Y_AXIS.setTickLabelFill(Color.WHITE);
         Y_AXIS.setAutoRanging(false);
         Y_AXIS.setLowerBound(0);
         Y_AXIS.setTickUnit(1000);
         Y_AXIS.setMinorTickVisible(false);
-        
-        TIME_CHART.setMinHeight(300);
-        TIME_CHART.setMinWidth(200);
+               
         XT_AXIS.setLabel("Origin City");
         XT_AXIS.setTickLabelFill(Color.WHITE);
-        YT_AXIS.setLabel("Hours for Travel");
+        YT_AXIS.setLabel("Travel Time (Hours)");
         YT_AXIS.setTickLabelFill(Color.WHITE);
         YT_AXIS.setAutoRanging(false);
         YT_AXIS.setLowerBound(0);
         YT_AXIS.setTickUnit(6);
         YT_AXIS.setMinorTickVisible(false);
         
-        Scene scene = new Scene(bPane, 1050, 615);
+        chartPane.add(DISTANCES_CHART, 0, 0);
+        chartPane.add(TIME_CHART, 1, 0);
+        chartPane.setPadding(new Insets(20, 20, 20, 20));
+        
+        actionPane.setAlignment(Pos.CENTER);
+        chartPane.setAlignment(Pos.CENTER);
+        midPane.setLeft(actionPane);
+        midPane.setCenter(SHOW_MAP_BUTTON);
+        midPane.setRight(chartPane);
+        largePane.setTop(midPane);
+        
+        Scene scene = new Scene(largePane, 1050, 615);
         scene.getStylesheets().add
                 (MainWindow.class.getResource("LoginCSS.css").toExternalForm());
         setScene(scene);
@@ -143,15 +151,15 @@ public class SimulationWindow extends Stage implements MapComponentInitializedLi
     }
     
     public void showMap() {
-        bPane.setBottom(mapView);
+        midPane.setBottom(mapView);
     }
     
     public void showProgress() {
-        gPane.add(progressBar,2,4);
+        actionPane.add(progressBar, 1, 3);
     }
     
     public void endProgress() {
-        gPane.getChildren().remove(progressBar);
+        actionPane.getChildren().remove(progressBar);
     }
 
     public void newMarker(double x, double y, String City) {
